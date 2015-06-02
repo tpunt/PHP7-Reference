@@ -4,8 +4,8 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 
 
 **Features**
-* [Combined Comparison Operator (<=>)](#cco)
-* Null Coalesce Operator (??)
+* [Combined Comparison Operator](#combined-comparison-operator)
+* [Null Coalesce Operator](#null-coalesce-operator)
 * Scalar Type Hints
 * Return Type Declarations
 * Unicode Codepoint Escape Syntax
@@ -57,7 +57,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 
 ## Features
 
-### Combined Comparison Operator (<=>)
+### Combined Comparison Operator
 The combined comparison operator (or spaceship operator) is a short-hand notation for performing three-way comparisons from two operands. It has an integer return value that can be either:
 
 * 1 (if the left-hand operand is greater than the right-hand operand)
@@ -81,7 +81,7 @@ Objects are not comparable, and so using them as oparands with this operator wil
 
 RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator]
 
-### Null Coalesce Operator (??)
+### Null Coalesce Operator
 The null coalesce operator (or isset ternary operator) is a short-hand notation for performing `isset()` checks in the ternary operator. This is a common thing to do in applications, and so a new syntax has been introduced for this exact purpose.
 
 ```PHP
