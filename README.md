@@ -7,7 +7,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Combined Comparison Operator](#combined-comparison-operator)
 * [Null Coalesce Operator](#null-coalesce-operator)
 * [Scalar Type Declarations](#scalar-type-declarations)
-* Return Type Declarations
+* [Return Type Declarations](#return-type-declarations)
 * Unicode Codepoint Escape Syntax
 * Closure `call()` Method
 * Filtered `unserialize()`
@@ -128,6 +128,21 @@ var_dump(multiply(2, 3.5)); // float(7)
 var_dump(add('2', 3)); // Fatal error: Argument 1 passed to add() must be of the type integer, string given...
 ```
 
-Note that **only** the *invocation context* applies when the type-checking is performed. This means that the strict typing applies only to function/method calls, and not the function/method definition context. In the above example, the two functions could have been declared in either a strict or coercive file, but so long as they're being called in a strict file, then 
+Note that **only** the *invocation context* applies when the type-checking is performed. This means that the strict typing applies only to function/method calls, and not to the function/method definition context. In the above example, the two functions could have been declared in either a strict or coercive file, but so long as they're being called in a strict file, then the strict typing rules will apply.
 
 RFC: [Scalar Type Declarations](https://wiki.php.net/rfc/scalar_type_hints_v5)
+
+### Return Type Declarations
+Return type declarations enable you to specify the return type of a function, method, or closure. The following return types are supported: `string`, `int`, `float`, `bool`, `array`, `callable`, `self` (methods only), `parent` (methods only), `Closure`, the name of a class, and the name of an interface.
+
+```PHP
+function 
+```
+
+With respect to subtyping, the variance chosen for return types is **invariant**. This means that ...
+
+```PHP
+class
+```
+
+RFC: [Return Type Declarations](https://wiki.php.net/rfc/return_types)
