@@ -136,10 +136,25 @@ RFC: [Scalar Type Declarations](https://wiki.php.net/rfc/scalar_type_hints_v5)
 Return type declarations enable you to specify the return type of a function, method, or closure. The following return types are supported: `string`, `int`, `float`, `bool`, `array`, `callable`, `self` (methods only), `parent` (methods only), `Closure`, the name of a class, and the name of an interface.
 
 ```PHP
-function 
+function arraysSum(array ...$arrays): array
+{
+    return array_map(function(array $array): int {
+        return array_sum($array);
+    }, $arrays);
+}
+
+print_r(arraysSum([1,2,3], [4,5,6], [7,8,9]));
+/* Output
+Array
+(
+    [0] => 6
+    [1] => 15
+    [2] => 24
+)
+*/
 ```
 
-With respect to subtyping, the variance chosen for return types is **invariant**. This means that ...
+With respect to subtyping, the variance chosen for return types is **invariance**. This means that ...
 
 ```PHP
 class
