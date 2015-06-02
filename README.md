@@ -6,7 +6,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 **Features**
 * [Combined Comparison Operator](#combined-comparison-operator)
 * [Null Coalesce Operator](#null-coalesce-operator)
-* Scalar Type Hints
+* Scalar Type Declarations
 * Return Type Declarations
 * Unicode Codepoint Escape Syntax
 * Closure `call()` Method
@@ -60,11 +60,11 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 ### Combined Comparison Operator
 The combined comparison operator (or spaceship operator) is a short-hand notation for performing three-way comparisons from two operands. It has an integer return value that can be either:
 
-* 1 (if the left-hand operand is greater than the right-hand operand)
+* positive integer (if the left-hand operand is greater than the right-hand operand)
 * 0 (if both operands are equal)
-* -1 (if the right-hand operand is greater than the left-hand operand)
+* negative integer (if the right-hand operand is greater than the left-hand operand)
 
-The operator has the same precedence as the equality operators (`==`, `!=`, `===`, `!==`) and has the exact same behaviour as the other loose comparison operators (<, >=, etc). It is also non-associative like them too, so chaining of the operands (like `1 <=> 2 <=> 3`) is not allowed.
+The operator has the same precedence as the equality operators (`==`, `!=`, `===`, `!==`) and has the exact same behaviour as the other loose comparison operators (`<`, `>=`, etc). It is also non-associative like them too, so chaining of the operands (like `1 <=> 2 <=> 3`) is not allowed.
 
 ```PHP
 // compares strings lexically
@@ -79,7 +79,7 @@ var_dump(['a', 'b'] <=> ['a', 'b']); // int(0)
 
 Objects are not comparable, and so using them as oparands with this operator will result in undefined behaviour.
 
-RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator]
+RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator)
 
 ### Null Coalesce Operator
 The null coalesce operator (or isset ternary operator) is a short-hand notation for performing `isset()` checks in the ternary operator. This is a common thing to do in applications, and so a new syntax has been introduced for this exact purpose.
