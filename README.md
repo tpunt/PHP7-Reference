@@ -6,7 +6,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 **Features**
 * [Combined Comparison Operator](#combined-comparison-operator)
 * [Null Coalesce Operator](#null-coalesce-operator)
-* Scalar Type Declarations
+* [Scalar Type Declarations](#scalar-type-declarations)
 * Return Type Declarations
 * Unicode Codepoint Escape Syntax
 * Closure `call()` Method
@@ -93,3 +93,41 @@ $route = $_GET['route'] ?? 'index';
 ```
 
 RFC: [Null Coalesce Operator](https://wiki.php.net/rfc/isset_ternary)
+
+### Scalar Type Declarations
+Scalar type declarations come in two flavours: **coercive** (default) and **strict**. The following types for parameters can now be enforced (either coercively or strictly): strings (`string`), integers (`int`), floating-point numbers (`float`), and booleans (`bool`). They augment the other types introduced in the PHP 5.x versions: class names, interfaces, `array` and `callable`.
+
+```PHP
+// Coercive mode
+function sumOfInts(int ...$ints)
+{
+    return array_sum($ints);
+}
+
+var_dump(sumOfInts(2, '3', 4.1)); // int(9)
+```
+
+To enable strict mode, a single `declare()` directive must be placed at the top of the file. This means that the strictness of typing for scalars is configured on a per file basis. This directive not only affects the type declarations of parameters, but also of function return types (see [Return Type Declarations](#return-type-declarations)), built-in PHP functions, and functions from loaded extensions.
+
+If the type-check fails, then an `E_RECOVERABLE_ERROR` is produced. The only leniency present in strict typing is the automatic conversion of integers to floats (but not vice-versa) when an integer is provided in a float context.
+
+```PHP
+declare(strict_types=1);
+
+function multiply(float $x, float $y)
+{
+    return $x * $y;
+}
+
+function add(int $x, int $y)
+{
+    return $x + $y;
+}
+
+var_dump(multiply(2, 3.5)); // float(7)
+var_dump(add('2', 3)); // Fatal error: Argument 1 passed to add() must be of the type integer, string given...
+```
+
+Note that **only** the *invocation context* applies when the type-checking is performed. This means that the strict typing applies only to function/method calls, and not the function/method definition context. In the above example, the two functions could have been declared in either a strict or coercive file, but so long as they're being called in a strict file, then 
+
+RFC: [Scalar Type Declarations](https://wiki.php.net/rfc/scalar_type_hints_v5)
