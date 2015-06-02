@@ -64,7 +64,7 @@ The combined comparison operator (or spaceship operator) is a short-hand notatio
 * 0 (if both operands are equal)
 * -1 (if the right-hand operand is greater than the left-hand operand)
 
-The operator has the same precedence as the equality operators (==, !=, ===, !==) and has the exact same behaviour as the other loose comparison operators (<, >=, etc). It is also non-associative like them too, so chaining of the operands (like 1 <=> 2 <=> 3) is not allowed.
+The operator has the same precedence as the equality operators (`==`, `!=`, `===`, `!==`) and has the exact same behaviour as the other loose comparison operators (<, >=, etc). It is also non-associative like them too, so chaining of the operands (like `1 <=> 2 <=> 3`) is not allowed.
 
 ```PHP
 // compares strings lexically
@@ -79,4 +79,17 @@ var_dump(['a', 'b'] <=> ['a', 'b']); // int(0)
 
 Objects are not comparable, and so using them as oparands with this operator will result in undefined behaviour.
 
-RFC: (Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator]
+RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator]
+
+### Null Coalesce Operator (??)
+The null coalesce operator (or isset ternary operator) is a short-hand notation for performing `isset()` checks in the ternary operator. This is a common thing to do in applications, and so a new syntax has been introduced for this exact purpose.
+
+```PHP
+// old style
+$route = isset($_GET['route']) ? $_GET['route'] : 'index';
+
+// new style
+$route = $_GET['route'] ?? 'index';
+```
+
+RFC: [Null Coalesce Operator](https://wiki.php.net/rfc/isset_ternary)
