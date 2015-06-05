@@ -8,7 +8,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Null Coalesce Operator](#null-coalesce-operator)
 * [Scalar Type Declarations](#scalar-type-declarations)
 * [Return Type Declarations](#return-type-declarations)
-* Unicode Codepoint Escape Syntax
+* [Unicode Codepoint Escape Syntax](#unicode_codepoint_escape_syntax)
 * Closure `call()` Method
 * Filtered `unserialize()`
 * `IntlChar` Class
@@ -200,3 +200,13 @@ class B implements SomeInterface
 This time, the implemented method causes an `E_RECOVERABLE_ERROR` when executed because `null` is not a valid return type - only an instance of the class `A` can be returned.
 
 RFC: [Return Type Declarations](https://wiki.php.net/rfc/return_types)
+
+### Unicode Codepoint Escape Syntax
+
+This enables you to output a UTF-8 encoded unicode codepoint in either a double-quoted string or a heredoc. Any valid codepoint is accepted, with leading `0`'s being optional.
+
+```PHP
+echo "\u{aa}"; // ª
+echo "\u{0000aa}"; // ª (same as before but with optional leading 0's)
+echo "\u{9999}"; // 香
+```
