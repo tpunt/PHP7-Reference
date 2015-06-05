@@ -154,10 +154,49 @@ Array
 */
 ```
 
-With respect to subtyping, the variance chosen for return types is **invariance**. This means that ...
+With respect to subtyping, **invariance** has been chosen for return types. This simply means that when a method is either overridden in a subtyped class or implemented as defined in a contract, its return type must match exactly the method it is (re)implementing.
 
 ```PHP
-class
+class A {}
+class B extends A {}
+
+class C
+{
+    public function test() : A
+    {
+        return new A;
+    }
+}
+
+class D extends C
+{
+    // overriding method C::test() : A
+    public function test() : B // causes a variance mismatch error
+    {
+        return new B;
+    }
+}
 ```
+
+The overriding method `D::test() : B` causes an `E_COMPILE_ERROR` because covariance is not allowed. In order for this to work, `D::test()` method must have a return type of `A`.
+
+```PHP
+class A {}
+
+interface SomeInterface
+{
+    public function test() : A;
+}
+
+class B implements SomeInterface
+{
+    public function test() : A // all good!
+    {
+        return null; // not good!
+    }
+}
+```
+
+This time, the implemented method causes an `E_RECOVERABLE_ERROR` when executed because `null` is not a valid return type - only an instance of the class `A` can be returned.
 
 RFC: [Return Type Declarations](https://wiki.php.net/rfc/return_types)
