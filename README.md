@@ -8,8 +8,8 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Null Coalesce Operator](#null-coalesce-operator)
 * [Scalar Type Declarations](#scalar-type-declarations)
 * [Return Type Declarations](#return-type-declarations)
-* [Unicode Codepoint Escape Syntax](#unicode_codepoint_escape_syntax)
-* Closure `call()` Method
+* [Unicode Codepoint Escape Syntax](#unicode-codepoint-escape-syntax)
+* [Closure `call()` Method](#closure-call-method)
 * Filtered `unserialize()`
 * `IntlChar` Class
 * `session_start()` Options
@@ -210,3 +210,24 @@ echo "\u{aa}"; // ª
 echo "\u{0000aa}"; // ª (same as before but with optional leading 0's)
 echo "\u{9999}"; // 香
 ```
+
+RFC: [Unicode Codepoint Escape Syntax](https://wiki.php.net/rfc/unicode_escape)
+
+### Closure call() method
+
+The new call() method for closures is used as a shorthand way of invoking a closure whilst binding an object scope to it. This creates more perfomant and compact code by removing the need to create an intermediate closure before invoking it.
+
+```PHP
+class A {private $x = 1;}
+
+// Pre PHP 7 code
+$getXCB = function() {return $this->x;};
+$getX = $getXCB->bindTo(new A, 'A');
+echo $getX(); // 1
+
+// PHP 7+ code
+$getX = function() {return $this->x;};
+echo $getX->call(new A); // 1
+```
+
+RFC: [Closure::call](https://wiki.php.net/rfc/closure_apply)
