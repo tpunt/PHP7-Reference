@@ -10,7 +10,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Return Type Declarations](#return-type-declarations)
 * [Unicode Codepoint Escape Syntax](#unicode-codepoint-escape-syntax)
 * [Closure `call()` Method](#closure-call-method)
-* Filtered `unserialize()`
+* [Filtered `unserialize()`](#filtered-unserialize)
 * `IntlChar` Class
 * `session_start()` Options
 * Expectations
@@ -231,3 +231,20 @@ echo $getX->call(new A); // 1
 ```
 
 RFC: [Closure::call](https://wiki.php.net/rfc/closure_apply)
+
+### Filtered `unserialize()`
+
+This feature seeks to provide better security when unserializing objects on untrusted data. It prevents possible code injections by enabling the developer to whitelist classes that can be unserialized.
+
+```PHP
+// converts all objects into __PHP_Incomplete_Class object
+$data = unserialize($foo, ["allowed_classes" => false]);
+
+// converts all objects into __PHP_Incomplete_Class object except those of MyClass and MyClass2
+$data = unserialize($foo, ["allowed_classes" => ["MyClass", "MyClass2"]);
+
+// default behaviour (same as omitting the second argument) that accepts all classes
+$data = unserialize($foo, ["allowed_classes" => true]);
+```
+
+RFC: [Filtered unserialize()](https://wiki.php.net/rfc/secure_unserialize)
