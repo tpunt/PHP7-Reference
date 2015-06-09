@@ -16,7 +16,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * Expectations
 * [Group `use` Declarations](#group-use-declarations)
 * Generator Return Expressions
-* Integer Division with `intdiv()`
+* [Integer Division with `intdiv()`](#integer-division-with-intdiv)
 * `preg_replace_callback_array()` Function
 
 
@@ -268,3 +268,13 @@ use parent\child\{
 ```
 
 RFC: [Group use Declarations](https://wiki.php.net/rfc/group_use_declarations)
+
+### Integer Division with `intdiv()`
+
+The `intdiv()` function has been introduced to handle division where an integer is to be returned.
+
+```PHP
+var_dump(intdiv(10, 3)); // int(3)
+```
+
+RFC: [intdiv()](https://wiki.php.net/rfc/intdiv)
