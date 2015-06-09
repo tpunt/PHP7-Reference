@@ -14,7 +14,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * `IntlChar` Class
 * `session_start()` Options
 * Expectations
-* Group `use` Declarations
+* [Group `use` Declarations](#group-use-declarations)
 * Generator Return Expressions
 * Integer Division with `intdiv()`
 * `preg_replace_callback_array()` Function
@@ -248,3 +248,23 @@ $data = unserialize($foo, ["allowed_classes" => true]);
 ```
 
 RFC: [Filtered unserialize()](https://wiki.php.net/rfc/secure_unserialize)
+
+### Group `use` Declarations
+
+This gives the ability to group multiple `use` declarations according to the parent namespace. This seeks to remove code verbosity when importing multiple classes that come under the same namespace.
+
+```PHP
+// PHP 5.6 and below
+use some\namespace\ClassA;
+use some\namespace\ClassB;
+use some\namespace\ClassC as C;
+
+// PHP 7+
+use parent\child\{
+    ClassA,
+    ClassB,
+    ClassC as C
+};
+```
+
+RFC: [Group use Declarations](https://wiki.php.net/rfc/group_use_declarations)
