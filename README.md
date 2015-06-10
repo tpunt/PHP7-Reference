@@ -258,7 +258,7 @@ The `assert()` function's prototype is as follows:
 void assert (mixed $expression [, mixed $message]);
 ```
 
-As with the old API, if `$expression` is a string, then it will be evaluated. If the first argument is falsy, then an exception is triggered. The second argument can either be a plain string (in which case, an AssertionException is triggered), or an object containing an error message.
+As with the old API, if `$expression` is a string, then it will be evaluated. If the first argument is falsy, then the assertion fails. The second argument can either be a plain string (causing an AssertionException to be triggered), or a custom exception object containing an error message.
 
 ```PHP
 ini_set("assert.exception", 1);
