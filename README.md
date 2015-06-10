@@ -13,7 +13,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Filtered `unserialize()`](#filtered-unserialize)
 * `IntlChar` Class
 * `session_start()` Options
-* Expectations
+* [Expectations](#expectations)
 * [Group `use` Declarations](#group-use-declarations)
 * Generator Return Expressions
 * [Integer Division with `intdiv()`](#integer-division-with-intdiv)
@@ -248,6 +248,38 @@ $data = unserialize($foo, ["allowed_classes" => true]);
 ```
 
 RFC: [Filtered unserialize()](https://wiki.php.net/rfc/secure_unserialize)
+
+### Expectations
+
+Expectations are an enhancement to the older `assert()` function. They enable for zero-cost assertions in production code, and provide the ability to throw custom exceptions on error.
+
+The `assert()` function's prototype is as follows:
+```
+void assert (mixed $expression [, mixed $message]);
+```
+
+As with the old API, if `$expression` is a string, then it will be evaluated. If the first argument is falsy, then an exception is triggered. The second argument can either be a plain string (in which case, an AssertionException is triggered), or an object containing an error message.
+
+```PHP
+ini_set("assert.exception", 1);
+
+class CustomError extends AssertionException {}
+
+assert(false, new CustomError("Some error message"));
+```
+
+With this feature comes two PHP.ini settings (along with their default values):
+ - zend.assertions = 1
+ - assert.exception = 0
+
+**zend.assertions** has three values:
+ - **1** = generate and execute code (development mode)
+ - **0** = generate code and jump around at it at runtime
+ - **-1** = don't generate any code (zero-cost, production mode)
+
+**assert.exception** means that an exception is thrown when an assertion fails. This is switched off by default to remain compatible with the old `assert()` function.
+
+RFC: [Expectations](#https://wiki.php.net/rfc/expectations)
 
 ### Group `use` Declarations
 
