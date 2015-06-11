@@ -12,7 +12,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Closure `call()` Method](#closure-call-method)
 * [Filtered `unserialize()`](#filtered-unserialize)
 * `IntlChar` Class
-* `session_start()` Options
+* [`session_start()` Options](#session_start-options)
 * [Expectations](#expectations)
 * [Group `use` Declarations](#group-use-declarations)
 * Generator Return Expressions
@@ -248,6 +248,18 @@ $data = unserialize($foo, ["allowed_classes" => true]);
 ```
 
 RFC: [Filtered unserialize()](https://wiki.php.net/rfc/secure_unserialize)
+
+### `session_start()` Options
+
+This feature gives the ability to pass in an array of options to the `session_start()` function. It firstly enables for session-based php.ini options to be set using this options array:
+
+```PHP
+session_start(['cache_limiter'=>'private']); // sets the session.cache_limiter option to private
+```
+
+It secondly introduces a new php.ini setting: `session.lazy_write`. This is, by default, set to true and means that write operations to session data only occur if the session data actually changes.
+
+RFC: [Introduce session_start() Options](#https://wiki.php.net/rfc/session-lock-ini)
 
 ### Expectations
 
