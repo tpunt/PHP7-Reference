@@ -85,10 +85,10 @@ RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison
 The null coalesce operator (or isset ternary operator) is a short-hand notation for performing `isset()` checks in the ternary operator. This is a common thing to do in applications, and so a new syntax has been introduced for this exact purpose.
 
 ```PHP
-// old style
+// Pre PHP 7 code
 $route = isset($_GET['route']) ? $_GET['route'] : 'index';
 
-// new style
+// PHP 7+ code
 $route = $_GET['route'] ?? 'index';
 ```
 
@@ -251,13 +251,15 @@ RFC: [Filtered unserialize()](https://wiki.php.net/rfc/secure_unserialize)
 
 ### `session_start()` Options
 
-This feature gives the ability to pass in an array of options to the `session_start()` function. It firstly enables for session-based php.ini options to be set using this options array:
+This feature gives the ability to pass in an array of options to the `session_start()` function. This is used to set session-based php.ini options:
 
 ```PHP
 session_start(['cache_limiter'=>'private']); // sets the session.cache_limiter option to private
 ```
 
-It secondly introduces a new php.ini setting: `session.lazy_write`. This is, by default, set to true and means that write operations to session data only occur if the session data actually changes.
+This feature also introduces:
+ - A new php.ini setting (`session.lazy_write`) that is, by default, set to true and means that session data is only rewritten if it changes.
+ - A new interface (`SessionUpdateTimestampHandlerInterface`) that defines two new functions: `validateId()` and `updateTimestamp()`
 
 RFC: [Introduce session_start() Options](#https://wiki.php.net/rfc/session-lock-ini)
 
@@ -298,12 +300,12 @@ RFC: [Expectations](#https://wiki.php.net/rfc/expectations)
 This gives the ability to group multiple `use` declarations according to the parent namespace. This seeks to remove code verbosity when importing multiple classes that come under the same namespace.
 
 ```PHP
-// PHP 5.6 and below
+// Pre PHP 7 code
 use some\namespace\ClassA;
 use some\namespace\ClassB;
 use some\namespace\ClassC as C;
 
-// PHP 7+
+// PHP 7+ code
 use parent\child\{
     ClassA,
     ClassB,
