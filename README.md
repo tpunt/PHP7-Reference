@@ -17,7 +17,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Group `use` Declarations](#group-use-declarations)
 * Generator Return Expressions
 * [Integer Division with `intdiv()`](#integer-division-with-intdiv)
-* `preg_replace_callback_array()` Function
+* [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
 
 
 **Changes**
@@ -324,3 +324,66 @@ var_dump(intdiv(10, 3)); // int(3)
 ```
 
 RFC: [intdiv()](https://wiki.php.net/rfc/intdiv)
+
+### `preg_replace_callback_array()` Function
+
+This new function addition enables for code to be written more cleanly when using the `preg_replace_callback()` function. Prior to PHP 7, callbacks that needed to be executed per regular expression match required the callback function (second parameter of `preg_replace_callback()`) to be polluted with lots of branching (a hacky method at best). But now, callbacks can be registered on a per-regular expression basis using an associative array with the regular expression as the keys and the callbacks as the values.
+
+```PHP
+$tokenStream = []; // [tokenName, lexeme] pairs
+
+$input = <<<'end'
+$a = 3; // variable initialisation
+end;
+
+// Pre PHP 7 code
+preg_replace_callback(
+    [
+        '~\$[a-z_][a-z\d_]*~i',
+        '~=~',
+        '~[\d]+~',
+        '~;~',
+        '~//.*~',
+    ],
+    function ($match) use (&$tokenStream) {
+        if (strpos($match[0], '$') === 0) {
+            $tokenStream[] = ['T_VARIABLE', $match[0]];
+        } elseif (strpos($match[0], '=') === 0) {
+            $tokenStream[] = ['T_ASSIGN', $match[0]];
+        } elseif (ctype_digit($match[0])) {
+            $tokenStream[] = ['T_NUM', $match[0]];
+        } elseif (strpos($match[0], ';') === 0) {
+            $tokenStream[] = ['T_TERMINATE_STMT', $match[0]];
+        } elseif (strpos($match[0], '//') === 0) {
+            $tokenStream[] = ['T_COMMENT', $match[0]];
+        } else {
+            // skip whitespace
+        }
+    },
+    $input
+);
+
+// PHP 7+ code
+preg_replace_callback_array(
+    [
+        '~\$[a-z_][a-z\d_]*~i' => function ($match) use (&$tokenStream) {
+            $tokenStream[] = ['T_VARIABLE', $match[0]];
+        },
+        '~=~' => function ($match) use (&$tokenStream) {
+            $tokenStream[] = ['T_ASSIGN', $match[0]];
+        },
+        '~[\d]+~' => function ($match) use (&$tokenStream) {
+            $tokenStream[] = ['T_NUM', $match[0]];
+        },
+        '~;~' => function ($match) use (&$tokenStream) {
+            $tokenStream[] = ['T_TERMINATE_STMT', $match[0]];
+        },
+        '~//.*~' => function ($match) use (&$tokenStream) {
+            $tokenStream[] = ['T_COMMENT', $match[0]];
+        },
+    ],
+    $input
+);
+```
+
+RFC: [Add preg_replace_callback_array Function](#https://wiki.php.net/rfc/preg_replace_callback_array)
