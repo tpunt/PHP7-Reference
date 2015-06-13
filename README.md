@@ -15,7 +15,8 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [`session_start()` Options](#session_start-options)
 * [Expectations](#expectations)
 * [Group `use` Declarations](#group-use-declarations)
-* Generator Return Expressions
+* [Generator Return Expressions](#generator-return-expressions)
+* Generator Delegation
 * [Integer Division with `intdiv()`](#integer-division-with-intdiv)
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
 
@@ -328,6 +329,35 @@ use parent\child\{
 ```
 
 RFC: [Group use Declarations](https://wiki.php.net/rfc/group_use_declarations)
+
+### Generator Return Expressions
+
+This feature builds upon the generator functionality introduced into PHP 5.5. It enables for a `return` statement to be used within a generator to enable for a final *expression* to be returned (return by reference is not allowed). This value can be fetched using the new `Generator::getReturn()` method, which may only be used once the generator has finishing yielding values.
+
+```PHP
+// IIFE syntax now possible - see the Uniform Variable Syntax subsection in the Changes section
+$gen = (function() {
+    yield 1;
+    yield 2;
+
+    return 3;
+})();
+
+foreach ($gen as $val) {
+    echo $val, PHP_EOL;
+}
+
+echo $gen->getReturn(), PHP_EOL;
+
+// output:
+// 1
+// 2
+// 3
+```
+
+Being able to explicitly return a final value from a generator is a handy ability to have. This is because it enables for a final value to be returned by a generator (from perhaps some form of coroutine computation) that can be specifically handled by the client code executing the generator. This is far simpler than forcing the client code to firstly check whether the final value has been yielded, and then if so, to handle that value specifically.
+
+RFC: [Generator Return Expressions](https://wiki.php.net/rfc/generator-return-expressions)
 
 ### Integer Division with `intdiv()`
 
