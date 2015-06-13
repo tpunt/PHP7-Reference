@@ -16,7 +16,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Expectations](#expectations)
 * [Group `use` Declarations](#group-use-declarations)
 * [Generator Return Expressions](#generator-return-expressions)
-* Generator Delegation
+* [Generator Delegation](#generator-delegation)
 * [Integer Division with `intdiv()`](#integer-division-with-intdiv)
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
 
@@ -358,6 +358,44 @@ echo $gen->getReturn(), PHP_EOL;
 Being able to explicitly return a final value from a generator is a handy ability to have. This is because it enables for a final value to be returned by a generator (from perhaps some form of coroutine computation) that can be specifically handled by the client code executing the generator. This is far simpler than forcing the client code to firstly check whether the final value has been yielded, and then if so, to handle that value specifically.
 
 RFC: [Generator Return Expressions](https://wiki.php.net/rfc/generator-return-expressions)
+
+### Generator Delegation
+
+Generator delegation builds upon the ability of being able to return expressions from generators. It does this by using an new syntax of `yield from <expr>`, where <expr> can be any `Traversable` object or array. This <expr> will be advanced until no longer valid, and then execution will continue in the calling generator. This feature enables `yield` statemets to be broken down into smaller operations, thereby promoting cleaner code that has greater reusability.
+
+```PHP
+function gen()
+{
+    yield 1;
+    yield 2;
+
+    return yield from gen2();
+}
+
+function gen2()
+{
+    yield 3;
+
+    return 4;
+}
+
+$gen = gen();
+
+foreach ($gen as $val)
+{
+    echo $val, PHP_EOL;
+}
+
+echo $gen->getReturn();
+
+// output
+// 1
+// 2
+// 3
+// 4
+```
+
+RFC: [Generator Delegation](https://wiki.php.net/rfc/generator-delegation)
 
 ### Integer Division with `intdiv()`
 
