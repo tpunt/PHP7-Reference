@@ -11,7 +11,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Unicode Codepoint Escape Syntax](#unicode-codepoint-escape-syntax)
 * [Closure `call()` Method](#closure-call-method)
 * [Filtered `unserialize()`](#filtered-unserialize)
-* `IntlChar` Class
+* [`IntlChar` Class](#intlchar-class)
 * [`session_start()` Options](#session_start-options)
 * [Expectations](#expectations)
 * [Group `use` Declarations](#group-use-declarations)
@@ -248,6 +248,20 @@ $data = unserialize($foo, ["allowed_classes" => true]);
 ```
 
 RFC: [Filtered unserialize()](https://wiki.php.net/rfc/secure_unserialize)
+
+### `IntlChar` Class
+
+The new `IntlChar` class seeks to expose additional ICU functionality. The class itself defines a number of static methods and constants that can be used to manipulate unicode characters.
+
+```PHP
+printf('%x', IntlChar::CODEPOINT_MAX); // 10ffff
+echo IntlChar::charName('@'); // COMMERCIAL AT
+var_dump(IntlChar::ispunct('!')); bool(true)
+```
+
+In order to use this class, you will need the `Intl` extension installed.
+
+RFC: [IntlChar class](https://wiki.php.net/rfc/intl.char)
 
 ### `session_start()` Options
 
