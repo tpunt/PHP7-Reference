@@ -274,7 +274,7 @@ session_start(['cache_limiter' => 'private']); // sets the session.cache_limiter
 
 This feature also introduces a new php.ini setting (`session.lazy_write`) that is, by default, set to true and means that session data is only rewritten if it changes.
 
-RFC: [Introduce session_start() Options](#https://wiki.php.net/rfc/session-lock-ini)
+RFC: [Introduce session_start() Options](https://wiki.php.net/rfc/session-lock-ini)
 
 ### Expectations
 
@@ -306,7 +306,7 @@ With this feature comes two PHP.ini settings (along with their default values):
 
 **assert.exception** means that an exception is thrown when an assertion fails. This is switched off by default to remain compatible with the old `assert()` function.
 
-RFC: [Expectations](#https://wiki.php.net/rfc/expectations)
+RFC: [Expectations](https://wiki.php.net/rfc/expectations)
 
 ### Group `use` Declarations
 
@@ -477,3 +477,5 @@ The licensing of the old JSON extension was regarded as non-free, causing issues
 **BC breaks**
  - A number *must not* end in a decimal point (i.e. `34.` must be changed to either `34.0` or just `34`)
  - The `e` exponent *must not* immediately follow the decimal point (i.e. `3.e3` must be changed to either `3.0e3` or just `3e3`)
+
+RFC: [Replace current json extension with jsond](https://wiki.php.net/rfc/jsond)
