@@ -3,7 +3,7 @@
 PHP 7 has been slated for release [in November of this year](https://wiki.php.net/rfc/php7timeline) (2015). It comes with a number of new features, changes, and backwards compatibility breakages that are outlined below.
 
 
-**Features**
+**[Features](#features)**
 * [Combined Comparison Operator](#combined-comparison-operator)
 * [Null Coalesce Operator](#null-coalesce-operator)
 * [Scalar Type Declarations](#scalar-type-declarations)
@@ -21,8 +21,8 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
 
 
-**Changes**
-* JSON Extension Replaced with JSOND
+**[Changes](#changes)**
+* [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
 * Integer Semantics
 * ZPP Failure on Overflow
 * Variable Syntax Uniformity
@@ -269,12 +269,10 @@ RFC: [IntlChar class](https://wiki.php.net/rfc/intl.char)
 This feature gives the ability to pass in an array of options to the `session_start()` function. This is used to set session-based php.ini options:
 
 ```PHP
-session_start(['cache_limiter'=>'private']); // sets the session.cache_limiter option to private
+session_start(['cache_limiter' => 'private']); // sets the session.cache_limiter option to private
 ```
 
-This feature also introduces:
- - A new php.ini setting (`session.lazy_write`) that is, by default, set to true and means that session data is only rewritten if it changes.
- - A new interface (`SessionUpdateTimestampHandlerInterface`) that defines two new functions: `validateId()` and `updateTimestamp()`
+This feature also introduces a new php.ini setting (`session.lazy_write`) that is, by default, set to true and means that session data is only rewritten if it changes.
 
 RFC: [Introduce session_start() Options](#https://wiki.php.net/rfc/session-lock-ini)
 
@@ -469,3 +467,13 @@ preg_replace_callback_array(
 ```
 
 RFC: [Add preg_replace_callback_array Function](https://wiki.php.net/rfc/preg_replace_callback_array)
+
+## Changes
+
+### JSON Extension Replaced with JSOND
+
+The licensing of the old JSON extension was regarded as non-free, causing issues for many Linux-based distributions. The extension has since been replaced with JSOND and comes with some [performance gains](https://github.com/bukka/php-jsond-bench/blob/master/reports/0001/summary.md) and backward compatibility breakages.
+
+**BC breaks**
+ - A number *must not* end in a decimal point (i.e. `34.` must be changed to either `34.0` or just `34`)
+ - The `e` exponent *must not* immediately follow the decimal point (i.e. `3.e3` must be changed to either `3.0e3` or just `3e3`)
