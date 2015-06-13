@@ -24,7 +24,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 **[Changes](#changes)**
 * [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
 * [Integer Semantics](#integer-semantics)
-* ZPP Failure on Overflow
+* [ZPP Failure on Overflow](#zpp-failure-on-overflow)
 * Variable Syntax Uniformity
 * Non-Object Call Errors
 * Exceptions in the Engine
@@ -474,7 +474,7 @@ RFC: [Add preg_replace_callback_array Function](https://wiki.php.net/rfc/preg_re
 
 The licensing of the old JSON extension was regarded as non-free, causing issues for many Linux-based distributions. The extension has since been replaced with JSOND and comes with some [performance gains](https://github.com/bukka/php-jsond-bench/blob/master/reports/0001/summary.md) and backward compatibility breakages.
 
-**BC breaks**
+**BC Breaks**
  - A number *must not* end in a decimal point (i.e. `34.` must be changed to either `34.0` or just `34`)
  - The `e` exponent *must not* immediately follow the decimal point (i.e. `3.e3` must be changed to either `3.0e3` or just `3e3`)
 
@@ -488,7 +488,16 @@ The semantics for some integer-based behaviour has changed in an effort to make 
  - Left bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0
  - Right bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0 or -1 (sign dependent)
 
- **BC Breaks**
+**BC Breaks**
  - Any reliance on the old semantics for the above will no longer work
 
 RFC: [Integer Semantics](https://wiki.php.net/rfc/integer_semantics)
+
+### ZPP Failure on Overflow
+
+Coercion between floats to integers can occur when a float is passed to an internal function expecting an integer. If the float is too large to represent as an integer, then the value will be silently truncated (which may result in a loss of magnitude and sign). This can introduce hard-to-find bugs. This change therefore seeks to notify the developer when an implicit conversion from a float to an integer has occurred and failed by returning `null` and emitting an E_WARNING.
+
+**BC Breaks**
+ - Code that once silently worked will now emit an E_WARNING and may fail if the result of the function invocation is directly passed to another function (since `null` will now be passed).
+
+RFC: [ZPP Failure on Overflow](https://wiki.php.net/rfc/zpp_fail_on_overflow)
