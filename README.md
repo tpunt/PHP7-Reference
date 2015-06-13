@@ -343,7 +343,7 @@ preg_replace_callback(
         '~=~',
         '~[\d]+~',
         '~;~',
-        '~//.*~',
+        '~//.*~'
     ],
     function ($match) use (&$tokenStream) {
         if (strpos($match[0], '$') === 0) {
@@ -380,10 +380,10 @@ preg_replace_callback_array(
         },
         '~//.*~' => function ($match) use (&$tokenStream) {
             $tokenStream[] = ['T_COMMENT', $match[0]];
-        },
+        }
     ],
     $input
 );
 ```
 
-RFC: [Add preg_replace_callback_array Function](#https://wiki.php.net/rfc/preg_replace_callback_array)
+RFC: [Add preg_replace_callback_array Function](https://wiki.php.net/rfc/preg_replace_callback_array)
