@@ -23,7 +23,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 
 **[Changes](#changes)**
 * [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
-* Integer Semantics
+* [Integer Semantics](#integer-semantics)
 * ZPP Failure on Overflow
 * Variable Syntax Uniformity
 * Non-Object Call Errors
@@ -479,3 +479,16 @@ The licensing of the old JSON extension was regarded as non-free, causing issues
  - The `e` exponent *must not* immediately follow the decimal point (i.e. `3.e3` must be changed to either `3.0e3` or just `3e3`)
 
 RFC: [Replace current json extension with jsond](https://wiki.php.net/rfc/jsond)
+
+### Integer Semantics
+
+The semantics for some integer-based behaviour has changed in an effort to make them more intuitive and platform-independent. Here is a list of those changes:
+ - Casting `NAN` and `INF` to an integer will always result in 0
+ - Bitwise shifting by a negative number of bits is now disallowed (causes a bool(false) return an emits an E_WARNING)
+ - Left bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0
+ - Right bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0 or -1 (sign dependent)
+
+ **BC Breaks**
+ - Any reliance on the old semantics for the above will no longer work
+
+RFC: [Integer Semantics](https://wiki.php.net/rfc/integer_semantics)
