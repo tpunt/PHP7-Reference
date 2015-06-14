@@ -25,7 +25,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
 * [Integer Semantics](#integer-semantics)
 * [ZPP Failure on Overflow](#zpp-failure-on-overflow)
-* Variable Syntax Uniformity
+* [Uniform Variable Syntax](#uniform-variable-syntax)
 * Non-Object Call Errors
 * Exceptions in the Engine
 * Fixes to `foreach()`'s Behaviour
@@ -214,7 +214,7 @@ echo "\u{9999}"; // 香
 
 RFC: [Unicode Codepoint Escape Syntax](https://wiki.php.net/rfc/unicode_escape)
 
-### Closure call() method
+### Closure call() Method
 
 The new call() method for closures is used as a shorthand way of invoking a closure whilst binding an object scope to it. This creates more perfomant and compact code by removing the need to create an intermediate closure before invoking it.
 
@@ -501,3 +501,11 @@ Coercion between floats to integers can occur when a float is passed to an inter
  - Code that once silently worked will now emit an E_WARNING and may fail if the result of the function invocation is directly passed to another function (since `null` will now be passed).
 
 RFC: [ZPP Failure on Overflow](https://wiki.php.net/rfc/zpp_fail_on_overflow)
+
+### Uniform Variable Syntax
+
+This change brings far greater orthogonality to PHP's operator usage and has a very low impact to breaking backwards compatibility.
+
+...
+
+RFC: [Uniform Variable Syntax](https://wiki.php.net/rfc/uniform_variable_syntax)
