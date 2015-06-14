@@ -504,8 +504,33 @@ RFC: [ZPP Failure on Overflow](https://wiki.php.net/rfc/zpp_fail_on_overflow)
 
 ### Uniform Variable Syntax
 
-This change brings far greater orthogonality to PHP's operator usage and has a very low impact to breaking backwards compatibility.
+This change brings far greater orthogonality to the variable operators in PHP. It enables for a number of new combinations of operators that were previously disallowed, and so introduces new ways to achieve old operations in terser code.
 
-...
+```PHP
+// nesting ::
+$foo::$bar::$baz // access the property $baz of the $foo::$bar property
+
+// nesting ()
+foo()() // invoke the return of foo()
+
+// operators on expressions enclosed in ()
+(function () {})() // IIFE syntax from JS
+
+// operator support on dereferencable scalars
+'string'->toUpper();
+```
+
+The ability to arbitrarily combine variable operators came from reversing the evaluation semantics of indirect variable, property, and method references. The new behaviour is more intuitive, always following a left-to-right evaluation order:
+
+```PHP
+                        // old meaning            // new meaning
+$$foo['bar']['baz']     ${$foo['bar']['baz']}     ($$foo)['bar']['baz']
+$foo->$bar['baz']       $foo->{$bar['baz']}       ($foo->$bar)['baz']
+$foo->$bar['baz']()     $foo->{$bar['baz']}()     ($foo->$bar)['baz']()
+Foo::$bar['baz']()      Foo::{$bar['baz']}()      (Foo::$bar)['baz']()
+```
+
+**BC Breaks**
+ - Code that relied upon the old evaluation order must be rewritten to explicity use the old evaluation order with curly braces. This will make the code both forwards compatible with PHP 7+ and backwards compatible with PHP 5.x
 
 RFC: [Uniform Variable Syntax](https://wiki.php.net/rfc/uniform_variable_syntax)
