@@ -2,6 +2,7 @@
 
 PHP 7 has been slated for release [in November of this year](https://wiki.php.net/rfc/php7timeline) (2015). It comes with a number of new features, changes, and backwards compatibility breakages that are outlined below.
 
+**[Performance](#performance)**
 
 **[Features](#features)**
 * [Combined Comparison Operator](#combined-comparison-operator)
@@ -40,21 +41,12 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * Reclassification and Removal of E_STRICT Notices
 * Deprecation of Salt Option for `password_hash()`
 
+**[FAQ](#faq)**
+ * What happened to PHP 6?
 
-**Backward Compatibility Breakages**
-* Removal of PHP 4-Style Constructors
-* JSON Extension Replaced with JSOND
-* Unicode Codepoint Escape Syntax
-* Integer Semantics
-* ZPP Failure on Overflow
-* Uniform Variable Syntax
-* Fixes to list()'s Behaviour
-* Removal of Alternative PHP Tags
-* Removal of Multiple Default Switch Statement Blocks
-* Removal of Hex Support in Numerical Strings
-* Integer Division with intdiv()
-* Fixes to Custom Session Handler Return Values
+## Performance
 
+Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides to applications.
 
 ## Features
 
