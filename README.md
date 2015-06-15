@@ -26,8 +26,8 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Integer Semantics](#integer-semantics)
 * [ZPP Failure on Overflow](#zpp-failure-on-overflow)
 * [Uniform Variable Syntax](#uniform-variable-syntax)
-* Non-Object Call Errors
-* Exceptions in the Engine
+* [Exceptions in the Engine](#exceptions-in-the-engine)
+* [Throwable Interface](#throwable-interface)
 * Fixes to `foreach()`'s Behaviour
 * Fixes to `list()`'s Behaviour
 * Fixes to Custom Session Handler Return Values
@@ -517,7 +517,7 @@ foo()() // invoke the return of foo()
 (function () {})() // IIFE syntax from JS
 
 // operator support on dereferencable scalars
-'string'->toUpper();
+'string'->toUpper(); // call the toUpper() method on the string 'string'
 ```
 
 The ability to arbitrarily combine variable operators came from reversing the evaluation semantics of indirect variable, property, and method references. The new behaviour is more intuitive, always following a left-to-right evaluation order:
@@ -531,6 +531,41 @@ Foo::$bar['baz']()      Foo::{$bar['baz']}()      (Foo::$bar)['baz']()
 ```
 
 **BC Breaks**
- - Code that relied upon the old evaluation order must be rewritten to explicity use the old evaluation order with curly braces. This will make the code both forwards compatible with PHP 7+ and backwards compatible with PHP 5.x
+ - Code that relied upon the old evaluation order must be rewritten to explicity use that evaluation order with curly braces (see middle column of the above). This will make the code both forwards compatible with PHP 7.x and backwards compatible with PHP 5.x
 
 RFC: [Uniform Variable Syntax](https://wiki.php.net/rfc/uniform_variable_syntax)
+
+### Exceptions in the Engine
+
+Exceptions in the engine converts many fatal and recoverable fatal errors into exceptions. This enables for graceful degradation of applications through custom error handling procedures. It also means that cleanup-driven features such as the `finally` clause and object destructors will now be executed. Furthermore, by using exceptions for application errors, stack traces will be produced for additional debugging information.
+
+```PHP
+function sum(float ...$numbers) : float
+{
+    return array_sum($numbers);
+}
+
+try {
+    $total = sum(3, 4, null);
+} catch (TypeError $typeErr) {
+    // handle type error here
+}
+```
+
+The new exception hierarchy is as follows:
+```
+interface Throwable
+    |- Exception implements Throwable
+    |- Error implements Throwable
+        |- TypeError extends Error
+        |- ParseError extends Error
+        |- AssertionError extends Error
+```
+
+See the [Throwable Interface](#throwable-interface) subsection in the Changes section for more information on this new exception hierarchy.
+
+**BC Breaks**
+ - Custom error handlers used for handling (and typically ignoring) recoverable fatal errors will not longer work since exceptions will now be thrown
+ - Parse errors occuring in `eval()`ed code will now become exceptions, requiring them to be wrapped in a try...catch block
+
+RFC: [Exceptions in the Engine](https://wiki.php.net/rfc/engine_exceptions_for_php7)
