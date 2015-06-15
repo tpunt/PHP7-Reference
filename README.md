@@ -28,7 +28,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Uniform Variable Syntax](#uniform-variable-syntax)
 * [Exceptions in the Engine](#exceptions-in-the-engine)
 * [Throwable Interface](#throwable-interface)
-* Fixes to `foreach()`'s Behaviour
+* [Fixes to `foreach()`'s Behaviour](#fixes-to-foreachs-behaviour)
 * Fixes to `list()`'s Behaviour
 * Fixes to Custom Session Handler Return Values
 * Removal of PHP 4-Style Constructors
@@ -591,3 +591,11 @@ public string __toString ( void )
 It cannot be implemented by user-defined classes - instead, a custom exception class should extend one of the pre-existing exceptions classes in PHP.
 
 RFC: [Throwable Interface](https://wiki.php.net/rfc/throwable-interface)
+
+### Fixes to `foreach()`'s Behaviour
+
+PHP's `foreach()` loop had a number of strange edge-cases to it. These were all implementation-driven and caused a lot of undefined behaviour when iterating copies vs references of an array, when using iterator manipulators like `current()` and `reset()`, when modifying the array currently being iterated, and so on.
+
+This change eliminates the undefined behaviour of these edge-cases and makes the semantics more predictable and intuitive.
+
+RFC: [Fix "foreach" behavior](https://wiki.php.net/rfc/php7_foreach)
