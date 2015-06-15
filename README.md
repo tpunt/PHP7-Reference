@@ -21,7 +21,6 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Integer Division with `intdiv()`](#integer-division-with-intdiv)
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
 
-
 **[Changes](#changes)**
 * [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
 * [Integer Semantics](#integer-semantics)
@@ -548,6 +547,7 @@ The new exception hierarchy is as follows:
 ```
 interface Throwable
     |- Exception implements Throwable
+        |- ...
     |- Error implements Throwable
         |- TypeError extends Error
         |- ParseError extends Error
@@ -561,3 +561,33 @@ See the [Throwable Interface](#throwable-interface) subsection in the Changes se
  - Parse errors occuring in `eval()`ed code will now become exceptions, requiring them to be wrapped in a try...catch block
 
 RFC: [Exceptions in the Engine](https://wiki.php.net/rfc/engine_exceptions_for_php7)
+
+### Throwable Interface
+
+This change affects PHP's exception hierarchy due to the introduction of [exceptions in the engine](#exceptions-in-the-engine). Rather than placing fatal and recoverable fatal errors under the pre-existing `Exception` class hierarchy, [it was decided](https://wiki.php.net/rfc/engine_exceptions_for_php7#doodle__form__introduce_and_use_baseexception) to implement a new hierarchy of exceptions to prevent PHP 5.x code from catching these new exceptions with catch-all (`catch (Exception $e)`) clauses.
+
+The new exception hierarchy is as follows:
+```
+interface Throwable
+    |- Exception implements Throwable
+        |- ...
+    |- Error implements Throwable
+        |- TypeError extends Error
+        |- ParseError extends Error
+        |- AssertionError extends Error
+```
+
+The `Throwable` interface is implemented by both `Exception` and `Error` base class hierarchies and defines the following contract:
+```
+final public string getMessage ( void )
+final public mixed getCode ( void )
+final public string getFile ( void )
+final public int getLine ( void )
+final public array getTrace ( void )
+final public string getTraceAsString ( void )
+public string __toString ( void )
+```
+
+It cannot be implemented by user-defined classes - instead, a custom exception class should extend one of the pre-existing exceptions classes in PHP.
+
+RFC: [Throwable Interface](https://wiki.php.net/rfc/throwable-interface)
