@@ -36,7 +36,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * Removal of Alternative PHP Tags
 * Removal of Multiple Default Blocks in Switch Statements
 * Removal of Dead Server APIs
-* Removal ofHex Support in Numerical Strings
+* Removal of Hex Support in Numerical Strings
 * Reclassification and Removal of E_STRICT Notices
 * Deprecation of Salt Option for `password_hash()`
 
@@ -594,8 +594,78 @@ RFC: [Throwable Interface](https://wiki.php.net/rfc/throwable-interface)
 
 ### Fixes to `foreach()`'s Behaviour
 
-PHP's `foreach()` loop had a number of strange edge-cases to it. These were all implementation-driven and caused a lot of undefined behaviour when iterating copies vs references of an array, when using iterator manipulators like `current()` and `reset()`, when modifying the array currently being iterated, and so on.
+PHP's `foreach()` loop had a number of strange edge-cases to it. These were all implementation-driven and caused a lot of undefined and inconsistent behaviour when iterating between copies and references of an array, when using iterator manipulators like `current()` and `reset()`, when modifying the array currently being iterated, and so on.
 
 This change eliminates the undefined behaviour of these edge-cases and makes the semantics more predictable and intuitive.
 
+`foreach()` by value on arrays
+```PHP
+$array = [1,2,3];
+$array2 = &$array;
+
+foreach($array as $val) {
+    unset($array[1]); // modify array being iterated over
+    echo "{$val} - ", current($array), PHP_EOL;
+}
+
+// Pre PHP 7 result
+1 - 3
+3 - 
+
+// PHP 7+ result
+1 - 1
+2 - 1
+3 - 1
+```
+
+When by-value semantics are used, the array being iterated over is now not modified in-place. `current()` also now has defined behaviour, where it will always begin at the start of the array.
+
+`foreach()` by reference on arrays and objects and by value on objects
+```PHP
+$array = [1,2,3];
+
+foreach($array as &$val) {
+    echo "{$val} - ", current($array), PHP_EOL;
+}
+
+// Pre PHP 7 result
+1 - 2
+2 - 3
+3 - 
+
+// PHP 7+ result
+1 - 1
+2 - 1
+3 - 1
+```
+
+The `current()` function is no longer affected by `foreach()`'s iteration on the array. Also, nested `foreach()`'s using by-reference semantics work independently from each other now:
+```PHP
+$array = [1,2,3];
+
+foreach($array as &$val) {
+    echo $val, PHP_EOL;
+
+    foreach ($array as &$val2) {
+        unset($array[1]);
+        echo $val, PHP_EOL;
+    }
+}
+
+// Pre PHP 7 result
+1
+1
+1
+
+// PHP 7+ result
+1
+1
+1
+3
+3
+3
+```
+
 RFC: [Fix "foreach" behavior](https://wiki.php.net/rfc/php7_foreach)
+
+## FAQ
