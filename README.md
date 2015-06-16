@@ -30,7 +30,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Throwable Interface](#throwable-interface)
 * [Fixes to `foreach()`'s Behaviour](#fixes-to-foreachs-behaviour)
 * [Fixes to `list()`'s Behaviour](#fixes-to-lists-behaviour)
-* Fixes to Custom Session Handler Return Values
+* [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
 * Removal of PHP 4-Style Constructors
 * Removal of date.timezone Warning
 * Removal of Alternative PHP Tags
@@ -706,5 +706,44 @@ This has now been changed making string usage with `list()` forbidden in all cas
  - Making `list()` equal to any non-direct string value is no longer possible. `null` will now be the value for the variable `$a` and `$b` in the above examples.
 
 RFC: [Fix list() behavior inconsistency](https://wiki.php.net/rfc/fix_list_behavior_inconsistency)
+
+### Fixes to Custom Session Handler Return Values
+
+When implementing custom session handlers, predicate functions from the `SessionHandlerInterface` that expect a `true` or `false` return value did not behave as expected. Due to an error in the previous implementation, only a `-1` return value was considered false - meaning that any even if the boolean `false` was used to denote a failure, it was taken as a success:
+```PHP
+<?php
+
+class FileSessionHandler implements SessionHandlerInterface
+{
+    private $savePath;
+
+    function open($savePath, $sessionName)
+    {
+        return false; // always fail
+    }
+
+    function close(){return true;}
+
+    function read($id){}
+
+    function write($id, $data){}
+
+    function destroy($id){}
+
+    function gc($maxlifetime){}
+}
+
+session_set_save_handler(new FileSessionHandler());
+
+session_start(); // should cause an error but doesn't
+```
+
+Now, the above will fail with a fatal error. Having a `-1` return value will also continue to fail, whilst `0` and `true` will continue to mean success. Any other value returned will now cause a failure and emit an E_WARNING.
+
+**BC Breaks**
+ - If boolean `false` is returned, it will actually fail now
+ - If anything other than a boolean, `0`, or `-1` is returned, it will fail and cause a warning to be emitted
+
+RFC: [Fix handling of custom session handler return values](https://wiki.php.net/rfc/session.user.return-value)
 
 ## FAQ
