@@ -32,7 +32,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Fixes to `list()`'s Behaviour](#fixes-to-lists-behaviour)
 * [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
 * [Deprecation of PHP 4-Style Constructors](#deprecation-of-php-4-style-constructors)
-* Removal of date.timezone Warning
+* [Removal of date.timezone Warning](#removal-of-date.timezone-warning)
 * Removal of Alternative PHP Tags
 * Removal of Multiple Default Blocks in Switch Statements
 * Removal of Dead Server APIs
@@ -758,5 +758,11 @@ Now in PHP 7, if the class is not in a namespace and there is no `__construct()`
  - Custom error handlers may be affected by the raising of E_DEPRECATED warnings. To fix this, simply update the class constructor name to `__construct`.
 
 RFC: [Remove PHP 4 Constructors](https://wiki.php.net/rfc/remove_php4_constructors)
+
+### Removal of date.timezone Warning
+
+When any date- or time-based functions were invoked and a default timezone had not been set, a warning was emitted. The fix was to simply set the `date.timezone` INI setting to a valid timezone, but this forced users to have a php.ini file and to configure it beforehand. Since this was the only setting that had a warning attached to it, and it defaulted to UTC anyway, the warning has now been removed.
+
+RFC: [Remove the date.timezone warning](https://wiki.php.net/rfc/date.timezone_warning_removal)
 
 ## FAQ
