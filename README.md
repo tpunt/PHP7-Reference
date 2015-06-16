@@ -31,7 +31,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Fixes to `foreach()`'s Behaviour](#fixes-to-foreachs-behaviour)
 * [Fixes to `list()`'s Behaviour](#fixes-to-lists-behaviour)
 * [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
-* Removal of PHP 4-Style Constructors
+* [Deprecation of PHP 4-Style Constructors](#deprecation-of-php-4-style-constructors)
 * Removal of date.timezone Warning
 * Removal of Alternative PHP Tags
 * Removal of Multiple Default Blocks in Switch Statements
@@ -745,5 +745,18 @@ Now, the above will fail with a fatal error. Having a `-1` return value will als
  - If anything other than a boolean, `0`, or `-1` is returned, it will fail and cause a warning to be emitted
 
 RFC: [Fix handling of custom session handler return values](https://wiki.php.net/rfc/session.user.return-value)
+
+### Deprecation of PHP 4-Style Constructors
+
+PHP 4 constructors were preserved in PHP 5 alongside the new `__construct()`. Now, PHP 4-style constructors are being deprecated in favour of having only a single method (`__construct()`) to be invoked on object creation. This is because the conditions upon whether the PHP 4-style constructor was invoked caused additional cognitive overhead to developers that could also be confusing to the inexperienced.
+
+For example, if the class is defined within a namespace or if an `__construct()` method existed, then a PHP 4-style constructor was recognised as a plain method. If it was defined above an `__construct()` method, then an E_STRICT notice would be emitted, but still recognised as a plain method.
+
+Now in PHP 7, if the class is not in a namespace and there is no `__construct()` method present, the PHP 4-style constructor will be used as a constructor but an E_DEPRECATED will be emitted. In PHP 8, the PHP 4-style constructor will always be recognised as a plain method and the E_DEPRECATED notice will disappear.
+
+**BC Breaks**
+ - Custom error handlers may be affected by the raising of E_DEPRECATED warnings. To fix this, simply update the class constructor name to `__construct`.
+
+RFC: [Remove PHP 4 Constructors](https://wiki.php.net/rfc/remove_php4_constructors)
 
 ## FAQ
