@@ -29,7 +29,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Exceptions in the Engine](#exceptions-in-the-engine)
 * [Throwable Interface](#throwable-interface)
 * [Fixes to `foreach()`'s Behaviour](#fixes-to-foreachs-behaviour)
-* Fixes to `list()`'s Behaviour
+* [Fixes to `list()`'s Behaviour](#fixes-to-lists-behaviour)
 * Fixes to Custom Session Handler Return Values
 * Removal of PHP 4-Style Constructors
 * Removal of date.timezone Warning
@@ -666,6 +666,45 @@ foreach($array as &$val) {
 3
 ```
 
+**BC Breaks**
+ - Any reliance on the old (quirky and undocumented) semantics will no longer work.
+
 RFC: [Fix "foreach" behavior](https://wiki.php.net/rfc/php7_foreach)
+
+### Fixes to `list()`'s Behaviour
+
+The `list()` function was documented as not supporting strings, however in few cases strings could have been used:
+```PHP
+// array dereferencing
+$str[0] = 'ab';
+list($a, $b) = $str[0];
+echo $a; // a
+echo $b; // b
+
+// object dereferencing
+$obj = new StdClass();
+$obj->prop = 'ab';
+list($a, $b) = $obj->prop;
+echo $a; // a
+echo $b; // b
+
+// function return
+function func()
+{
+    return 'ab';
+}
+
+list($a, $b) = func();
+var_dump($a, $b);
+echo $a; // a
+echo $b; // b
+```
+
+This has now been changed making string usage with `list()` forbidden in all cases.
+
+**BC Breaks**
+ - Making `list()` equal to any non-direct string value is no longer possible. `null` will now be the value for the variable `$a` and `$b` in the above examples.
+
+RFC: [Fix list() behavior inconsistency](https://wiki.php.net/rfc/fix_list_behavior_inconsistency)
 
 ## FAQ
