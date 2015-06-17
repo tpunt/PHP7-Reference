@@ -34,7 +34,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Deprecation of PHP 4-Style Constructors](#deprecation-of-php-4-style-constructors)
 * [Removal of date.timezone Warning](#removal-of-date.timezone-warning)
 * [Removal of Alternative PHP Tags](#removal-of-alternative-php-tags)
-* Removal of Multiple Default Blocks in Switch Statements
+* [Removal of Multiple Default Blocks in Switch Statements](#removal-of-multiple-default-blocks-in-switch-statements)
 * Removal of Dead Server APIs
 * Removal of Hex Support in Numerical Strings
 * Reclassification and Removal of E_STRICT Notices
@@ -773,5 +773,14 @@ The alternative PHP tags `<%` (and `<%=`), `%>`, `<script language="php">`, and 
  - If your code relied upon these alternative tags, then they need to be updated to either the normal or short opening and closing tags. This can either be done manually or automated with [this porting script](https://gist.github.com/nikic/74769d74dad8b9ef221b).
 
 RFC: [Remove alternative PHP tags](https://wiki.php.net/rfc/remove_alternative_php_tags)
+
+### Removal of Multiple Default Blocks in Switch Statements
+
+Previously, it was possible to specify multiple `default` block statements within a switch statement (where the last `default` block was only executed). This (useless) ability has now been removed and causes a fatal error.
+
+**BC Breaks**
+ - Any code written (or more likely generated) that created switch statements with multiple `default` blocks will now become a fatal error.
+
+RFC: [Make defining multiple default cases in a switch a syntax error](https://wiki.php.net/rfc/switch.default.multiple)
 
 ## FAQ
