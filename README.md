@@ -123,6 +123,9 @@ var_dump(add('2', 3)); // Fatal error: Argument 1 passed to add() must be of the
 
 Note that **only** the *invocation context* applies when the type-checking is performed. This means that the strict typing applies only to function/method calls, and not to the function/method definition context. In the above example, the two functions could have been declared in either a strict or coercive file, but so long as they're being called in a strict file, then the strict typing rules will apply.
 
+**BC Breaks**
+ - Classes with names `int`, `string`, `float`, and `bool` are now forbidden.
+
 RFC: [Scalar Type Declarations](https://wiki.php.net/rfc/scalar_type_hints_v5)
 
 ### Return Type Declarations
@@ -196,10 +199,45 @@ RFC: [Return Type Declarations](https://wiki.php.net/rfc/return_types)
 
 ### Anonymous Classes
 
-Anonymous classes are useful when only simple one-off objects need to be created.
+Anonymous classes are useful when simple, one-off objects need to be created.
 
 ```PHP
+// Pre PHP 7
+class Logger
+{
+    public function log($msg)
+    {
+        echo $msg;
+    }
+}
+ 
+$util->setLogger(new Logger());
+ 
+// PHP 7+
+$util->setLogger(new class {
+    public function log($msg)
+    {
+        echo $msg;
+    }
+});
+```
 
+They can pass arguments through to their constructors, extend other classes, implement interfaces, and use traits:
+```PHP
+class SomeClass {}
+interface SomeInterface {}
+trait SomeTrait {}
+
+var_dump(new class(10) extends SomeClass implements SomeInterface {
+    private $num;
+
+    public function __construct($num)
+    {
+        $this->num = $num;
+    }
+
+    use SomeTrait;
+});
 ```
 
 RFC: [Anonymous Classes](https://wiki.php.net/rfc/anonymous_classes)
