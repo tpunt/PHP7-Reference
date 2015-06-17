@@ -36,7 +36,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Removal of Alternative PHP Tags](#removal-of-alternative-php-tags)
 * [Removal of Multiple Default Blocks in Switch Statements](#removal-of-multiple-default-blocks-in-switch-statements)
 * [Removal of Dead Server APIs](#removal-of-dead-server-apis)
-* Removal of Hex Support in Numerical Strings
+* [Removal of Hex Support in Numerical Strings](#removal-of-hex-support-in-numerical-strings)
 * Reclassification and Removal of E_STRICT Notices
 * Deprecation of Salt Option for `password_hash()`
 
@@ -735,7 +735,7 @@ class FileSessionHandler implements SessionHandlerInterface
 
 session_set_save_handler(new FileSessionHandler());
 
-session_start(); // should cause an error but doesn't
+session_start(); // doesn't cause an error in pre PHP 7 code
 ```
 
 Now, the above will fail with a fatal error. Having a `-1` return value will also continue to fail, whilst `0` and `true` will continue to mean success. Any other value returned will now cause a failure and emit an E_WARNING.
@@ -807,5 +807,37 @@ The following SAPIs have been removed from the core (most of which have been mov
 - ext/ereg
 
 RFC: [Removal of dead or not yet PHP7 ported SAPIs and extensions](https://wiki.php.net/rfc/removal_of_dead_sapis_and_exts)
+
+### Removal of Hex Support in Numerical Strings
+
+A Stringy hexadecimal number is no longer recognised as numerical.
+```PHP
+var_dump(is_numeric('0x123'));
+var_dump('0x123' == '291');
+echo '0x123' + '0x123';
+
+// Pre PHP 7 result
+bool(true)
+bool(true)
+582
+
+// PHP 7+ result
+bool(false)
+bool(false)
+0
+```
+
+The reason for this change is to promote better consistency between the handling of stringy hex numbers across the language. For example, explicit casts do not recognise stringy hex numbers:
+```PHP
+var_dump((int) '0x123'); // int(0)
+```
+
+Instead, stringy hex numbers should be validated and converted using the `filter_var()` function:
+```PHP
+var_dump(filter_var('0x123', FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_HEX)); // int(291)
+```
+
+**BC Breaks**
+ - This change affects the `is_numeric()` function and various operators, including `==`, `+`, `-`, `*`, `/`, `%`, `**`, `++`, and `--`
 
 ## FAQ
