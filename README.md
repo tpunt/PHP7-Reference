@@ -32,10 +32,10 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Fixes to `list()`'s Behaviour](#fixes-to-lists-behaviour)
 * [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
 * [Deprecation of PHP 4-Style Constructors](#deprecation-of-php-4-style-constructors)
-* [Removal of date.timezone Warning](#removal-of-date.timezone-warning)
+* [Removal of date.timezone Warning](#removal-of-datetimezone-warning)
 * [Removal of Alternative PHP Tags](#removal-of-alternative-php-tags)
 * [Removal of Multiple Default Blocks in Switch Statements](#removal-of-multiple-default-blocks-in-switch-statements)
-* Removal of Dead Server APIs
+* [Removal of Dead Server APIs](#removal-of-dead-server-apis)
 * Removal of Hex Support in Numerical Strings
 * Reclassification and Removal of E_STRICT Notices
 * Deprecation of Salt Option for `password_hash()`
@@ -782,5 +782,30 @@ Previously, it was possible to specify multiple `default` block statements withi
  - Any code written (or more likely generated) that created switch statements with multiple `default` blocks will now become a fatal error.
 
 RFC: [Make defining multiple default cases in a switch a syntax error](https://wiki.php.net/rfc/switch.default.multiple)
+
+### Removal of Dead Server APIs
+
+The following SAPIs have been removed from the core (most of which have been moved to PECL):
+- sapi/aolserver
+- sapi/apache
+- sapi/apache_hooks
+- sapi/apache2filter
+- sapi/caudium
+- sapi/continuity
+- sapi/isapi
+- sapi/milter
+- sapi/nsapi
+- sapi/phttpd
+- sapi/pi3web
+- sapi/roxen
+- sapi/thttpd
+- sapi/tux
+- sapi/webjames
+- ext/mssql
+- ext/mysql
+- ext/sybase_ct
+- ext/ereg
+
+RFC: [Removal of dead or not yet PHP7 ported SAPIs and extensions](https://wiki.php.net/rfc/removal_of_dead_sapis_and_exts)
 
 ## FAQ
