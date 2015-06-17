@@ -37,7 +37,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Removal of Multiple Default Blocks in Switch Statements](#removal-of-multiple-default-blocks-in-switch-statements)
 * [Removal of Dead Server APIs](#removal-of-dead-server-apis)
 * [Removal of Hex Support in Numerical Strings](#removal-of-hex-support-in-numerical-strings)
-* Reclassification and Removal of E_STRICT Notices
+* [Reclassification and Removal of E_STRICT Notices](#reclassification-and-removal-of-e_strict-notices)
 * Deprecation of Salt Option for `password_hash()`
 
 **[FAQ](#faq)**
@@ -839,5 +839,16 @@ var_dump(filter_var('0x123', FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_HEX)); // in
 
 **BC Breaks**
  - This change affects the `is_numeric()` function and various operators, including `==`, `+`, `-`, `*`, `/`, `%`, `**`, `++`, and `--`
+
+RFC: [Remove hex support in numeric strings](https://wiki.php.net/rfc/remove_hex_support_in_numeric_strings)
+
+### Reclassification and Removal of E_STRICT Notices
+
+E_STRICT notices have always been a bit of a grey area in their meaning. This changes removes this error category altogether and either: removes the E_STRICT notice, changes it to an E_DEPRECATED if the functionality will be removed in future, changes it to an E_NOTICE, or promotes it to an E_WARNING.
+
+**BC BREAKS**
+ - Because E_STRICT is in the lowest severity error category, any error promotions to an E_WARNING may break custom error handlers.
+
+RFC: [Reclassify E_STRICT notices](https://wiki.php.net/rfc/reclassify_e_strict)
 
 ## FAQ
