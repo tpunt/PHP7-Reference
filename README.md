@@ -9,6 +9,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Null Coalesce Operator](#null-coalesce-operator)
 * [Scalar Type Declarations](#scalar-type-declarations)
 * [Return Type Declarations](#return-type-declarations)
+* [Anonymous Classes](#anonymous-classes)
 * [Unicode Codepoint Escape Syntax](#unicode-codepoint-escape-syntax)
 * [Closure `call()` Method](#closure-call-method)
 * [Filtered `unserialize()`](#filtered-unserialize)
@@ -192,6 +193,16 @@ class B implements SomeInterface
 This time, the implemented method causes an `E_RECOVERABLE_ERROR` when executed because `null` is not a valid return type - only an instance of the class `A` can be returned.
 
 RFC: [Return Type Declarations](https://wiki.php.net/rfc/return_types)
+
+### Anonymous Classes
+
+Anonymous classes are useful when only simple one-off objects need to be created.
+
+```PHP
+
+```
+
+RFC: [Anonymous Classes](https://wiki.php.net/rfc/anonymous_classes)
 
 ### Unicode Codepoint Escape Syntax
 
