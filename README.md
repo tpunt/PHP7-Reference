@@ -33,7 +33,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
 * [Deprecation of PHP 4-Style Constructors](#deprecation-of-php-4-style-constructors)
 * [Removal of date.timezone Warning](#removal-of-date.timezone-warning)
-* Removal of Alternative PHP Tags
+* [Removal of Alternative PHP Tags](#removal-of-alternative-php-tags)
 * Removal of Multiple Default Blocks in Switch Statements
 * Removal of Dead Server APIs
 * Removal of Hex Support in Numerical Strings
@@ -764,5 +764,14 @@ RFC: [Remove PHP 4 Constructors](https://wiki.php.net/rfc/remove_php4_constructo
 When any date- or time-based functions were invoked and a default timezone had not been set, a warning was emitted. The fix was to simply set the `date.timezone` INI setting to a valid timezone, but this forced users to have a php.ini file and to configure it beforehand. Since this was the only setting that had a warning attached to it, and it defaulted to UTC anyway, the warning has now been removed.
 
 RFC: [Remove the date.timezone warning](https://wiki.php.net/rfc/date.timezone_warning_removal)
+
+### Removal of Alternative PHP Tags
+
+The alternative PHP tags `<%` (and `<%=`), `%>`, `<script language="php">`, and `</script>` have now been removed.
+
+**BC Breaks**
+ - If your code relied upon these alternative tags, then they need to be updated to either the normal or short opening and closing tags. This can either be done manually or automated with [this porting script](https://gist.github.com/nikic/74769d74dad8b9ef221b).
+
+RFC: [Remove alternative PHP tags](https://wiki.php.net/rfc/remove_alternative_php_tags)
 
 ## FAQ
