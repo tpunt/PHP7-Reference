@@ -907,3 +907,11 @@ With the introduction of the new password hashing API in PHP 5.5, many began imp
 RFC: no RFC available
 
 ## FAQ
+
+### What happened to PHP 6?
+
+PHP 6 was the major PHP version that never came to light. It was supposed to feature full support for Unicode in the core, but this effort was too ambitious with too many complications arising. The predominant reasons why version 6 was skipped for this new major version is as follows:
+ - **To prevent confusion**. Many resources were written about PHP 6 and much of the community knew what was featured in it. PHP 7 is a completely different beast with entirely different focusses (specifically on performance) and entirely different feature sets. Thus, a version has been skipped to prevent any confusion or misconceptions surrounding PHP 7.
+ - **To let sleeping dogs lie**. PHP 6 was seen as a failure and a large amount of PHP 6 code still remains in the PHP repository. It was therefore seen as best to move past version 6 and start afresh on the next major version, version 7.
+
+RFC: [Name of Next Release of PHP](https://wiki.php.net/rfc/php6)
