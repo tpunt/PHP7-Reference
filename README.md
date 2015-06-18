@@ -14,22 +14,22 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Closure `call()` Method](#closure-call-method)
 * [Filtered `unserialize()`](#filtered-unserialize)
 * [`IntlChar` Class](#intlchar-class)
-* [`session_start()` Options](#session_start-options)
 * [Expectations](#expectations)
 * [Group `use` Declarations](#group-use-declarations)
 * [Generator Return Expressions](#generator-return-expressions)
 * [Generator Delegation](#generator-delegation)
 * [Integer Division with `intdiv()`](#integer-division-with-intdiv)
+* [`session_start()` Options](#session_start-options)
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
-* [Loosening Reserved Word Restrictions](#loosening-reserved-word-restrictions)
 
 **[Changes](#changes)**
-* [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
-* [Integer Semantics](#integer-semantics)
-* [ZPP Failure on Overflow](#zpp-failure-on-overflow)
+* [Loosening Reserved Word Restrictions](#loosening-reserved-word-restrictions)
 * [Uniform Variable Syntax](#uniform-variable-syntax)
 * [Exceptions in the Engine](#exceptions-in-the-engine)
 * [Throwable Interface](#throwable-interface)
+* [Integer Semantics](#integer-semantics)
+* [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
+* [ZPP Failure on Overflow](#zpp-failure-on-overflow)
 * [Fixes to `foreach()`'s Behaviour](#fixes-to-foreachs-behaviour)
 * [Changes to `list()`'s Behaviour](#changes-to-lists-behaviour)
 * [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
@@ -352,18 +352,6 @@ In order to use this class, you will need the `Intl` extension installed.
 
 RFC: [IntlChar class](https://wiki.php.net/rfc/intl.char)
 
-### `session_start()` Options
-
-This feature gives the ability to pass in an array of options to the `session_start()` function. This is used to set session-based php.ini options:
-
-```PHP
-session_start(['cache_limiter' => 'private']); // sets the session.cache_limiter option to private
-```
-
-This feature also introduces a new php.ini setting (`session.lazy_write`) that is, by default, set to true and means that session data is only rewritten if it changes.
-
-RFC: [Introduce session_start() Options](https://wiki.php.net/rfc/session-lock-ini)
-
 ### Expectations
 
 Expectations are an enhancement to the older `assert()` function. They enable for zero-cost assertions in production code, and provide the ability to throw custom exceptions on error.
@@ -496,6 +484,18 @@ var_dump(intdiv(10, 3)); // int(3)
 
 RFC: [intdiv()](https://wiki.php.net/rfc/intdiv)
 
+### `session_start()` Options
+
+This feature gives the ability to pass in an array of options to the `session_start()` function. This is used to set session-based php.ini options:
+
+```PHP
+session_start(['cache_limiter' => 'private']); // sets the session.cache_limiter option to private
+```
+
+This feature also introduces a new php.ini setting (`session.lazy_write`) that is, by default, set to true and means that session data is only rewritten if it changes.
+
+RFC: [Introduce session_start() Options](https://wiki.php.net/rfc/session-lock-ini)
+
 ### `preg_replace_callback_array()` Function
 
 This new function addition enables for code to be written more cleanly when using the `preg_replace_callback()` function. Prior to PHP 7, callbacks that needed to be executed per regular expression match required the callback function (second parameter of `preg_replace_callback()`) to be polluted with lots of branching (a hacky method at best). But now, callbacks can be registered on a per-regular expression basis using an associative array with the regular expression as the keys and the callbacks as the values.
@@ -560,6 +560,8 @@ preg_replace_callback_array(
 
 RFC: [Add preg_replace_callback_array Function](https://wiki.php.net/rfc/preg_replace_callback_array)
 
+## Changes
+
 ### Loosening Reserved Word Restrictions
 
 Globally reserved words as property, constant, and method names within classes, interfaces, and traits are now allowed. This reduces the surface of BC breaks when new keywords are introduced and avoids naming restrictions on APIs.
@@ -572,40 +574,6 @@ Project::new('Project Name')->private()->for('purpose here')->with('username her
 The only limitation is that the `class` keyword still cannot be used as a constant name, otherwise it would conflict with the class name resolution syntax of `ClassName::class`.
 
 RFC: [Context Sensitive Lexer](https://wiki.php.net/rfc/context_sensitive_lexer)
-
-## Changes
-
-### JSON Extension Replaced with JSOND
-
-The licensing of the old JSON extension was regarded as non-free, causing issues for many Linux-based distributions. The extension has since been replaced with JSOND and comes with some [performance gains](https://github.com/bukka/php-jsond-bench/blob/master/reports/0001/summary.md) and backward compatibility breakages.
-
-**BC Breaks**
- - A number *must not* end in a decimal point (i.e. `34.` must be changed to either `34.0` or just `34`)
- - The `e` exponent *must not* immediately follow the decimal point (i.e. `3.e3` must be changed to either `3.0e3` or just `3e3`)
-
-RFC: [Replace current json extension with jsond](https://wiki.php.net/rfc/jsond)
-
-### Integer Semantics
-
-The semantics for some integer-based behaviour has changed in an effort to make them more intuitive and platform-independent. Here is a list of those changes:
- - Casting `NAN` and `INF` to an integer will always result in 0
- - Bitwise shifting by a negative number of bits is now disallowed (causes a bool(false) return an emits an E_WARNING)
- - Left bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0
- - Right bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0 or -1 (sign dependent)
-
-**BC Breaks**
- - Any reliance on the old semantics for the above will no longer work
-
-RFC: [Integer Semantics](https://wiki.php.net/rfc/integer_semantics)
-
-### ZPP Failure on Overflow
-
-Coercion between floats to integers can occur when a float is passed to an internal function expecting an integer. If the float is too large to represent as an integer, then the value will be silently truncated (which may result in a loss of magnitude and sign). This can introduce hard-to-find bugs. This change therefore seeks to notify the developer when an implicit conversion from a float to an integer has occurred and failed by returning `null` and emitting an E_WARNING.
-
-**BC Breaks**
- - Code that once silently worked will now emit an E_WARNING and may fail if the result of the function invocation is directly passed to another function (since `null` will now be passed).
-
-RFC: [ZPP Failure on Overflow](https://wiki.php.net/rfc/zpp_fail_on_overflow)
 
 ### Uniform Variable Syntax
 
@@ -705,6 +673,38 @@ public string __toString ( void )
 It cannot be implemented by user-defined classes - instead, a custom exception class should extend one of the pre-existing exceptions classes in PHP.
 
 RFC: [Throwable Interface](https://wiki.php.net/rfc/throwable-interface)
+
+### Integer Semantics
+
+The semantics for some integer-based behaviour has changed in an effort to make them more intuitive and platform-independent. Here is a list of those changes:
+ - Casting `NAN` and `INF` to an integer will always result in 0
+ - Bitwise shifting by a negative number of bits is now disallowed (causes a bool(false) return an emits an E_WARNING)
+ - Left bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0
+ - Right bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0 or -1 (sign dependent)
+
+**BC Breaks**
+ - Any reliance on the old semantics for the above will no longer work
+
+RFC: [Integer Semantics](https://wiki.php.net/rfc/integer_semantics)
+
+### JSON Extension Replaced with JSOND
+
+The licensing of the old JSON extension was regarded as non-free, causing issues for many Linux-based distributions. The extension has since been replaced with JSOND and comes with some [performance gains](https://github.com/bukka/php-jsond-bench/blob/master/reports/0001/summary.md) and backward compatibility breakages.
+
+**BC Breaks**
+ - A number *must not* end in a decimal point (i.e. `34.` must be changed to either `34.0` or just `34`)
+ - The `e` exponent *must not* immediately follow the decimal point (i.e. `3.e3` must be changed to either `3.0e3` or just `3e3`)
+
+RFC: [Replace current json extension with jsond](https://wiki.php.net/rfc/jsond)
+
+### ZPP Failure on Overflow
+
+Coercion between floats to integers can occur when a float is passed to an internal function expecting an integer. If the float is too large to represent as an integer, then the value will be silently truncated (which may result in a loss of magnitude and sign). This can introduce hard-to-find bugs. This change therefore seeks to notify the developer when an implicit conversion from a float to an integer has occurred and failed by returning `null` and emitting an E_WARNING.
+
+**BC Breaks**
+ - Code that once silently worked will now emit an E_WARNING and may fail if the result of the function invocation is directly passed to another function (since `null` will now be passed).
+
+RFC: [ZPP Failure on Overflow](https://wiki.php.net/rfc/zpp_fail_on_overflow)
 
 ### Fixes to `foreach()`'s Behaviour
 
