@@ -42,11 +42,19 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Deprecation of Salt Option for `password_hash()`](#deprecation-of-salt-option-for-password_hash)
 
 **[FAQ](#faq)**
- * What happened to PHP 6?
+ * [What happened to PHP 6?](#what-happened-to-php-6)
 
 ## Performance
 
-Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides to applications.
+Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides applications. This is a result of refactoring the Zend Engine to use:
+ - More compact data structures, resulting in lower memory consumption
+ - Less indirection to values due to less heap allocations
+
+The refactored codebase provides further opportunities for future optimisations as well (such as JIT compilation). So we can expect even better performance in future PHP versions too!
+
+PHP 7 performance chart comparisons:
+ - [Turbocharging the Web with PHP 7](https://www.zend.com/en/resources/php7_infographic)
+ - [Benchmarks from Rasmus's Sydney Talk](http://talks.php.net/oz15#/drupalbench)
 
 ## Features
 
@@ -443,6 +451,9 @@ The `intdiv()` function has been introduced to handle division where an integer 
 var_dump(intdiv(10, 3)); // int(3)
 ```
 
+**BC Breaks**
+ - Functions in the global namespace must not be called `intdiv`.
+
 RFC: [intdiv()](https://wiki.php.net/rfc/intdiv)
 
 ### `preg_replace_callback_array()` Function
@@ -505,6 +516,9 @@ preg_replace_callback_array(
     $input
 );
 ```
+
+**BC Breaks**
+ - Functions in the global namespace must not be called `preg_replace_callback_array`.
 
 RFC: [Add preg_replace_callback_array Function](https://wiki.php.net/rfc/preg_replace_callback_array)
 
