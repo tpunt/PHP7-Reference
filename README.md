@@ -38,6 +38,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Removal of Multiple Default Blocks in Switch Statements](#removal-of-multiple-default-blocks-in-switch-statements)
 * [Removal of Dead Server APIs](#removal-of-dead-server-apis)
 * [Removal of Hex Support in Numerical Strings](#removal-of-hex-support-in-numerical-strings)
+* [Removal of Deprecated Functionality](#removal-of-deprecated-functionality)
 * [Reclassification and Removal of E_STRICT Notices](#reclassification-and-removal-of-e_strict-notices)
 * [Deprecation of Salt Option for `password_hash()`](#deprecation-of-salt-option-for-password_hash)
 
@@ -958,6 +959,19 @@ var_dump(filter_var('0x123', FILTER_VALIDATE_INT, FILTER_FLAG_ALLOW_HEX)); // in
  - This change affects the `is_numeric()` function and various operators, including `==`, `+`, `-`, `*`, `/`, `%`, `**`, `++`, and `--`
 
 RFC: [Remove hex support in numeric strings](https://wiki.php.net/rfc/remove_hex_support_in_numeric_strings)
+
+### Removal of Deprecated Functionality
+
+All Deprecated functionality has been removed, most notably:
+ - The original mysql extension (ext/mysql)
+ - The ereg extension (ext/ereg)
+ - Assigning `new` by reference
+ - Scoped calls of non-static methods from an incompatible `$this` context (such as `Foo::bar()` from outside a class, where `bar()` is not a static method)
+
+**BC Breaks**
+ - Any code that ran with deprecation warnings in PHP 5 will no longer work (you were warned!)
+
+RFC: [Remove deprecated functionality in PHP 7](https://wiki.php.net/rfc/remove_deprecated_functionality_in_php7)
 
 ### Reclassification and Removal of E_STRICT Notices
 
