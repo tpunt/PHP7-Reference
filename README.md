@@ -46,11 +46,11 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 
 ## Performance
 
-Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides applications. This is a result of refactoring the Zend Engine to use:
- - More compact data structures, resulting in lower memory consumption
- - Less indirection to values due to less heap allocations
+Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides to applications. This is a result of refactoring the Zend Engine to use more compact data structures and less heap allocations/deallocations. 
 
-The refactored codebase provides further opportunities for future optimisations as well (such as JIT compilation). So we can expect even better performance in future PHP versions too!
+The performance gains on real world applications will vary, but most applications seem to recieve a ~100% performance boost, with lower memory consumption too!
+
+The refactored codebase provides further opportunities for future optimisations as well (such as JIT compilation). So it looks like future PHP versions will continue to see performance enhancements as well.
 
 PHP 7 performance chart comparisons:
  - [Turbocharging the Web with PHP 7](https://www.zend.com/en/resources/php7_infographic)
