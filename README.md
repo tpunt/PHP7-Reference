@@ -30,7 +30,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Exceptions in the Engine](#exceptions-in-the-engine)
 * [Throwable Interface](#throwable-interface)
 * [Fixes to `foreach()`'s Behaviour](#fixes-to-foreachs-behaviour)
-* [Fixes to `list()`'s Behaviour](#fixes-to-lists-behaviour)
+* [Changes to `list()`'s Behaviour](#changes-to-lists-behaviour)
 * [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
 * [Deprecation of PHP 4-Style Constructors](#deprecation-of-php-4-style-constructors)
 * [Removal of date.timezone Warning](#removal-of-datetimezone-warning)
@@ -770,7 +770,7 @@ foreach($array as &$val) {
 
 RFC: [Fix "foreach" behavior](https://wiki.php.net/rfc/php7_foreach)
 
-### Fixes to `list()`'s Behaviour
+### Changes to `list()`'s Behaviour
 
 The `list()` function was documented as not supporting strings, however in few cases strings could have been used:
 ```PHP
@@ -801,10 +801,28 @@ echo $b; // b
 
 This has now been changed making string usage with `list()` forbidden in all cases.
 
+Also, empty `list()`'s are now a fatal error, and the order of assigning variables has been changed to left-to-right:
+```PHP
+$a = [1, 2];
+list($a, $b) = $a;
+ 
+// OLD: $a = 1, $b = 2
+// NEW: $a = 1, $b = null + "Undefined index 1"
+ 
+$b = [1, 2];
+list($a, $b) = $b;
+
+// OLD: $a = null + "Undefined index 0", $b = 2
+// NEW: $a = 1, $b = 2
+```
+
 **BC Breaks**
- - Making `list()` equal to any non-direct string value is no longer possible. `null` will now be the value for the variable `$a` and `$b` in the above examples.
+ - Making `list()` equal to any non-direct string value is no longer possible. `null` will now be the value for the variable `$a` and `$b` in the above examples
+ - Invoking `list()` without any variables will cause a fatal error
+ - Reliance upon the old right-to-left assignment order will no longer work
 
 RFC: [Fix list() behavior inconsistency](https://wiki.php.net/rfc/fix_list_behavior_inconsistency)
+RFC: [Abstract syntax tree](https://wiki.php.net/rfc/abstract_syntax_tree)
 
 ### Fixes to Custom Session Handler Return Values
 
@@ -961,7 +979,7 @@ RFC: no RFC available
 ### What happened to PHP 6?
 
 PHP 6 was the major PHP version that never came to light. It was supposed to feature full support for Unicode in the core, but this effort was too ambitious with too many complications arising. The predominant reasons why version 6 was skipped for this new major version is as follows:
- - **To prevent confusion**. Many resources were written about PHP 6 and much of the community knew what was featured in it. PHP 7 is a completely different beast with entirely different focusses (specifically on performance) and entirely different feature sets. Thus, a version has been skipped to prevent any confusion or misconceptions surrounding PHP 7.
+ - **To prevent confusion**. Many resources were written about PHP 6 and much of the community knew what was featured in it. PHP 7 is a completely different beast with entirely different focusses (specifically on performance) and entirely different feature sets. Thus, a version has been skipped to prevent any confusion or misconceptions surrounding what PHP 7 is.
  - **To let sleeping dogs lie**. PHP 6 was seen as a failure and a large amount of PHP 6 code still remains in the PHP repository. It was therefore seen as best to move past version 6 and start afresh on the next major version, version 7.
 
 RFC: [Name of Next Release of PHP](https://wiki.php.net/rfc/php6)
