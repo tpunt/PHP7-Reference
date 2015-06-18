@@ -21,6 +21,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 * [Generator Delegation](#generator-delegation)
 * [Integer Division with `intdiv()`](#integer-division-with-intdiv)
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
+* [Loosening Reserved Word Restrictions](#loosening-reserved-word-restrictions)
 
 **[Changes](#changes)**
 * [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
@@ -559,6 +560,19 @@ preg_replace_callback_array(
 
 RFC: [Add preg_replace_callback_array Function](https://wiki.php.net/rfc/preg_replace_callback_array)
 
+### Loosening Reserved Word Restrictions
+
+Globally reserved words as property, constant, and method names within classes, interfaces, and traits are now allowed. This reduces the surface of BC breaks when new keywords are introduced and avoids naming restrictions on APIs.
+
+This is particularly useful when creating internal DSLs with fluent interfaces:
+```PHP
+Project::new('Project Name')->private()->for('purpose here')->with('username here');
+```
+
+The only limitation is that the `class` keyword still cannot be used as a constant name, otherwise it would conflict with the class name resolution syntax of `ClassName::class`.
+
+RFC: [Context Sensitive Lexer](https://wiki.php.net/rfc/context_sensitive_lexer)
+
 ## Changes
 
 ### JSON Extension Replaced with JSOND
@@ -823,6 +837,7 @@ list($a, $b) = $b;
  - Reliance upon the old right-to-left assignment order will no longer work
 
 RFC: [Fix list() behavior inconsistency](https://wiki.php.net/rfc/fix_list_behavior_inconsistency)
+
 RFC: [Abstract syntax tree](https://wiki.php.net/rfc/abstract_syntax_tree)
 
 ### Fixes to Custom Session Handler Return Values
