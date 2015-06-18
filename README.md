@@ -48,7 +48,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 
 Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides to applications. This is a result of refactoring the Zend Engine to use more compact data structures and less heap allocations/deallocations. 
 
-The performance gains on real world applications will vary, but most applications seem to recieve a ~100% performance boost, with lower memory consumption too!
+The performance gains on real world applications will vary, but most applications seem to recieve a ~100% performance boost - with lower memory consumption too!
 
 The refactored codebase provides further opportunities for future optimisations as well (such as JIT compilation). So it looks like future PHP versions will continue to see performance enhancements as well.
 
@@ -175,7 +175,7 @@ class C
 class D extends C
 {
     // overriding method C::test() : A
-    public function test() : B // causes a variance mismatch error
+    public function test() : B // Fatal error due to variance mismatch
     {
         return new B;
     }
@@ -230,7 +230,7 @@ $util->setLogger(new class {
 });
 ```
 
-They can pass arguments through to their constructors, extend other classes, implement interfaces, and use traits:
+They can pass arguments through to their constructors, extend other classes, implement interfaces, and use traits just like a normal class can:
 ```PHP
 class SomeClass {}
 interface SomeInterface {}
@@ -246,6 +246,41 @@ var_dump(new class(10) extends SomeClass implements SomeInterface {
 
     use SomeTrait;
 });
+```
+
+Nesting an anonymous class within another class does not give it access to any private or protected methods or properties of that outer class. In order to use the outer class's protected properties or methods, the anonymous class can extend the outer class. To use the private or protected properties of the outer class in the anonymous class, they must passed through it's constructor:
+```PHP
+<?php
+
+class Outer
+{
+    private $prop = 1;
+    protected $prop2 = 2;
+    
+    protected function func1()
+    {
+        return 3;
+    }
+    
+    public function func2()
+    {
+        return new class($this->prop) extends Outer {
+            private $prop3;
+
+            public function __construct($prop)
+            {
+                $this->prop3 = $prop;
+            }
+
+            public function func3()
+            {
+                return $this->prop2 + $this->prop3 + $this->func1();
+            }
+        };
+    }
+}
+
+echo (new Outer)->func2()->func3(); // 6
 ```
 
 RFC: [Anonymous Classes](https://wiki.php.net/rfc/anonymous_classes)
@@ -264,14 +299,14 @@ RFC: [Unicode Codepoint Escape Syntax](https://wiki.php.net/rfc/unicode_escape)
 
 ### Closure call() Method
 
-The new call() method for closures is used as a shorthand way of invoking a closure whilst binding an object scope to it. This creates more perfomant and compact code by removing the need to create an intermediate closure before invoking it.
+The new `call()` method for closures is used as a shorthand way of invoking a closure whilst binding an object scope to it. This creates more perfomant and compact code by removing the need to create an intermediate closure before invoking it.
 
 ```PHP
 class A {private $x = 1;}
 
 // Pre PHP 7 code
 $getXCB = function() {return $this->x;};
-$getX = $getXCB->bindTo(new A, 'A');
+$getX = $getXCB->bindTo(new A, 'A'); // intermediate closure
 echo $getX(); // 1
 
 // PHP 7+ code
@@ -309,6 +344,9 @@ var_dump(IntlChar::ispunct('!')); bool(true)
 ```
 
 In order to use this class, you will need the `Intl` extension installed.
+
+**BC Breaks**
+ - Classes in the global namespace must not be called `IntlChar`.
 
 RFC: [IntlChar class](https://wiki.php.net/rfc/intl.char)
 
@@ -487,8 +525,6 @@ preg_replace_callback(
             $tokenStream[] = ['T_TERMINATE_STMT', $match[0]];
         } elseif (strpos($match[0], '//') === 0) {
             $tokenStream[] = ['T_COMMENT', $match[0]];
-        } else {
-            // skip whitespace
         }
     },
     $input
