@@ -48,7 +48,7 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 
 ## Performance
 
-Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides to applications. This is a result of refactoring the Zend Engine to use more compact data structures and less heap allocations/deallocations. 
+Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides to applications. This is a result of refactoring the Zend Engine to use more compact data structures and less heap allocations/deallocations.
 
 The performance gains on real world applications will vary, though many applications seem to recieve a ~100% performance boost - with lower memory consumption too!
 
@@ -220,9 +220,9 @@ class Logger
         echo $msg;
     }
 }
- 
+
 $util->setLogger(new Logger());
- 
+
 // PHP 7+ code
 $util->setLogger(new class {
     public function log($msg)
@@ -265,12 +265,12 @@ class Outer
 {
     private $prop = 1;
     protected $prop2 = 2;
-    
+
     protected function func1()
     {
         return 3;
     }
-    
+
     public function func2()
     {
         return new class($this->prop) extends Outer {
@@ -732,7 +732,7 @@ foreach($array as $val) {
 
 // Pre PHP 7 result
 1 - 3
-3 - 
+3 -
 
 // PHP 7+ result
 1 - 1
@@ -753,7 +753,7 @@ foreach($array as &$val) {
 // Pre PHP 7 result
 1 - 2
 2 - 3
-3 - 
+3 -
 
 // PHP 7+ result
 1 - 1
@@ -828,10 +828,10 @@ Also, empty `list()`'s are now a fatal error, and the order of assigning variabl
 ```PHP
 $a = [1, 2];
 list($a, $b) = $a;
- 
+
 // OLD: $a = 1, $b = 2
 // NEW: $a = 1, $b = null + "Undefined index 1"
- 
+
 $b = [1, 2];
 list($a, $b) = $b;
 
