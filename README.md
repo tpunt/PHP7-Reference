@@ -349,7 +349,7 @@ The new `IntlChar` class seeks to expose additional ICU functionality. The class
 ```PHP
 printf('%x', IntlChar::CODEPOINT_MAX); // 10ffff
 echo IntlChar::charName('@'); // COMMERCIAL AT
-var_dump(IntlChar::ispunct('!')); bool(true)
+var_dump(IntlChar::ispunct('!')); // bool(true)
 ```
 
 In order to use this class, you will need the `Intl` extension installed.
