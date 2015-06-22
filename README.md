@@ -257,7 +257,7 @@ object(class@anonymous)#1 (1) {
 */
 ```
 
-Nesting an anonymous class within another class does not give it access to any private or protected methods or properties of that outer class. In order to use the outer class's protected properties or methods, the anonymous class can extend the outer class. To use the private or protected properties of the outer class in the anonymous class, they must be passed through it's constructor:
+Nesting an anonymous class within another class does not give it access to any private or protected methods or properties of that outer class. In order to use the outer class' protected properties or methods, the anonymous class can extend the outer class. To use the private or protected properties of the outer class in the anonymous class, they must be passed through it's constructor:
 ```PHP
 <?php
 
