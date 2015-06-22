@@ -402,11 +402,7 @@ use some\namespace\ClassB;
 use some\namespace\ClassC as C;
 
 // PHP 7+ code
-use parent\child\{
-    ClassA,
-    ClassB,
-    ClassC as C
-};
+use some\namespace\{ClassA, ClassB, ClassC as C};
 ```
 
 RFC: [Group use Declarations](https://wiki.php.net/rfc/group_use_declarations)
