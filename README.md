@@ -80,7 +80,7 @@ var_dump(123 <=> 456); // int(-1)
 var_dump(['a', 'b'] <=> ['a', 'b']); // int(0)
 ```
 
-Objects are not comparable, and so using them as oparands with this operator will result in undefined behaviour.
+Objects are not comparable, and so using them as operands with this operator will result in undefined behaviour.
 
 RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator)
 
