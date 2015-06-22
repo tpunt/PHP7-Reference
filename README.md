@@ -50,9 +50,9 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 
 Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides to applications. This is a result of refactoring the Zend Engine to use more compact data structures and less heap allocations/deallocations. 
 
-The performance gains on real world applications will vary, but most applications seem to recieve a ~100% performance boost - with lower memory consumption too!
+The performance gains on real world applications will vary, though many applications seem to recieve a ~100% performance boost - with lower memory consumption too!
 
-The refactored codebase provides further opportunities for future optimisations as well (such as JIT compilation). So it looks like future PHP versions will continue to see performance enhancements as well.
+The refactored codebase provides further opportunities for future optimisations as well (such as JIT compilation). So it looks like future PHP versions will continue to see performance enhancements too.
 
 PHP 7 performance chart comparisons:
  - [Turbocharging the Web with PHP 7](https://www.zend.com/en/resources/php7_infographic)
@@ -61,11 +61,11 @@ PHP 7 performance chart comparisons:
 ## Features
 
 ### Combined Comparison Operator
-The combined comparison operator (or spaceship operator) is a short-hand notation for performing three-way comparisons from two operands. It has an integer return value that can be either:
+The combined comparison operator (or spaceship operator) is a shorthand notation for performing three-way comparisons from two operands. It has an integer return value that can be either:
 
-* positive integer (if the left-hand operand is greater than the right-hand operand)
+* a positive integer (if the left-hand operand is greater than the right-hand operand)
 * 0 (if both operands are equal)
-* negative integer (if the right-hand operand is greater than the left-hand operand)
+* a negative integer (if the right-hand operand is greater than the left-hand operand)
 
 The operator has the same precedence as the equality operators (`==`, `!=`, `===`, `!==`) and has the exact same behaviour as the other loose comparison operators (`<`, `>=`, etc). It is also non-associative like them too, so chaining of the operands (like `1 <=> 2 <=> 3`) is not allowed.
 
@@ -85,7 +85,7 @@ Objects are not comparable, and so using them as oparands with this operator wil
 RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator)
 
 ### Null Coalesce Operator
-The null coalesce operator (or isset ternary operator) is a short-hand notation for performing `isset()` checks in the ternary operator. This is a common thing to do in applications, and so a new syntax has been introduced for this exact purpose.
+The null coalesce operator (or isset ternary operator) is a shorthand notation for performing `isset()` checks in the ternary operator. This is a common thing to do in applications, and so a new syntax has been introduced for this exact purpose.
 
 ```PHP
 // Pre PHP 7 code
@@ -110,7 +110,7 @@ function sumOfInts(int ...$ints)
 var_dump(sumOfInts(2, '3', 4.1)); // int(9)
 ```
 
-To enable strict mode, a single `declare()` directive must be placed at the top of the file. This means that the strictness of typing for scalars is configured on a per file basis. This directive not only affects the type declarations of parameters, but also of function return types (see [Return Type Declarations](#return-type-declarations)), built-in PHP functions, and functions from loaded extensions.
+To enable strict mode, a single `declare()` directive must be placed at the top of the file. This means that the strictness of typing for scalars is configured on a per-file basis. This directive not only affects the type declarations of parameters, but also a function's return type (see [Return Type Declarations](#return-type-declarations)), built-in PHP functions, and functions from loaded extensions.
 
 If the type-check fails, then an `E_RECOVERABLE_ERROR` is produced. The only leniency present in strict typing is the automatic conversion of integers to floats (but not vice-versa) when an integer is provided in a float context.
 
@@ -131,7 +131,7 @@ var_dump(multiply(2, 3.5)); // float(7)
 var_dump(add('2', 3)); // Fatal error: Argument 1 passed to add() must be of the type integer, string given...
 ```
 
-Note that **only** the *invocation context* applies when the type-checking is performed. This means that the strict typing applies only to function/method calls, and not to the function/method definition context. In the above example, the two functions could have been declared in either a strict or coercive file, but so long as they're being called in a strict file, then the strict typing rules will apply.
+Note that **only** the *invocation context* applies when the type-checking is performed. This means that the strict typing applies only to function/method calls, and not to the function/method definitions. In the above example, the two functions could have been declared in either a strict or coercive file, but so long as they're being called in a strict file, then the strict typing rules will apply.
 
 **BC Breaks**
  - Classes with names `int`, `string`, `float`, and `bool` are now forbidden.
@@ -212,7 +212,7 @@ RFC: [Return Type Declarations](https://wiki.php.net/rfc/return_types)
 Anonymous classes are useful when simple, one-off objects need to be created.
 
 ```PHP
-// Pre PHP 7
+// Pre PHP 7 code
 class Logger
 {
     public function log($msg)
@@ -223,7 +223,7 @@ class Logger
  
 $util->setLogger(new Logger());
  
-// PHP 7+
+// PHP 7+ code
 $util->setLogger(new class {
     public function log($msg)
     {
@@ -248,9 +248,16 @@ var_dump(new class(10) extends SomeClass implements SomeInterface {
 
     use SomeTrait;
 });
+
+/** Output:
+object(class@anonymous)#1 (1) {
+  ["Command line code0x104c5b612":"class@anonymous":private]=>
+  int(10)
+}
+*/
 ```
 
-Nesting an anonymous class within another class does not give it access to any private or protected methods or properties of that outer class. In order to use the outer class's protected properties or methods, the anonymous class can extend the outer class. To use the private or protected properties of the outer class in the anonymous class, they must passed through it's constructor:
+Nesting an anonymous class within another class does not give it access to any private or protected methods or properties of that outer class. In order to use the outer class's protected properties or methods, the anonymous class can extend the outer class. To use the private or protected properties of the outer class in the anonymous class, they must be passed through it's constructor:
 ```PHP
 <?php
 
@@ -354,7 +361,7 @@ RFC: [IntlChar class](https://wiki.php.net/rfc/intl.char)
 
 ### Expectations
 
-Expectations are an enhancement to the older `assert()` function. They enable for zero-cost assertions in production code, and provide the ability to throw custom exceptions on error.
+Expectations are backwards compatible enhancement to the older `assert()` function. They enable for zero-cost assertions in production code, and provide the ability to throw custom exceptions on error.
 
 The `assert()` function's prototype is as follows:
 ```
@@ -498,7 +505,7 @@ RFC: [Introduce session_start() Options](https://wiki.php.net/rfc/session-lock-i
 
 ### `preg_replace_callback_array()` Function
 
-This new function addition enables for code to be written more cleanly when using the `preg_replace_callback()` function. Prior to PHP 7, callbacks that needed to be executed per regular expression match required the callback function (second parameter of `preg_replace_callback()`) to be polluted with lots of branching (a hacky method at best). But now, callbacks can be registered on a per-regular expression basis using an associative array with the regular expression as the keys and the callbacks as the values.
+This new function addition enables for code to be written more cleanly when using the `preg_replace_callback()` function. Prior to PHP 7, callbacks that needed to be executed per regular expression match required the callback function (second parameter of `preg_replace_callback()`) to be polluted with lots of branching (a hacky method at best). But now, callbacks can be registered on a per-regular expression basis using an associative array with the regular expression as the key and a callback as the value.
 
 ```PHP
 $tokenStream = []; // [tokenName, lexeme] pairs
@@ -568,6 +575,7 @@ Globally reserved words as property, constant, and method names within classes, 
 
 This is particularly useful when creating internal DSLs with fluent interfaces:
 ```PHP
+// 'new', 'private', and 'for' were previously unusable
 Project::new('Project Name')->private()->for('purpose here')->with('username here');
 ```
 
@@ -593,7 +601,7 @@ foo()() // invoke the return of foo()
 'string'->toUpper(); // call the toUpper() method on the string 'string'
 ```
 
-The ability to arbitrarily combine variable operators came from reversing the evaluation semantics of indirect variable, property, and method references. The new behaviour is more intuitive, always following a left-to-right evaluation order:
+The ability to arbitrarily combine variable operators came from reversing the evaluation semantics of indirect variable, property, and method references. The new behaviour is more intuitive and always following a left-to-right evaluation order:
 
 ```PHP
                         // old meaning            // new meaning
@@ -640,7 +648,7 @@ See the [Throwable Interface](#throwable-interface) subsection in the Changes se
 
 **BC Breaks**
  - Custom error handlers used for handling (and typically ignoring) recoverable fatal errors will not longer work since exceptions will now be thrown
- - Parse errors occuring in `eval()`ed code will now become exceptions, requiring them to be wrapped in a try...catch block
+ - Parse errors occuring in `eval()`ed code will now become exceptions, requiring them to be wrapped in a `try...catch` block
 
 RFC: [Exceptions in the Engine](https://wiki.php.net/rfc/engine_exceptions_for_php7)
 
@@ -670,7 +678,7 @@ final public string getTraceAsString ( void )
 public string __toString ( void )
 ```
 
-It cannot be implemented by user-defined classes - instead, a custom exception class should extend one of the pre-existing exceptions classes in PHP.
+`Throwable` cannot be implemented by user-defined classes - instead, a custom exception class should extend one of the pre-existing exceptions classes in PHP.
 
 RFC: [Throwable Interface](https://wiki.php.net/rfc/throwable-interface)
 
@@ -702,7 +710,7 @@ RFC: [Replace current json extension with jsond](https://wiki.php.net/rfc/jsond)
 Coercion between floats to integers can occur when a float is passed to an internal function expecting an integer. If the float is too large to represent as an integer, then the value will be silently truncated (which may result in a loss of magnitude and sign). This can introduce hard-to-find bugs. This change therefore seeks to notify the developer when an implicit conversion from a float to an integer has occurred and failed by returning `null` and emitting an E_WARNING.
 
 **BC Breaks**
- - Code that once silently worked will now emit an E_WARNING and may fail if the result of the function invocation is directly passed to another function (since `null` will now be passed).
+ - Code that once silently worked will now emit an E_WARNING and may fail if the result of the function invocation is directly passed to another function (since `null` will now be passed in).
 
 RFC: [ZPP Failure on Overflow](https://wiki.php.net/rfc/zpp_fail_on_overflow)
 
