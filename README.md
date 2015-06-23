@@ -1,6 +1,8 @@
 # PHP 7
 
-PHP 7 has been slated for release [in November of this year](https://wiki.php.net/rfc/php7timeline) (2015). It comes with a number of new features, changes, and backwards compatibility breakages that are outlined below.
+PHP 7 has been slated for release [in November of this year](https://wiki.php.net/rfc/php7timeline)
+(2015). It comes with a number of new features, changes, and backwards
+compatibility breakages that are outlined below.
 
 **[Performance](#performance)**
 
@@ -48,11 +50,17 @@ PHP 7 has been slated for release [in November of this year](https://wiki.php.ne
 
 ## Performance
 
-Unarguably the greatest part about PHP 7 is the incredible performance boosts it provides to applications. This is a result of refactoring the Zend Engine to use more compact data structures and less heap allocations/deallocations. 
+Unarguably the greatest part about PHP 7 is the incredible performance boosts
+it provides to applications. This is a result of refactoring the Zend Engine to
+use more compact data structures and less heap allocations/deallocations.
 
-The performance gains on real world applications will vary, though many applications seem to recieve a ~100% performance boost - with lower memory consumption too!
+The performance gains on real world applications will vary, though many
+applications seem to recieve a ~100% performance boost - with lower memory
+consumption too!
 
-The refactored codebase provides further opportunities for future optimisations as well (such as JIT compilation). So it looks like future PHP versions will continue to see performance enhancements too.
+The refactored codebase provides further opportunities for future optimisations
+as well (such as JIT compilation). So it looks like future PHP versions will
+continue to see performance enhancements too.
 
 PHP 7 performance chart comparisons:
  - [Turbocharging the Web with PHP 7](https://www.zend.com/en/resources/php7_infographic)
@@ -61,13 +69,18 @@ PHP 7 performance chart comparisons:
 ## Features
 
 ### Combined Comparison Operator
-The combined comparison operator (or spaceship operator) is a shorthand notation for performing three-way comparisons from two operands. It has an integer return value that can be either:
+The combined comparison operator (or spaceship operator) is a shorthand
+notation for performing three-way comparisons from two operands. It has an
+integer return value that can be either:
 
 * a positive integer (if the left-hand operand is greater than the right-hand operand)
 * 0 (if both operands are equal)
 * a negative integer (if the right-hand operand is greater than the left-hand operand)
 
-The operator has the same precedence as the equality operators (`==`, `!=`, `===`, `!==`) and has the exact same behaviour as the other loose comparison operators (`<`, `>=`, etc). It is also non-associative like them too, so chaining of the operands (like `1 <=> 2 <=> 3`) is not allowed.
+The operator has the same precedence as the equality operators (`==`, `!=`,
+`===`, `!==`) and has the exact same behaviour as the other loose comparison
+operators (`<`, `>=`, etc). It is also non-associative like them too, so
+chaining of the operands (like `1 <=> 2 <=> 3`) is not allowed.
 
 ```PHP
 // compares strings lexically
@@ -80,12 +93,16 @@ var_dump(123 <=> 456); // int(-1)
 var_dump(['a', 'b'] <=> ['a', 'b']); // int(0)
 ```
 
-Objects are not comparable, and so using them as oparands with this operator will result in undefined behaviour.
+Objects are not comparable, and so using them as operands with this operator
+will result in undefined behaviour.
 
 RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator)
 
 ### Null Coalesce Operator
-The null coalesce operator (or isset ternary operator) is a shorthand notation for performing `isset()` checks in the ternary operator. This is a common thing to do in applications, and so a new syntax has been introduced for this exact purpose.
+The null coalesce operator (or isset ternary operator) is a shorthand notation
+for performing `isset()` checks in the ternary operator. This is a common thing
+to do in applications, and so a new syntax has been introduced for this exact
+purpose.
 
 ```PHP
 // Pre PHP 7 code
@@ -98,7 +115,12 @@ $route = $_GET['route'] ?? 'index';
 RFC: [Null Coalesce Operator](https://wiki.php.net/rfc/isset_ternary)
 
 ### Scalar Type Declarations
-Scalar type declarations come in two flavours: **coercive** (default) and **strict**. The following types for parameters can now be enforced (either coercively or strictly): strings (`string`), integers (`int`), floating-point numbers (`float`), and booleans (`bool`). They augment the other types introduced in the PHP 5.x versions: class names, interfaces, `array` and `callable`.
+Scalar type declarations come in two flavours: **coercive** (default) and
+**strict**. The following types for parameters can now be enforced (either
+coercively or strictly): strings (`string`), integers (`int`), floating-point
+numbers (`float`), and booleans (`bool`). They augment the other types
+introduced in the PHP 5.x versions: class names, interfaces, `array` and
+`callable`.
 
 ```PHP
 // Coercive mode
@@ -110,9 +132,16 @@ function sumOfInts(int ...$ints)
 var_dump(sumOfInts(2, '3', 4.1)); // int(9)
 ```
 
-To enable strict mode, a single `declare()` directive must be placed at the top of the file. This means that the strictness of typing for scalars is configured on a per-file basis. This directive not only affects the type declarations of parameters, but also a function's return type (see [Return Type Declarations](#return-type-declarations)), built-in PHP functions, and functions from loaded extensions.
+To enable strict mode, a single `declare()` directive must be placed at the top
+of the file. This means that the strictness of typing for scalars is configured
+on a per-file basis. This directive not only affects the type declarations of
+parameters, but also a function's return type (see [Return Type
+Declarations](#return-type-declarations)), built-in PHP functions, and
+functions from loaded extensions.
 
-If the type-check fails, then an `E_RECOVERABLE_ERROR` is produced. The only leniency present in strict typing is the automatic conversion of integers to floats (but not vice-versa) when an integer is provided in a float context.
+If the type-check fails, then an `E_RECOVERABLE_ERROR` is produced. The only
+leniency present in strict typing is the automatic conversion of integers to
+floats (but not vice-versa) when an integer is provided in a float context.
 
 ```PHP
 declare(strict_types=1);
@@ -131,7 +160,12 @@ var_dump(multiply(2, 3.5)); // float(7)
 var_dump(add('2', 3)); // Fatal error: Argument 1 passed to add() must be of the type integer, string given...
 ```
 
-Note that **only** the *invocation context* applies when the type-checking is performed. This means that the strict typing applies only to function/method calls, and not to the function/method definitions. In the above example, the two functions could have been declared in either a strict or coercive file, but so long as they're being called in a strict file, then the strict typing rules will apply.
+Note that **only** the *invocation context* applies when the type-checking is
+performed. This means that the strict typing applies only to function/method
+calls, and not to the function/method definitions. In the above example, the
+two functions could have been declared in either a strict or coercive file, but
+so long as they're being called in a strict file, then the strict typing rules
+will apply.
 
 **BC Breaks**
  - Classes with names `int`, `string`, `float`, and `bool` are now forbidden.
@@ -139,7 +173,10 @@ Note that **only** the *invocation context* applies when the type-checking is pe
 RFC: [Scalar Type Declarations](https://wiki.php.net/rfc/scalar_type_hints_v5)
 
 ### Return Type Declarations
-Return type declarations enable you to specify the return type of a function, method, or closure. The following return types are supported: `string`, `int`, `float`, `bool`, `array`, `callable`, `self` (methods only), `parent` (methods only), `Closure`, the name of a class, and the name of an interface.
+Return type declarations enable you to specify the return type of a function,
+method, or closure. The following return types are supported: `string`, `int`,
+`float`, `bool`, `array`, `callable`, `self` (methods only), `parent` (methods
+only), `Closure`, the name of a class, and the name of an interface.
 
 ```PHP
 function arraysSum(array ...$arrays): array
@@ -160,7 +197,10 @@ Array
 */
 ```
 
-With respect to subtyping, **invariance** has been chosen for return types. This simply means that when a method is either overridden in a subtyped class or implemented as defined in a contract, its return type must match exactly the method it is (re)implementing.
+With respect to subtyping, **invariance** has been chosen for return types.
+This simply means that when a method is either overridden in a subtyped class
+or implemented as defined in a contract, its return type must match exactly the
+method it is (re)implementing.
 
 ```PHP
 class A {}
@@ -184,7 +224,9 @@ class D extends C
 }
 ```
 
-The overriding method `D::test() : B` causes an `E_COMPILE_ERROR` because covariance is not allowed. In order for this to work, `D::test()` method must have a return type of `A`.
+The overriding method `D::test() : B` causes an `E_COMPILE_ERROR` because
+covariance is not allowed. In order for this to work, `D::test()` method must
+have a return type of `A`.
 
 ```PHP
 class A {}
@@ -203,7 +245,9 @@ class B implements SomeInterface
 }
 ```
 
-This time, the implemented method causes an `E_RECOVERABLE_ERROR` when executed because `null` is not a valid return type - only an instance of the class `A` can be returned.
+This time, the implemented method causes an `E_RECOVERABLE_ERROR` when executed
+because `null` is not a valid return type - only an instance of the class `A`
+can be returned.
 
 RFC: [Return Type Declarations](https://wiki.php.net/rfc/return_types)
 
@@ -220,9 +264,9 @@ class Logger
         echo $msg;
     }
 }
- 
+
 $util->setLogger(new Logger());
- 
+
 // PHP 7+ code
 $util->setLogger(new class {
     public function log($msg)
@@ -232,7 +276,8 @@ $util->setLogger(new class {
 });
 ```
 
-They can pass arguments through to their constructors, extend other classes, implement interfaces, and use traits just like a normal class can:
+They can pass arguments through to their constructors, extend other classes,
+implement interfaces, and use traits just like a normal class can:
 ```PHP
 class SomeClass {}
 interface SomeInterface {}
@@ -257,7 +302,11 @@ object(class@anonymous)#1 (1) {
 */
 ```
 
-Nesting an anonymous class within another class does not give it access to any private or protected methods or properties of that outer class. In order to use the outer class's protected properties or methods, the anonymous class can extend the outer class. To use the private or protected properties of the outer class in the anonymous class, they must be passed through it's constructor:
+Nesting an anonymous class within another class does not give it access to any
+private or protected methods or properties of that outer class. In order to use
+the outer class' protected properties or methods, the anonymous class can
+extend the outer class. To use the private or protected properties of the outer
+class in the anonymous class, they must be passed through its constructor:
 ```PHP
 <?php
 
@@ -265,12 +314,12 @@ class Outer
 {
     private $prop = 1;
     protected $prop2 = 2;
-    
+
     protected function func1()
     {
         return 3;
     }
-    
+
     public function func2()
     {
         return new class($this->prop) extends Outer {
@@ -296,7 +345,9 @@ RFC: [Anonymous Classes](https://wiki.php.net/rfc/anonymous_classes)
 
 ### Unicode Codepoint Escape Syntax
 
-This enables you to output a UTF-8 encoded unicode codepoint in either a double-quoted string or a heredoc. Any valid codepoint is accepted, with leading `0`'s being optional.
+This enables you to output a UTF-8 encoded unicode codepoint in either a
+double-quoted string or a heredoc. Any valid codepoint is accepted, with
+leading `0`'s being optional.
 
 ```PHP
 echo "\u{aa}"; // ª
@@ -308,7 +359,10 @@ RFC: [Unicode Codepoint Escape Syntax](https://wiki.php.net/rfc/unicode_escape)
 
 ### Closure call() Method
 
-The new `call()` method for closures is used as a shorthand way of invoking a closure whilst binding an object scope to it. This creates more perfomant and compact code by removing the need to create an intermediate closure before invoking it.
+The new `call()` method for closures is used as a shorthand way of invoking a
+closure whilst binding an object scope to it. This creates more perfomant and
+compact code by removing the need to create an intermediate closure before
+invoking it.
 
 ```PHP
 class A {private $x = 1;}
@@ -327,7 +381,9 @@ RFC: [Closure::call](https://wiki.php.net/rfc/closure_apply)
 
 ### Filtered `unserialize()`
 
-This feature seeks to provide better security when unserializing objects on untrusted data. It prevents possible code injections by enabling the developer to whitelist classes that can be unserialized.
+This feature seeks to provide better security when unserializing objects on
+untrusted data. It prevents possible code injections by enabling the developer
+to whitelist classes that can be unserialized.
 
 ```PHP
 // converts all objects into __PHP_Incomplete_Class object
@@ -344,7 +400,9 @@ RFC: [Filtered unserialize()](https://wiki.php.net/rfc/secure_unserialize)
 
 ### `IntlChar` Class
 
-The new `IntlChar` class seeks to expose additional ICU functionality. The class itself defines a number of static methods and constants that can be used to manipulate unicode characters.
+The new `IntlChar` class seeks to expose additional ICU functionality. The
+class itself defines a number of static methods and constants that can be used
+to manipulate unicode characters.
 
 ```PHP
 printf('%x', IntlChar::CODEPOINT_MAX); // 10ffff
@@ -361,14 +419,19 @@ RFC: [IntlChar class](https://wiki.php.net/rfc/intl.char)
 
 ### Expectations
 
-Expectations are backwards compatible enhancement to the older `assert()` function. They enable for zero-cost assertions in production code, and provide the ability to throw custom exceptions on error.
+Expectations are backwards compatible enhancement to the older `assert()`
+function. They enable for zero-cost assertions in production code, and provide
+the ability to throw custom exceptions on error.
 
 The `assert()` function's prototype is as follows:
 ```
 void assert (mixed $expression [, mixed $message]);
 ```
 
-As with the old API, if `$expression` is a string, then it will be evaluated. If the first argument is falsy, then the assertion fails. The second argument can either be a plain string (causing an AssertionException to be triggered), or a custom exception object containing an error message.
+As with the old API, if `$expression` is a string, then it will be evaluated.
+If the first argument is falsy, then the assertion fails. The second argument
+can either be a plain string (causing an AssertionException to be triggered),
+or a custom exception object containing an error message.
 
 ```PHP
 ini_set("assert.exception", 1);
@@ -387,13 +450,17 @@ With this feature comes two PHP.ini settings (along with their default values):
  - **0** = generate code and jump around at it at runtime
  - **-1** = don't generate any code (zero-cost, production mode)
 
-**assert.exception** means that an exception is thrown when an assertion fails. This is switched off by default to remain compatible with the old `assert()` function.
+**assert.exception** means that an exception is thrown when an assertion fails.
+This is switched off by default to remain compatible with the old `assert()`
+function.
 
 RFC: [Expectations](https://wiki.php.net/rfc/expectations)
 
 ### Group `use` Declarations
 
-This gives the ability to group multiple `use` declarations according to the parent namespace. This seeks to remove code verbosity when importing multiple classes that come under the same namespace.
+This gives the ability to group multiple `use` declarations according to the
+parent namespace. This seeks to remove code verbosity when importing multiple
+classes that come under the same namespace.
 
 ```PHP
 // Pre PHP 7 code
@@ -409,7 +476,11 @@ RFC: [Group use Declarations](https://wiki.php.net/rfc/group_use_declarations)
 
 ### Generator Return Expressions
 
-This feature builds upon the generator functionality introduced into PHP 5.5. It enables for a `return` statement to be used within a generator to enable for a final *expression* to be returned (return by reference is not allowed). This value can be fetched using the new `Generator::getReturn()` method, which may only be used once the generator has finishing yielding values.
+This feature builds upon the generator functionality introduced into PHP 5.5.
+It enables for a `return` statement to be used within a generator to enable for
+a final *expression* to be returned (return by reference is not allowed). This
+value can be fetched using the new `Generator::getReturn()` method, which may
+only be used once the generator has finishing yielding values.
 
 ```PHP
 // IIFE syntax now possible - see the Uniform Variable Syntax subsection in the Changes section
@@ -432,13 +503,24 @@ echo $gen->getReturn(), PHP_EOL;
 // 3
 ```
 
-Being able to explicitly return a final value from a generator is a handy ability to have. This is because it enables for a final value to be returned by a generator (from perhaps some form of coroutine computation) that can be specifically handled by the client code executing the generator. This is far simpler than forcing the client code to firstly check whether the final value has been yielded, and then if so, to handle that value specifically.
+Being able to explicitly return a final value from a generator is a handy
+ability to have. This is because it enables for a final value to be returned by
+a generator (from perhaps some form of coroutine computation) that can be
+specifically handled by the client code executing the generator. This is far
+simpler than forcing the client code to firstly check whether the final value
+has been yielded, and then if so, to handle that value specifically.
 
 RFC: [Generator Return Expressions](https://wiki.php.net/rfc/generator-return-expressions)
 
 ### Generator Delegation
 
-Generator delegation builds upon the ability of being able to return expressions from generators. It does this by using an new syntax of `yield from <expr>`, where <expr> can be any `Traversable` object or array. This <expr> will be advanced until no longer valid, and then execution will continue in the calling generator. This feature enables `yield` statemets to be broken down into smaller operations, thereby promoting cleaner code that has greater reusability.
+Generator delegation builds upon the ability of being able to return
+expressions from generators. It does this by using an new syntax of `yield from
+<expr>`, where <expr> can be any `Traversable` object or array. This <expr>
+will be advanced until no longer valid, and then execution will continue in the
+calling generator. This feature enables `yield` statemets to be broken down
+into smaller operations, thereby promoting cleaner code that has greater
+reusability.
 
 ```PHP
 function gen()
@@ -489,19 +571,28 @@ RFC: [intdiv()](https://wiki.php.net/rfc/intdiv)
 
 ### `session_start()` Options
 
-This feature gives the ability to pass in an array of options to the `session_start()` function. This is used to set session-based php.ini options:
+This feature gives the ability to pass in an array of options to the
+`session_start()` function. This is used to set session-based php.ini options:
 
 ```PHP
 session_start(['cache_limiter' => 'private']); // sets the session.cache_limiter option to private
 ```
 
-This feature also introduces a new php.ini setting (`session.lazy_write`) that is, by default, set to true and means that session data is only rewritten if it changes.
+This feature also introduces a new php.ini setting (`session.lazy_write`) that
+is, by default, set to true and means that session data is only rewritten if it
+changes.
 
 RFC: [Introduce session_start() Options](https://wiki.php.net/rfc/session-lock-ini)
 
 ### `preg_replace_callback_array()` Function
 
-This new function addition enables for code to be written more cleanly when using the `preg_replace_callback()` function. Prior to PHP 7, callbacks that needed to be executed per regular expression match required the callback function (second parameter of `preg_replace_callback()`) to be polluted with lots of branching (a hacky method at best). But now, callbacks can be registered on a per-regular expression basis using an associative array with the regular expression as the key and a callback as the value.
+This new function addition enables for code to be written more cleanly when
+using the `preg_replace_callback()` function. Prior to PHP 7, callbacks that
+needed to be executed per regular expression match required the callback
+function (second parameter of `preg_replace_callback()`) to be polluted with
+lots of branching (a hacky method at best). But now, callbacks can be
+registered on a per-regular expression basis using an associative array with
+the regular expression as the key and a callback as the value.
 
 ```PHP
 $tokenStream = []; // [tokenName, lexeme] pairs
@@ -567,7 +658,9 @@ RFC: [Add preg_replace_callback_array Function](https://wiki.php.net/rfc/preg_re
 
 ### Loosening Reserved Word Restrictions
 
-Globally reserved words as property, constant, and method names within classes, interfaces, and traits are now allowed. This reduces the surface of BC breaks when new keywords are introduced and avoids naming restrictions on APIs.
+Globally reserved words as property, constant, and method names within classes,
+interfaces, and traits are now allowed. This reduces the surface of BC breaks
+when new keywords are introduced and avoids naming restrictions on APIs.
 
 This is particularly useful when creating internal DSLs with fluent interfaces:
 ```PHP
@@ -575,13 +668,18 @@ This is particularly useful when creating internal DSLs with fluent interfaces:
 Project::new('Project Name')->private()->for('purpose here')->with('username here');
 ```
 
-The only limitation is that the `class` keyword still cannot be used as a constant name, otherwise it would conflict with the class name resolution syntax of `ClassName::class`.
+The only limitation is that the `class` keyword still cannot be used as a
+constant name, otherwise it would conflict with the class name resolution
+syntax of `ClassName::class`.
 
 RFC: [Context Sensitive Lexer](https://wiki.php.net/rfc/context_sensitive_lexer)
 
 ### Uniform Variable Syntax
 
-This change brings far greater orthogonality to the variable operators in PHP. It enables for a number of new combinations of operators that were previously disallowed, and so introduces new ways to achieve old operations in terser code.
+This change brings far greater orthogonality to the variable operators in PHP.
+It enables for a number of new combinations of operators that were previously
+disallowed, and so introduces new ways to achieve old operations in terser
+code.
 
 ```PHP
 // nesting ::
@@ -597,7 +695,10 @@ foo()() // invoke the return of foo()
 'string'->toUpper(); // call the toUpper() method on the string 'string'
 ```
 
-The ability to arbitrarily combine variable operators came from reversing the evaluation semantics of indirect variable, property, and method references. The new behaviour is more intuitive and always following a left-to-right evaluation order:
+The ability to arbitrarily combine variable operators came from reversing the
+evaluation semantics of indirect variable, property, and method references. The
+new behaviour is more intuitive and always following a left-to-right evaluation
+order:
 
 ```PHP
                         // old meaning            // new meaning
@@ -608,13 +709,21 @@ Foo::$bar['baz']()      Foo::{$bar['baz']}()      (Foo::$bar)['baz']()
 ```
 
 **BC Breaks**
- - Code that relied upon the old evaluation order must be rewritten to explicity use that evaluation order with curly braces (see middle column of the above). This will make the code both forwards compatible with PHP 7.x and backwards compatible with PHP 5.x
+ - Code that relied upon the old evaluation order must be rewritten to
+   explicity use that evaluation order with curly braces (see middle column of
+the above). This will make the code both forwards compatible with PHP 7.x and
+backwards compatible with PHP 5.x
 
 RFC: [Uniform Variable Syntax](https://wiki.php.net/rfc/uniform_variable_syntax)
 
 ### Exceptions in the Engine
 
-Exceptions in the engine converts many fatal and recoverable fatal errors into exceptions. This enables for graceful degradation of applications through custom error handling procedures. It also means that cleanup-driven features such as the `finally` clause and object destructors will now be executed. Furthermore, by using exceptions for application errors, stack traces will be produced for additional debugging information.
+Exceptions in the engine converts many fatal and recoverable fatal errors into
+exceptions. This enables for graceful degradation of applications through
+custom error handling procedures. It also means that cleanup-driven features
+such as the `finally` clause and object destructors will now be executed.
+Furthermore, by using exceptions for application errors, stack traces will be
+produced for additional debugging information.
 
 ```PHP
 function sum(float ...$numbers) : float
@@ -640,17 +749,26 @@ interface Throwable
         |- AssertionError extends Error
 ```
 
-See the [Throwable Interface](#throwable-interface) subsection in the Changes section for more information on this new exception hierarchy.
+See the [Throwable Interface](#throwable-interface) subsection in the Changes
+section for more information on this new exception hierarchy.
 
 **BC Breaks**
- - Custom error handlers used for handling (and typically ignoring) recoverable fatal errors will not longer work since exceptions will now be thrown
- - Parse errors occuring in `eval()`ed code will now become exceptions, requiring them to be wrapped in a `try...catch` block
+ - Custom error handlers used for handling (and typically ignoring) recoverable
+   fatal errors will not longer work since exceptions will now be thrown
+ - Parse errors occuring in `eval()`ed code will now become exceptions,
+   requiring them to be wrapped in a `try...catch` block
 
 RFC: [Exceptions in the Engine](https://wiki.php.net/rfc/engine_exceptions_for_php7)
 
 ### Throwable Interface
 
-This change affects PHP's exception hierarchy due to the introduction of [exceptions in the engine](#exceptions-in-the-engine). Rather than placing fatal and recoverable fatal errors under the pre-existing `Exception` class hierarchy, [it was decided](https://wiki.php.net/rfc/engine_exceptions_for_php7#doodle__form__introduce_and_use_baseexception) to implement a new hierarchy of exceptions to prevent PHP 5.x code from catching these new exceptions with catch-all (`catch (Exception $e)`) clauses.
+This change affects PHP's exception hierarchy due to the introduction of
+[exceptions in the engine](#exceptions-in-the-engine). Rather than placing
+fatal and recoverable fatal errors under the pre-existing `Exception` class
+hierarchy, [it was
+decided](https://wiki.php.net/rfc/engine_exceptions_for_php7#doodle__form__introduce_and_use_baseexception)
+to implement a new hierarchy of exceptions to prevent PHP 5.x code from
+catching these new exceptions with catch-all (`catch (Exception $e)`) clauses.
 
 The new exception hierarchy is as follows:
 ```
@@ -663,7 +781,8 @@ interface Throwable
         |- AssertionError extends Error
 ```
 
-The `Throwable` interface is implemented by both `Exception` and `Error` base class hierarchies and defines the following contract:
+The `Throwable` interface is implemented by both `Exception` and `Error` base
+class hierarchies and defines the following contract:
 ```
 final public string getMessage ( void )
 final public mixed getCode ( void )
@@ -674,17 +793,22 @@ final public string getTraceAsString ( void )
 public string __toString ( void )
 ```
 
-`Throwable` cannot be implemented by user-defined classes - instead, a custom exception class should extend one of the pre-existing exceptions classes in PHP.
+`Throwable` cannot be implemented by user-defined classes - instead, a custom
+exception class should extend one of the pre-existing exceptions classes in
+PHP.
 
 RFC: [Throwable Interface](https://wiki.php.net/rfc/throwable-interface)
 
 ### Integer Semantics
 
-The semantics for some integer-based behaviour has changed in an effort to make them more intuitive and platform-independent. Here is a list of those changes:
+The semantics for some integer-based behaviour has changed in an effort to make
+them more intuitive and platform-independent. Here is a list of those changes:
  - Casting `NAN` and `INF` to an integer will always result in 0
- - Bitwise shifting by a negative number of bits is now disallowed (causes a bool(false) return an emits an E_WARNING)
+ - Bitwise shifting by a negative number of bits is now disallowed (causes a
+   bool(false) return an emits an E_WARNING)
  - Left bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0
- - Right bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0 or -1 (sign dependent)
+ - Right bitwise shifts by a number of bits beyond the bit width of an integer
+   will always result in 0 or -1 (sign dependent)
 
 **BC Breaks**
  - Any reliance on the old semantics for the above will no longer work
@@ -693,28 +817,46 @@ RFC: [Integer Semantics](https://wiki.php.net/rfc/integer_semantics)
 
 ### JSON Extension Replaced with JSOND
 
-The licensing of the old JSON extension was regarded as non-free, causing issues for many Linux-based distributions. The extension has since been replaced with JSOND and comes with some [performance gains](https://github.com/bukka/php-jsond-bench/blob/master/reports/0001/summary.md) and backward compatibility breakages.
+The licensing of the old JSON extension was regarded as non-free, causing
+issues for many Linux-based distributions. The extension has since been
+replaced with JSOND and comes with some [performance
+gains](https://github.com/bukka/php-jsond-bench/blob/master/reports/0001/summary.md)
+and backward compatibility breakages.
 
 **BC Breaks**
  - A number *must not* end in a decimal point (i.e. `34.` must be changed to either `34.0` or just `34`)
- - The `e` exponent *must not* immediately follow the decimal point (i.e. `3.e3` must be changed to either `3.0e3` or just `3e3`)
+ - The `e` exponent *must not* immediately follow the decimal point (i.e.
+   `3.e3` must be changed to either `3.0e3` or just `3e3`)
 
 RFC: [Replace current json extension with jsond](https://wiki.php.net/rfc/jsond)
 
 ### ZPP Failure on Overflow
 
-Coercion between floats to integers can occur when a float is passed to an internal function expecting an integer. If the float is too large to represent as an integer, then the value will be silently truncated (which may result in a loss of magnitude and sign). This can introduce hard-to-find bugs. This change therefore seeks to notify the developer when an implicit conversion from a float to an integer has occurred and failed by returning `null` and emitting an E_WARNING.
+Coercion between floats to integers can occur when a float is passed to an
+internal function expecting an integer. If the float is too large to represent
+as an integer, then the value will be silently truncated (which may result in a
+loss of magnitude and sign). This can introduce hard-to-find bugs. This change
+therefore seeks to notify the developer when an implicit conversion from a
+float to an integer has occurred and failed by returning `null` and emitting an
+E_WARNING.
 
 **BC Breaks**
- - Code that once silently worked will now emit an E_WARNING and may fail if the result of the function invocation is directly passed to another function (since `null` will now be passed in).
+ - Code that once silently worked will now emit an E_WARNING and may fail if
+   the result of the function invocation is directly passed to another function
+(since `null` will now be passed in).
 
 RFC: [ZPP Failure on Overflow](https://wiki.php.net/rfc/zpp_fail_on_overflow)
 
 ### Fixes to `foreach()`'s Behaviour
 
-PHP's `foreach()` loop had a number of strange edge-cases to it. These were all implementation-driven and caused a lot of undefined and inconsistent behaviour when iterating between copies and references of an array, when using iterator manipulators like `current()` and `reset()`, when modifying the array currently being iterated, and so on.
+PHP's `foreach()` loop had a number of strange edge-cases to it. These were all
+implementation-driven and caused a lot of undefined and inconsistent behaviour
+when iterating between copies and references of an array, when using iterator
+manipulators like `current()` and `reset()`, when modifying the array currently
+being iterated, and so on.
 
-This change eliminates the undefined behaviour of these edge-cases and makes the semantics more predictable and intuitive.
+This change eliminates the undefined behaviour of these edge-cases and makes
+the semantics more predictable and intuitive.
 
 `foreach()` by value on arrays
 ```PHP
@@ -728,7 +870,7 @@ foreach($array as $val) {
 
 // Pre PHP 7 result
 1 - 3
-3 - 
+3 -
 
 // PHP 7+ result
 1 - 1
@@ -736,7 +878,9 @@ foreach($array as $val) {
 3 - 1
 ```
 
-When by-value semantics are used, the array being iterated over is now not modified in-place. `current()` also now has defined behaviour, where it will always begin at the start of the array.
+When by-value semantics are used, the array being iterated over is now not
+modified in-place. `current()` also now has defined behaviour, where it will
+always begin at the start of the array.
 
 `foreach()` by reference on arrays and objects and by value on objects
 ```PHP
@@ -749,7 +893,7 @@ foreach($array as &$val) {
 // Pre PHP 7 result
 1 - 2
 2 - 3
-3 - 
+3 -
 
 // PHP 7+ result
 1 - 1
@@ -757,7 +901,9 @@ foreach($array as &$val) {
 3 - 1
 ```
 
-The `current()` function is no longer affected by `foreach()`'s iteration on the array. Also, nested `foreach()`'s using by-reference semantics work independently from each other now:
+The `current()` function is no longer affected by `foreach()`'s iteration on
+the array. Also, nested `foreach()`'s using by-reference semantics work
+independently from each other now:
 ```PHP
 $array = [1,2,3];
 
@@ -824,10 +970,10 @@ Also, empty `list()`'s are now a fatal error, and the order of assigning variabl
 ```PHP
 $a = [1, 2];
 list($a, $b) = $a;
- 
+
 // OLD: $a = 1, $b = 2
 // NEW: $a = 1, $b = null + "Undefined index 1"
- 
+
 $b = [1, 2];
 list($a, $b) = $b;
 
@@ -836,7 +982,9 @@ list($a, $b) = $b;
 ```
 
 **BC Breaks**
- - Making `list()` equal to any non-direct string value is no longer possible. `null` will now be the value for the variable `$a` and `$b` in the above examples
+ - Making `list()` equal to any non-direct string value is no longer possible.
+   `null` will now be the value for the variable `$a` and `$b` in the above
+examples
  - Invoking `list()` without any variables will cause a fatal error
  - Reliance upon the old right-to-left assignment order will no longer work
 
@@ -846,7 +994,11 @@ RFC: [Abstract syntax tree](https://wiki.php.net/rfc/abstract_syntax_tree)
 
 ### Fixes to Custom Session Handler Return Values
 
-When implementing custom session handlers, predicate functions from the `SessionHandlerInterface` that expect a `true` or `false` return value did not behave as expected. Due to an error in the previous implementation, only a `-1` return value was considered false - meaning that any even if the boolean `false` was used to denote a failure, it was taken as a success:
+When implementing custom session handlers, predicate functions from the
+`SessionHandlerInterface` that expect a `true` or `false` return value did not
+behave as expected. Due to an error in the previous implementation, only a `-1`
+return value was considered false - meaning that any even if the boolean
+`false` was used to denote a failure, it was taken as a success:
 ```PHP
 <?php
 
@@ -875,7 +1027,9 @@ session_set_save_handler(new FileSessionHandler());
 session_start(); // doesn't cause an error in pre PHP 7 code
 ```
 
-Now, the above will fail with a fatal error. Having a `-1` return value will also continue to fail, whilst `0` and `true` will continue to mean success. Any other value returned will now cause a failure and emit an E_WARNING.
+Now, the above will fail with a fatal error. Having a `-1` return value will
+also continue to fail, whilst `0` and `true` will continue to mean success. Any
+other value returned will now cause a failure and emit an E_WARNING.
 
 **BC Breaks**
  - If boolean `false` is returned, it will actually fail now
@@ -885,38 +1039,64 @@ RFC: [Fix handling of custom session handler return values](https://wiki.php.net
 
 ### Deprecation of PHP 4-Style Constructors
 
-PHP 4 constructors were preserved in PHP 5 alongside the new `__construct()`. Now, PHP 4-style constructors are being deprecated in favour of having only a single method (`__construct()`) to be invoked on object creation. This is because the conditions upon whether the PHP 4-style constructor was invoked caused additional cognitive overhead to developers that could also be confusing to the inexperienced.
+PHP 4 constructors were preserved in PHP 5 alongside the new `__construct()`.
+Now, PHP 4-style constructors are being deprecated in favour of having only a
+single method (`__construct()`) to be invoked on object creation. This is
+because the conditions upon whether the PHP 4-style constructor was invoked
+caused additional cognitive overhead to developers that could also be confusing
+to the inexperienced.
 
-For example, if the class is defined within a namespace or if an `__construct()` method existed, then a PHP 4-style constructor was recognised as a plain method. If it was defined above an `__construct()` method, then an E_STRICT notice would be emitted, but still recognised as a plain method.
+For example, if the class is defined within a namespace or if an
+`__construct()` method existed, then a PHP 4-style constructor was recognised
+as a plain method. If it was defined above an `__construct()` method, then an
+E_STRICT notice would be emitted, but still recognised as a plain method.
 
-Now in PHP 7, if the class is not in a namespace and there is no `__construct()` method present, the PHP 4-style constructor will be used as a constructor but an E_DEPRECATED will be emitted. In PHP 8, the PHP 4-style constructor will always be recognised as a plain method and the E_DEPRECATED notice will disappear.
+Now in PHP 7, if the class is not in a namespace and there is no
+`__construct()` method present, the PHP 4-style constructor will be used as a
+constructor but an E_DEPRECATED will be emitted. In PHP 8, the PHP 4-style
+constructor will always be recognised as a plain method and the E_DEPRECATED
+notice will disappear.
 
 **BC Breaks**
- - Custom error handlers may be affected by the raising of E_DEPRECATED warnings. To fix this, simply update the class constructor name to `__construct`.
+ - Custom error handlers may be affected by the raising of E_DEPRECATED
+   warnings. To fix this, simply update the class constructor name to
+`__construct`.
 
 RFC: [Remove PHP 4 Constructors](https://wiki.php.net/rfc/remove_php4_constructors)
 
 ### Removal of date.timezone Warning
 
-When any date- or time-based functions were invoked and a default timezone had not been set, a warning was emitted. The fix was to simply set the `date.timezone` INI setting to a valid timezone, but this forced users to have a php.ini file and to configure it beforehand. Since this was the only setting that had a warning attached to it, and it defaulted to UTC anyway, the warning has now been removed.
+When any date- or time-based functions were invoked and a default timezone had
+not been set, a warning was emitted. The fix was to simply set the
+`date.timezone` INI setting to a valid timezone, but this forced users to have
+a php.ini file and to configure it beforehand. Since this was the only setting
+that had a warning attached to it, and it defaulted to UTC anyway, the warning
+has now been removed.
 
 RFC: [Remove the date.timezone warning](https://wiki.php.net/rfc/date.timezone_warning_removal)
 
 ### Removal of Alternative PHP Tags
 
-The alternative PHP tags `<%` (and `<%=`), `%>`, `<script language="php">`, and `</script>` have now been removed.
+The alternative PHP tags `<%` (and `<%=`), `%>`, `<script language="php">`, and
+`</script>` have now been removed.
 
 **BC Breaks**
- - If your code relied upon these alternative tags, then they need to be updated to either the normal or short opening and closing tags. This can either be done manually or automated with [this porting script](https://gist.github.com/nikic/74769d74dad8b9ef221b).
+ - If your code relied upon these alternative tags, then they need to be
+   updated to either the normal or short opening and closing tags. This can
+either be done manually or automated with [this porting
+script](https://gist.github.com/nikic/74769d74dad8b9ef221b).
 
 RFC: [Remove alternative PHP tags](https://wiki.php.net/rfc/remove_alternative_php_tags)
 
 ### Removal of Multiple Default Blocks in Switch Statements
 
-Previously, it was possible to specify multiple `default` block statements within a switch statement (where the last `default` block was only executed). This (useless) ability has now been removed and causes a fatal error.
+Previously, it was possible to specify multiple `default` block statements
+within a switch statement (where the last `default` block was only executed).
+This (useless) ability has now been removed and causes a fatal error.
 
 **BC Breaks**
- - Any code written (or more likely generated) that created switch statements with multiple `default` blocks will now become a fatal error.
+ - Any code written (or more likely generated) that created switch statements
+   with multiple `default` blocks will now become a fatal error.
 
 RFC: [Make defining multiple default cases in a switch a syntax error](https://wiki.php.net/rfc/switch.default.multiple)
 
@@ -964,7 +1144,9 @@ bool(false)
 0
 ```
 
-The reason for this change is to promote better consistency between the handling of stringy hex numbers across the language. For example, explicit casts do not recognise stringy hex numbers:
+The reason for this change is to promote better consistency between the
+handling of stringy hex numbers across the language. For example, explicit
+casts do not recognise stringy hex numbers:
 ```PHP
 var_dump((int) '0x123'); // int(0)
 ```
@@ -985,7 +1167,9 @@ All Deprecated functionality has been removed, most notably:
  - The original mysql extension (ext/mysql)
  - The ereg extension (ext/ereg)
  - Assigning `new` by reference
- - Scoped calls of non-static methods from an incompatible `$this` context (such as `Foo::bar()` from outside a class, where `bar()` is not a static method)
+ - Scoped calls of non-static methods from an incompatible `$this` context
+   (such as `Foo::bar()` from outside a class, where `bar()` is not a static
+method)
 
 **BC Breaks**
  - Any code that ran with deprecation warnings in PHP 5 will no longer work (you were warned!)
@@ -994,16 +1178,26 @@ RFC: [Remove deprecated functionality in PHP 7](https://wiki.php.net/rfc/remove_
 
 ### Reclassification and Removal of E_STRICT Notices
 
-E_STRICT notices have always been a bit of a grey area in their meaning. This changes removes this error category altogether and either: removes the E_STRICT notice, changes it to an E_DEPRECATED if the functionality will be removed in future, changes it to an E_NOTICE, or promotes it to an E_WARNING.
+E_STRICT notices have always been a bit of a grey area in their meaning. This
+changes removes this error category altogether and either: removes the E_STRICT
+notice, changes it to an E_DEPRECATED if the functionality will be removed in
+future, changes it to an E_NOTICE, or promotes it to an E_WARNING.
 
 **BC BREAKS**
- - Because E_STRICT is in the lowest severity error category, any error promotions to an E_WARNING may break custom error handlers.
+ - Because E_STRICT is in the lowest severity error category, any error
+   promotions to an E_WARNING may break custom error handlers.
 
 RFC: [Reclassify E_STRICT notices](https://wiki.php.net/rfc/reclassify_e_strict)
 
 ### Deprecation of Salt Option for `password_hash()`
 
-With the introduction of the new password hashing API in PHP 5.5, many began implementing it and generating their own salts. Unfortunately, many of these salts were generated from cryptographically insecure functions like mt_rand(), making the salt far weaker than what would have been generated by default. (Yes, a salt is always when hashing passwords with this new API!) The option to generate salts have therefore been deprecated to prevent developers from creating insecure salts.
+With the introduction of the new password hashing API in PHP 5.5, many began
+implementing it and generating their own salts. Unfortunately, many of these
+salts were generated from cryptographically insecure functions like mt_rand(),
+making the salt far weaker than what would have been generated by default.
+(Yes, a salt is always used when hashing passwords with this new API!) The option to
+generate salts have therefore been deprecated to prevent developers from
+creating insecure salts.
 
 RFC: no RFC available
 
@@ -1011,8 +1205,18 @@ RFC: no RFC available
 
 ### What happened to PHP 6?
 
-PHP 6 was the major PHP version that never came to light. It was supposed to feature full support for Unicode in the core, but this effort was too ambitious with too many complications arising. The predominant reasons why version 6 was skipped for this new major version is as follows:
- - **To prevent confusion**. Many resources were written about PHP 6 and much of the community knew what was featured in it. PHP 7 is a completely different beast with entirely different focusses (specifically on performance) and entirely different feature sets. Thus, a version has been skipped to prevent any confusion or misconceptions surrounding what PHP 7 is.
- - **To let sleeping dogs lie**. PHP 6 was seen as a failure and a large amount of PHP 6 code still remains in the PHP repository. It was therefore seen as best to move past version 6 and start afresh on the next major version, version 7.
+PHP 6 was the major PHP version that never came to light. It was supposed to
+feature full support for Unicode in the core, but this effort was too ambitious
+with too many complications arising. The predominant reasons why version 6 was
+skipped for this new major version is as follows:
+ - **To prevent confusion**. Many resources were written about PHP 6 and much
+   of the community knew what was featured in it. PHP 7 is a completely
+different beast with entirely different focusses (specifically on performance)
+and entirely different feature sets. Thus, a version has been skipped to
+prevent any confusion or misconceptions surrounding what PHP 7 is.
+ - **To let sleeping dogs lie**. PHP 6 was seen as a failure and a large amount
+   of PHP 6 code still remains in the PHP repository. It was therefore seen as
+best to move past version 6 and start afresh on the next major version, version
+7.
 
 RFC: [Name of Next Release of PHP](https://wiki.php.net/rfc/php6)
