@@ -528,7 +528,7 @@ Generator delegation builds upon the ability of being able to return
 expressions from generators. It does this by using an new syntax of `yield from
 <expr>`, where <expr> can be any `Traversable` object or array. This <expr>
 will be advanced until no longer valid, and then execution will continue in the
-calling generator. This feature enables `yield` statemets to be broken down
+calling generator. This feature enables `yield` statements to be broken down
 into smaller operations, thereby promoting cleaner code that has greater
 reusability.
 
@@ -720,7 +720,7 @@ Foo::$bar['baz']()      Foo::{$bar['baz']}()      (Foo::$bar)['baz']()
 
 **BC Breaks**
  - Code that relied upon the old evaluation order must be rewritten to
-   explicity use that evaluation order with curly braces (see middle column of
+   explicitly use that evaluation order with curly braces (see middle column of
 the above). This will make the code both forwards compatible with PHP 7.x and
 backwards compatible with PHP 5.x
 
@@ -765,7 +765,7 @@ section for more information on this new exception hierarchy.
 **BC Breaks**
  - Custom error handlers used for handling (and typically ignoring) recoverable
    fatal errors will not longer work since exceptions will now be thrown
- - Parse errors occuring in `eval()`ed code will now become exceptions,
+ - Parse errors occurring in `eval()`ed code will now become exceptions,
    requiring them to be wrapped in a `try...catch` block
 
 RFC: [Exceptions in the Engine](https://wiki.php.net/rfc/engine_exceptions_for_php7)
