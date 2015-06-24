@@ -55,7 +55,7 @@ it provides to applications. This is a result of refactoring the Zend Engine to
 use more compact data structures and less heap allocations/deallocations.
 
 The performance gains on real world applications will vary, though many
-applications seem to recieve a ~100% performance boost - with lower memory
+applications seem to receive a ~100% performance boost - with lower memory
 consumption too!
 
 The refactored codebase provides further opportunities for future optimisations
