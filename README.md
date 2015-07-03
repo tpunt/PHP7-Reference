@@ -34,6 +34,7 @@ compatibility breakages that are outlined below.
 * [ZPP Failure on Overflow](#zpp-failure-on-overflow)
 * [Fixes to `foreach()`'s Behaviour](#fixes-to-foreachs-behaviour)
 * [Changes to `list()`'s Behaviour](#changes-to-lists-behaviour)
+* [Changes to Division by Zero Semantics](#changes-to-division-by-zero-semantics)
 * [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
 * [Deprecation of PHP 4-Style Constructors](#deprecation-of-php-4-style-constructors)
 * [Removal of date.timezone Warning](#removal-of-datetimezone-warning)
@@ -1001,6 +1002,35 @@ examples
 RFC: [Fix list() behavior inconsistency](https://wiki.php.net/rfc/fix_list_behavior_inconsistency)
 
 RFC: [Abstract syntax tree](https://wiki.php.net/rfc/abstract_syntax_tree)
+
+### Changes to Division by Zero Semantics
+
+Prior to PHP 7, when a divisor was 0 for either the divide (/) or modulus (%) operators,
+an E_WARNING would be emitted and `false` would be returned. This was nonsensical for
+an arithmetic operation to return a boolean in some cases, and so the behaviour has been
+rectified in PHP 7.
+
+The new behaviour removes both of the E_WARNINGs and causes the divide operator to return a
+float as either +INF, -INF, or NAN. The modulus operator (alongside the new `intdiv()`
+function) will throw a `DivisionByZeroError` exception. In addition, the `intdiv()`
+function may also throw an `ArithmeticError` when valid integer arguments are supplied
+that cause an incorrect result (due to integer overflow).
+
+```PHP
+var_dump(3/0); // float(INF)
+var_dump(0/0); // float(NAN)
+
+var_dump(0%0); // DivisionByZeroError
+
+intdiv(PHP_INT_MIN, -1); // ArithmeticError
+```
+
+**BC Breaks**
+ - The divide operator will no longer return `false` (which could have been silently coerced
+ to 0 in an arithmetic operation)
+ - The modulus operator will now throw an exception with a 0 divisor instead of returning `false`
+
+RFC: No RFC available
 
 ### Fixes to Custom Session Handler Return Values
 
