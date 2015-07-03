@@ -758,6 +758,8 @@ interface Throwable
         |- TypeError extends Error
         |- ParseError extends Error
         |- AssertionError extends Error
+        |- ArithmeticError extends Error
+            |- DivisionByZeroError extends ArithmeticError
 ```
 
 See the [Throwable Interface](#throwable-interface) subsection in the Changes
@@ -790,6 +792,8 @@ interface Throwable
         |- TypeError extends Error
         |- ParseError extends Error
         |- AssertionError extends Error
+        |- ArithmeticError extends Error
+            |- DivisionByZeroError extends ArithmeticError
 ```
 
 The `Throwable` interface is implemented by both `Exception` and `Error` base
