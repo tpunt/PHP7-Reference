@@ -1014,15 +1014,15 @@ an E_WARNING would be emitted and `false` would be returned. This was nonsensica
 an arithmetic operation to return a boolean in some cases, and so the behaviour has been
 rectified in PHP 7.
 
-The new behaviour removes both of the E_WARNINGs and causes the divide operator to return a
-float as either +INF, -INF, or NAN. The modulus operator (alongside the new `intdiv()`
+The new behaviour causes the divide operator to return a float as either +INF, -INF, or
+NAN. The modulus operator E_WARNING has been removed and (alongside the new `intdiv()`
 function) will throw a `DivisionByZeroError` exception. In addition, the `intdiv()`
 function may also throw an `ArithmeticError` when valid integer arguments are supplied
 that cause an incorrect result (due to integer overflow).
 
 ```PHP
-var_dump(3/0); // float(INF)
-var_dump(0/0); // float(NAN)
+var_dump(3/0); // float(INF) + E_WARNING
+var_dump(0/0); // float(NAN) + E_WARNING
 
 var_dump(0%0); // DivisionByZeroError
 
