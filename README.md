@@ -24,6 +24,7 @@ compatibility breakages that are outlined below.
 * [`session_start()` Options](#session_start-options)
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
 * [CSPRNG Functions](#csprng-functions)
+* [Support for Array Constants in `define()`](#support-for-array-constants-in-define)
 
 **[Changes](#changes)**
 * [Loosening Reserved Word Restrictions](#loosening-reserved-word-restrictions)
@@ -684,6 +685,16 @@ int random_int(int min, int max);
  - Functions in the global namespace must not be called `random_int` or `random_bytes`.
 
 RFC: [Easy User-land CSPRNG](https://wiki.php.net/rfc/easy_userland_csprng)
+
+### Support for Array Constants in `define()`
+
+The ability to define array constants was introduced in PHP 5.6 using the `const` keyword. This ability has now been applied to the `define()` function too:
+
+```PHP
+define('ALLOWED_IMAGE_EXTENSIONS', ['jpg', 'jpeg', 'gif', 'png']);
+```
+
+RFC: No RFC available
 
 ## Changes
 
