@@ -23,6 +23,7 @@ compatibility breakages that are outlined below.
 * [Integer Division with `intdiv()`](#integer-division-with-intdiv)
 * [`session_start()` Options](#session_start-options)
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
+* [CSPRNG Functions](#csprng-functions)
 
 **[Changes](#changes)**
 * [Loosening Reserved Word Restrictions](#loosening-reserved-word-restrictions)
@@ -666,6 +667,23 @@ preg_replace_callback_array(
  - Functions in the global namespace must not be called `preg_replace_callback_array`.
 
 RFC: [Add preg_replace_callback_array Function](https://wiki.php.net/rfc/preg_replace_callback_array)
+
+### CSPRNG Functions
+
+This feature introduces two new functions for generating cryptographically
+secure integers and strings. They expose simple APIs and are
+platform-independent.
+
+Function signatures:
+```
+string random_bytes(int length);
+int random_int(int min, int max);
+```
+
+**BC Breaks**
+ - Functions in the global namespace must not be called `random_int` or `random_bytes`.
+
+RFC: [Easy User-land CSPRNG](https://wiki.php.net/rfc/easy_userland_csprng)
 
 ## Changes
 
