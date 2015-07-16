@@ -439,11 +439,11 @@ can either be a plain string (causing an AssertionException to be triggered),
 or a custom exception object containing an error message.
 
 ```PHP
-ini_set("assert.exception", 1);
+ini_set('assert.exception', 1);
 
-class CustomError extends AssertionException {}
+class CustomError extends AssertionError {}
 
-assert(false, new CustomError("Some error message"));
+assert(false, new CustomError('Some error message'));
 ```
 
 With this feature comes two PHP.ini settings (along with their default values):
