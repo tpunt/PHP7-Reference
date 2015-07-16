@@ -140,9 +140,10 @@ parameters, but also a function's return type (see [Return Type
 Declarations](#return-type-declarations)), built-in PHP functions, and
 functions from loaded extensions.
 
-If the type-check fails, then an `E_RECOVERABLE_ERROR` is produced. The only
-leniency present in strict typing is the automatic conversion of integers to
-floats (but not vice-versa) when an integer is provided in a float context.
+If the type-check fails, then a `TypeError` exception (see [Exceptions in the
+Engine](#exceptions-in-the-engine)) is thrown. The only leniency present in
+strict typing is the automatic conversion of integers to floats (but not
+vice-versa) when an integer is provided in a float context.
 
 ```PHP
 declare(strict_types=1);
@@ -246,9 +247,10 @@ class B implements SomeInterface
 }
 ```
 
-This time, the implemented method causes an `E_RECOVERABLE_ERROR` when executed
-because `null` is not a valid return type - only an instance of the class `A`
-can be returned.
+This time, the implemented method causes a `TypeError` exception (see
+[Exceptions in the Engine](#exceptions-in-the-engine)) to be thrown when
+executed. This is because `null` is not a valid return type - only an instance of the
+class `A` can be returned.
 
 RFC: [Return Type Declarations](https://wiki.php.net/rfc/return_types)
 
