@@ -161,7 +161,7 @@ function add(int $x, int $y)
 }
 
 var_dump(multiply(2, 3.5)); // float(7)
-var_dump(add('2', 3)); // Fatal error: Argument 1 passed to add() must be of the type integer, string given...
+var_dump(add('2', 3)); // Fatal error: Uncaught TypeError: Argument 1 passed to add() must be of the type integer, string given...
 ```
 
 Note that **only** the *invocation context* applies when the type-checking is
@@ -244,7 +244,7 @@ class B implements SomeInterface
 {
     public function test() : A // all good!
     {
-        return null; // not good!
+        return null; // Fatal error: Uncaught TypeError: Return value of B::test() must be an instance of A, null returned...
     }
 }
 ```
@@ -601,13 +601,19 @@ RFC: [Introduce session_start() Options](https://wiki.php.net/rfc/session-lock-i
 
 ### `preg_replace_callback_array()` Function
 
-This new function addition enables for code to be written more cleanly when
-using the `preg_replace_callback()` function. Prior to PHP 7, callbacks that
-needed to be executed per regular expression match required the callback
-function (second parameter of `preg_replace_callback()`) to be polluted with
-lots of branching (a hacky method at best). But now, callbacks can be
-registered on a per-regular expression basis using an associative array with
-the regular expression as the key and a callback as the value.
+This new function enables code to be written more cleanly when using the
+`preg_replace_callback()` function. Prior to PHP 7, callbacks that needed to be
+executed per regular expression required the callback function (second
+parameter of `preg_replace_callback()`) to be polluted with lots of branching
+(a hacky method at best).
+
+Now, callbacks can be registered to each regular expression using an associative
+array, where the key is a regular expression and the value is a callback.
+
+Function Signature:
+```
+string preg_replace_callback_array(array $regexesAndCallbacks, string $input);
+```
 
 ```PHP
 $tokenStream = []; // [tokenName, lexeme] pairs
@@ -681,6 +687,9 @@ string random_bytes(int length);
 int random_int(int min, int max);
 ```
 
+Both functions will emit an `E_WARNING` and return `false` if a source of
+sufficient randomness cannot be found.
+
 **BC Breaks**
  - Functions in the global namespace must not be called `random_int` or `random_bytes`.
 
@@ -694,7 +703,7 @@ The ability to define array constants was introduced in PHP 5.6 using the `const
 define('ALLOWED_IMAGE_EXTENSIONS', ['jpg', 'jpeg', 'gif', 'png']);
 ```
 
-RFC: No RFC available
+RFC: no RFC available
 
 ## Changes
 
@@ -1283,7 +1292,7 @@ RFC: no RFC available
 PHP 6 was the major PHP version that never came to light. It was supposed to
 feature full support for Unicode in the core, but this effort was too ambitious
 with too many complications arising. The predominant reasons why version 6 was
-skipped for this new major version is as follows:
+skipped for this new major version are as follows:
  - **To prevent confusion**. Many resources were written about PHP 6 and much
    of the community knew what was featured in it. PHP 7 is a completely
 different beast with entirely different focusses (specifically on performance)
