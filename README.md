@@ -25,6 +25,7 @@ compatibility breakages that are outlined below.
 * [`preg_replace_callback_array()` Function](#preg_replace_callback_array-function)
 * [CSPRNG Functions](#csprng-functions)
 * [Support for Array Constants in `define()`](#support-for-array-constants-in-define)
+* [Reflection Additions](#reflection-additions)
 
 **[Changes](#changes)**
 * [Loosening Reserved Word Restrictions](#loosening-reserved-word-restrictions)
@@ -697,11 +698,69 @@ RFC: [Easy User-land CSPRNG](https://wiki.php.net/rfc/easy_userland_csprng)
 
 ### Support for Array Constants in `define()`
 
-The ability to define array constants was introduced in PHP 5.6 using the `const` keyword. This ability has now been applied to the `define()` function too:
+The ability to define array constants was introduced in PHP 5.6 using the
+`const` keyword. This ability has now been applied to the `define()` function
+too:
 
 ```PHP
 define('ALLOWED_IMAGE_EXTENSIONS', ['jpg', 'jpeg', 'gif', 'png']);
 ```
+
+RFC: no RFC available
+
+### Reflection Additions
+
+Two new reflection classes have been introduced in PHP 7. The first is
+`ReflectionGenerator`, which is used for introspection on generators:
+
+```PHP
+class ReflectionGenerator
+{
+    public ReflectionGenerator::__construct(Generator $gen)
+    public array ReflectionGenerator::getTrace($options = DEBUG_BACKTRACE_PROVIDE_OBJECT)
+    public int ReflectionGenerator::getExecutingLine(void)
+    public string ReflectionGenerator::getExecutingFile(void)
+    public ReflectionFunctionAbstract ReflectionGenerator::getFunction(void)
+    public Object ReflectionGenerator::getThis(void)
+    public Generator ReflectionGenerator::getExecutingGenerator(void)
+}
+```
+
+The second is `ReflectionType` to better support the scalar and return type
+declaration features:
+
+```PHP
+class ReflectionType
+{
+    public bool ReflectionType::allowsNull(void)
+    public bool ReflectionType::isBuiltin(void)
+    public string ReflectionType::__toString(void)
+}
+```
+
+Also, two new methods have been introduced into `ReflectionParameter`:
+```PHP
+class ReflectionParameter
+{
+    // ...
+    public bool ReflectionParameter::hasType(void)
+    public ReflectionType ReflectionParameter::getType(void)
+}
+```
+
+As well as two new methods in `ReflectionFunctionAbstract`:
+```PHP
+class ReflectionFunctionAbstract
+{
+    // ...
+    public bool ReflectionFunctionAbstract::hasReturnType(void)
+    public ReflectionType ReflectionFunctionAbstract::getReturnType(void)
+}
+```
+
+**BC Breaks**
+ - Classes in the global namespace must not be called `ReflectionGenerator` or
+   `ReflectionType`.
 
 RFC: no RFC available
 
