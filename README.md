@@ -177,10 +177,10 @@ will apply.
 RFC: [Scalar Type Declarations](https://wiki.php.net/rfc/scalar_type_hints_v5)
 
 ### Return Type Declarations
-Return type declarations enable you to specify the return type of a function,
-method, or closure. The following return types are supported: `string`, `int`,
-`float`, `bool`, `array`, `callable`, `self` (methods only), `parent` (methods
-only), `Closure`, the name of a class, and the name of an interface.
+Return type declarations enable for the return type of a function, method, or
+closure to be specified. The following return types are supported: `string`,
+`int`, `float`, `bool`, `array`, `callable`, `self` (methods only), `parent`
+(methods only), `Closure`, the name of a class, and the name of an interface.
 
 ```PHP
 function arraysSum(array ...$arrays): array
@@ -350,7 +350,7 @@ RFC: [Anonymous Classes](https://wiki.php.net/rfc/anonymous_classes)
 
 ### Unicode Codepoint Escape Syntax
 
-This enables you to output a UTF-8 encoded unicode codepoint in either a
+This enables a UTF-8 encoded unicode codepoint to be output in either a
 double-quoted string or a heredoc. Any valid codepoint is accepted, with
 leading `0`'s being optional.
 
@@ -415,7 +415,7 @@ echo IntlChar::charName('@'); // COMMERCIAL AT
 var_dump(IntlChar::ispunct('!')); // bool(true)
 ```
 
-In order to use this class, you will need the `Intl` extension installed.
+In order to use this class, the `Intl` extension must be installed.
 
 **BC Breaks**
  - Classes in the global namespace must not be called `IntlChar`.
@@ -721,7 +721,7 @@ Project::new('Project Name')->private()->for('purpose here')->with('username her
 
 The only limitation is that the `class` keyword still cannot be used as a
 constant name, otherwise it would conflict with the class name resolution
-syntax of `ClassName::class`.
+syntax (`ClassName::class`).
 
 RFC: [Context Sensitive Lexer](https://wiki.php.net/rfc/context_sensitive_lexer)
 
@@ -748,7 +748,7 @@ foo()() // invoke the return of foo()
 
 The ability to arbitrarily combine variable operators came from reversing the
 evaluation semantics of indirect variable, property, and method references. The
-new behaviour is more intuitive and always following a left-to-right evaluation
+new behaviour is more intuitive and always follows a left-to-right evaluation
 order:
 
 ```PHP
@@ -1165,10 +1165,9 @@ The alternative PHP tags `<%` (and `<%=`), `%>`, `<script language="php">`, and
 `</script>` have now been removed.
 
 **BC Breaks**
- - If your code relied upon these alternative tags, then they need to be
-   updated to either the normal or short opening and closing tags. This can
-either be done manually or automated with [this porting
-script](https://gist.github.com/nikic/74769d74dad8b9ef221b).
+ - Code that relied upon these alternative tags needs to be updated to either
+   the normal or short opening and closing tags. This can either be done
+   manually or automated with [this porting script](https://gist.github.com/nikic/74769d74dad8b9ef221b).
 
 RFC: [Remove alternative PHP tags](https://wiki.php.net/rfc/remove_alternative_php_tags)
 
