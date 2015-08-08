@@ -48,6 +48,7 @@ compatibility breakages that are outlined below.
 * [Removal of Deprecated Functionality](#removal-of-deprecated-functionality)
 * [Reclassification and Removal of E_STRICT Notices](#reclassification-and-removal-of-e_strict-notices)
 * [Deprecation of Salt Option for `password_hash()`](#deprecation-of-salt-option-for-password_hash)
+* [Error on Invalid Octal Literals](#error-on-invalid-octal-literals)
 
 **[FAQ](#faq)**
  * [What happened to PHP 6?](#what-happened-to-php-6)
@@ -800,9 +801,6 @@ foo()() // invoke the return of foo()
 
 // operators on expressions enclosed in ()
 (function () {})() // IIFE syntax from JS
-
-// operator support on dereferencable scalars
-'string'->toUpper(); // call the toUpper() method on the string 'string'
 ```
 
 The ability to arbitrarily combine variable operators came from reversing the
@@ -898,13 +896,16 @@ interface Throwable
 The `Throwable` interface is implemented by both `Exception` and `Error` base
 class hierarchies and defines the following contract:
 ```
-final public string getMessage ( void )
-final public mixed getCode ( void )
-final public string getFile ( void )
-final public int getLine ( void )
-final public array getTrace ( void )
-final public string getTraceAsString ( void )
-public string __toString ( void )
+interface Throwable
+{
+    final public string getMessage ( void )
+    final public mixed getCode ( void )
+    final public string getFile ( void )
+    final public int getLine ( void )
+    final public array getTrace ( void )
+    final public string getTraceAsString ( void )
+    public string __toString ( void )
+}
 ```
 
 `Throwable` cannot be implemented by user-defined classes - instead, a custom
@@ -1325,9 +1326,9 @@ changes removes this error category altogether and either: removes the E_STRICT
 notice, changes it to an E_DEPRECATED if the functionality will be removed in
 future, changes it to an E_NOTICE, or promotes it to an E_WARNING.
 
-**BC BREAKS**
+**BC Breaks**
  - Because E_STRICT is in the lowest severity error category, any error
-   promotions to an E_WARNING may break custom error handlers.
+   promotions to an E_WARNING may break custom error handlers
 
 RFC: [Reclassify E_STRICT notices](https://wiki.php.net/rfc/reclassify_e_strict)
 
@@ -1342,6 +1343,18 @@ generate salts have therefore been deprecated to prevent developers from
 creating insecure salts.
 
 RFC: no RFC available
+
+### Error on Invalid Octal Literals
+
+Invalid octal literals will now cause a parse error rather than being
+truncated and silently ignored.
+
+```PHP
+echo 0678; // Parse error:  Invalid numeric literal in...
+```
+
+**BC Breaks**
+ - Any invalid octal literals in code will now cause parse errors
 
 ## FAQ
 
