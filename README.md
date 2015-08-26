@@ -437,7 +437,7 @@ void assert (mixed $expression [, mixed $message]);
 
 As with the old API, if `$expression` is a string, then it will be evaluated.
 If the first argument is falsy, then the assertion fails. The second argument
-can either be a plain string (causing an AssertionException to be triggered),
+can either be a plain string (causing an AssertionError to be triggered),
 or a custom exception object containing an error message.
 
 ```PHP
@@ -692,6 +692,9 @@ int random_int(int min, int max);
 Both functions will emit an `E_WARNING` and return `false` if a source of
 sufficient randomness cannot be found.
 
+Sidenote: this behaviour on error is most likely to change soon so that both
+functions throw an exception, since it currently poses a security problem.
+
 **BC Breaks**
  - Functions in the global namespace must not be called `random_int` or `random_bytes`.
 
@@ -717,13 +720,13 @@ Two new reflection classes have been introduced in PHP 7. The first is
 ```PHP
 class ReflectionGenerator
 {
-    public ReflectionGenerator::__construct(Generator $gen)
-    public array ReflectionGenerator::getTrace($options = DEBUG_BACKTRACE_PROVIDE_OBJECT)
-    public int ReflectionGenerator::getExecutingLine(void)
-    public string ReflectionGenerator::getExecutingFile(void)
-    public ReflectionFunctionAbstract ReflectionGenerator::getFunction(void)
-    public Object ReflectionGenerator::getThis(void)
-    public Generator ReflectionGenerator::getExecutingGenerator(void)
+    public __construct(Generator $gen)
+    public array getTrace($options = DEBUG_BACKTRACE_PROVIDE_OBJECT)
+    public int getExecutingLine(void)
+    public string getExecutingFile(void)
+    public ReflectionFunctionAbstract getFunction(void)
+    public Object getThis(void)
+    public Generator getExecutingGenerator(void)
 }
 ```
 
@@ -733,9 +736,9 @@ declaration features:
 ```PHP
 class ReflectionType
 {
-    public bool ReflectionType::allowsNull(void)
-    public bool ReflectionType::isBuiltin(void)
-    public string ReflectionType::__toString(void)
+    public bool allowsNull(void)
+    public bool isBuiltin(void)
+    public string __toString(void)
 }
 ```
 
@@ -744,8 +747,8 @@ Also, two new methods have been introduced into `ReflectionParameter`:
 class ReflectionParameter
 {
     // ...
-    public bool ReflectionParameter::hasType(void)
-    public ReflectionType ReflectionParameter::getType(void)
+    public bool hasType(void)
+    public ReflectionType getType(void)
 }
 ```
 
@@ -754,8 +757,8 @@ As well as two new methods in `ReflectionFunctionAbstract`:
 class ReflectionFunctionAbstract
 {
     // ...
-    public bool ReflectionFunctionAbstract::hasReturnType(void)
-    public ReflectionType ReflectionFunctionAbstract::getReturnType(void)
+    public bool hasReturnType(void)
+    public ReflectionType getReturnType(void)
 }
 ```
 
@@ -1355,6 +1358,8 @@ echo 0678; // Parse error:  Invalid numeric literal in...
 
 **BC Breaks**
  - Any invalid octal literals in code will now cause parse errors
+
+RFC: no RFC available
 
 ## FAQ
 
