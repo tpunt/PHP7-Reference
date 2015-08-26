@@ -1366,7 +1366,7 @@ with too many complications arising. The predominant reasons why version 6 was
 skipped for this new major version are as follows:
  - **To prevent confusion**. Many resources were written about PHP 6 and much
    of the community knew what was featured in it. PHP 7 is a completely
-different beast with entirely different focusses (specifically on performance)
+different beast with entirely different focuses (specifically on performance)
 and entirely different feature sets. Thus, a version has been skipped to
 prevent any confusion or misconceptions surrounding what PHP 7 is.
  - **To let sleeping dogs lie**. PHP 6 was seen as a failure and a large amount
