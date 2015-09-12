@@ -689,11 +689,8 @@ string random_bytes(int length);
 int random_int(int min, int max);
 ```
 
-Both functions will emit an `E_WARNING` and return `false` if a source of
-sufficient randomness cannot be found.
-
-Sidenote: this behaviour on error is most likely to change soon so that both
-functions throw an exception, since it currently poses a security problem.
+Both functions will emit an `Error` exception if a source of sufficient
+randomness cannot be found.
 
 **BC Breaks**
  - Functions in the global namespace must not be called `random_int` or `random_bytes`.
