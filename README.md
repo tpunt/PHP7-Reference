@@ -43,6 +43,7 @@ compatibility breakages that are outlined below.
 * [Removal of date.timezone Warning](#removal-of-datetimezone-warning)
 * [Removal of Alternative PHP Tags](#removal-of-alternative-php-tags)
 * [Removal of Multiple Default Blocks in Switch Statements](#removal-of-multiple-default-blocks-in-switch-statements)
+* [Removal of Redefinition of Parameters with Duplicate Names](#removal-of-redefinition-of-parameters-with-duplicate-names)
 * [Removal of Dead Server APIs](#removal-of-dead-server-apis)
 * [Removal of Hex Support in Numerical Strings](#removal-of-hex-support-in-numerical-strings)
 * [Removal of Deprecated Functionality](#removal-of-deprecated-functionality)
@@ -1242,6 +1243,29 @@ This (useless) ability has now been removed and causes a fatal error.
    with multiple `default` blocks will now become a fatal error.
 
 RFC: [Make defining multiple default cases in a switch a syntax error](https://wiki.php.net/rfc/switch.default.multiple)
+
+### Removal of Redefinition of Parameters with Duplicate Names
+
+Previously, it was possible to specify parameters with duplicate names within a function definition.
+This ability has now been removed and causes a fatal error.
+
+```PHP
+function foo($version, $version)
+{
+    return $version;
+}
+
+echo foo(5, 7);
+  
+// Pre PHP 7 result
+7
+
+// PHP 7+ result
+Fatal error: Redefinition of parameter $version in /redefinition-of-parameters.php
+```
+
+**BC Breaks**
+ - Function parameters with duplicate name will now become a fatal error.
 
 ### Removal of Dead Server APIs
 
