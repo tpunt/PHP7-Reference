@@ -50,6 +50,7 @@ compatibility breakages that are outlined below.
 * [Reclassification and Removal of E_STRICT Notices](#reclassification-and-removal-of-e_strict-notices)
 * [Deprecation of Salt Option for `password_hash()`](#deprecation-of-salt-option-for-password_hash)
 * [Error on Invalid Octal Literals](#error-on-invalid-octal-literals)
+* [`substr()` Return Value Change](#substr-return-value-change)
 
 **[FAQ](#faq)**
  * [What happened to PHP 6?](#what-happened-to-php-6)
@@ -1379,6 +1380,28 @@ echo 0678; // Parse error:  Invalid numeric literal in...
 
 **BC Breaks**
  - Any invalid octal literals in code will now cause parse errors
+
+RFC: no RFC available
+
+### `substr()` Return Value Change
+
+`substr()` will now return an empty string instead of `false` when the start
+position of the truncation is equal to the string length:
+```PHP
+var_dump(substr('a', 1));
+
+// Pre PHP 7 result
+bool(false)
+
+// PHP 7+ result
+string(0) ""
+```
+
+`substr()` may still return `false` in other cases, however.
+
+**BC Breaks**
+ - Code that strictly checked for a `bool(false)` return value may now be
+ semantically invalid
 
 RFC: no RFC available
 
