@@ -1,8 +1,9 @@
 # PHP 7
 
-PHP 7 has been slated for release [in November of this year](https://wiki.php.net/rfc/php7timeline)
-(2015). It comes with a number of new features, changes, and backwards
-compatibility breakages that are outlined below.
+PHP 7 is set to be released on [December 3rd, 2015]
+(https://www.mail-archive.com/internals@lists.php.net/msg81690.html). It comes
+with a number of new features, changes, and backwards compatibility breakages
+that are outlined below.
 
 **[Performance](#performance)**
 
