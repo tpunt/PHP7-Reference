@@ -923,7 +923,7 @@ The semantics for some integer-based behaviour has changed in an effort to make
 them more intuitive and platform-independent. Here is a list of those changes:
  - Casting `NAN` and `INF` to an integer will always result in 0
  - Bitwise shifting by a negative number of bits is now disallowed (causes a
-   bool(false) return an emits an E_WARNING)
+   bool(false) return and emits an E_WARNING)
  - Left bitwise shifts by a number of bits beyond the bit width of an integer will always result in 0
  - Right bitwise shifts by a number of bits beyond the bit width of an integer
    will always result in 0 or -1 (sign dependent)
@@ -1144,7 +1144,7 @@ RFC: No RFC available
 When implementing custom session handlers, predicate functions from the
 `SessionHandlerInterface` that expect a `true` or `false` return value did not
 behave as expected. Due to an error in the previous implementation, only a `-1`
-return value was considered false - meaning that any even if the boolean
+return value was considered false - meaning that even if the boolean
 `false` was used to denote a failure, it was taken as a success:
 ```PHP
 <?php
