@@ -140,12 +140,11 @@ function sumOfInts(int ...$ints)
 var_dump(sumOfInts(2, '3', 4.1)); // int(9)
 ```
 
-To enable strict mode, a single `declare()` directive must be placed at the top
-of the file. This means that the strictness of typing for scalars is configured
-on a per-file basis. This directive not only affects the type declarations of
-parameters, but also a function's return type (see [Return Type
-Declarations](#return-type-declarations)), built-in PHP functions, and
-functions from loaded extensions.
+To enable strict mode, a `declare()` directive must be the first statement of
+a script. The strict mode will apply to the entire script. This directive not
+only affects the type declarations of parameters, but also a function's return
+type (see [Return Type Declarations](#return-type-declarations)), built-in PHP
+functions, and functions from loaded extensions.
 
 If the type-check fails, then a `TypeError` exception (see [Exceptions in the
 Engine](#exceptions-in-the-engine)) is thrown. The only leniency present in
