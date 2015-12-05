@@ -1,7 +1,7 @@
 # PHP 7
 
-PHP 7 is set to be released on [December 3rd, 2015]
-(https://www.mail-archive.com/internals@lists.php.net/msg81690.html). It comes
+PHP 7 was released on [December 3rd, 2015]
+(http://php.net/archive/2015.php#id2015-12-03-1). It comes
 with a number of new features, changes, and backwards compatibility breakages
 that are outlined below.
 
