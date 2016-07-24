@@ -13,7 +13,6 @@ are accepted into PHP 7.1.
 * [Void Functions](#void-functions)
 * [Symmetric Array Destructuring on Assignment](#symmetric-array-destructuring-on-assignment)
 * [Class Constant Visibility](#class-constant-visibility)
-* [Null Coalescing Assignment Operator](#null-coalescing-assignment-operator)
 * [Multi Catch Exception Handling](#multi-catch-exception-handling)
 * [Support for Keys in `list()`](#support-for-keys-in-list)
 * [Support for Negative String Offsets](#support-for-negative-string-offsets)
@@ -140,22 +139,6 @@ class Something
 ```
 
 RFC: [Class Constant Visibility](https://wiki.php.net/rfc/class_const_visibility)
-
-### Null Coalescing Assignment Operator
-
-The new null coalescing operator (`??`) was introduced into PHP 7.0 without a
-counterpart compound assignment operator. This has now been remedied, helping
-to remove repetitious code and make assignments terser.
-
-```php
-// PHP 7.0
-$user->username = $user->username ?? 'tpunt';
-
-// PHP 7.1
-$user->username ??= 'tpunt';
-```
-
-RFC: [Null Coalescing Assignment Operator](https://wiki.php.net/rfc/null_coalesce_equal_operator)
 
 ### Multi Catch Exception Handling
 
