@@ -3,11 +3,6 @@
 PHP 7.1 will be released towards the end of 2016, and with it comes some
 interesting features and changes (outlined below).
 
-Note that feature freeze is not scheduled
-[until July 7th](https://marc.ttias.be/php-internals/2016-05/msg00085.php)
-(when beta 1 is released), and so this article will be actively updated as RFCs
-are accepted into PHP 7.1.
-
 **[Features](#features)**
 * [Nullable Types](#nullable-types)
 * [Void Functions](#void-functions)
