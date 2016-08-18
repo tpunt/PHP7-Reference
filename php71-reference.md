@@ -160,7 +160,7 @@ This type will typically be used for type checking parameter or return values
 that will be used either in a `foreach` loop or `yield from` statement.
 
 ```php
-function iterator(iterable $iter) : iterable
+function iterator(iterable $iter)
 {
     foreach ($iter as $i) {
         //
@@ -245,7 +245,7 @@ class Test
         return Closure::fromCallable([$this, 'privateFunction']);
     }
 
-    private privateFunction($param)
+    private function privateFunction($param)
     {
         return $param;
     }
