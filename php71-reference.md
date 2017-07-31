@@ -1,7 +1,6 @@
 # PHP 7.1
 
-PHP 7.1 will be released towards the end of 2016, and with it comes some
-interesting features and changes (outlined below).
+PHP 7.1 was released towards the end of 2016, and with it came some interesting features and changes (outlined below).
 
 **[Features](#features)**
 * [Nullable Types](#nullable-types)
