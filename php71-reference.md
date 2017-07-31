@@ -1,5 +1,5 @@
-[PHP 7.2 Reference](https://github.com/tpunt/PHP7-Reference/blob/master/php72-reference.md)
-[PHP 7.0 Reference](https://github.com/tpunt/PHP7-Reference/blob/master/README.md)
+ - [PHP 7.2 Reference](https://github.com/tpunt/PHP7-Reference/blob/master/php72-reference.md)
+ - [PHP 7.0 Reference](https://github.com/tpunt/PHP7-Reference/blob/master/README.md)
 
 ---
 
