@@ -376,7 +376,7 @@ For example, the following will not work:
 // Warning: Cannot call func_num_args() dynamically in %s on line %d
 ```
 
-RFC: [https://wiki.php.net/rfc/forbid_dynamic_scope_introspection](Forbid dynamic calls to scope introspection functions)
+RFC: [Forbid dynamic calls to scope introspection functions](https://wiki.php.net/rfc/forbid_dynamic_scope_introspection)
 
 ### Throw on Passing too few Function Arguments
 

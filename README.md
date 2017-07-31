@@ -4,8 +4,7 @@
 
 # PHP 7.0
 
-PHP 7 was released on [December 3rd, 2015]
-(http://php.net/archive/2015.php#id2015-12-03-1). It comes
+PHP 7 was released on [December 3rd, 2015](http://php.net/archive/2015.php#id2015-12-03-1). It comes
 with a number of new features, changes, and backwards compatibility breakages
 that are outlined below.
 
@@ -1262,7 +1261,7 @@ function foo($version, $version)
 }
 
 echo foo(5, 7);
-  
+
 // Pre PHP 7 result
 7
 
