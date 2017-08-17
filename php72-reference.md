@@ -9,6 +9,7 @@ PHP 7.2 will be released towards the end of 2017. It brings a number of new feat
 
 [Features](#features)
  - [New `object` Type](#new-object-type)
+ - [Libsodium is now a Core Extension (as ext/sodium)](#libsodium-is-now-a-core-extension-as-extsodium)
  - [Extension Loading by Name](#extension-loading-by-name)
  - [Allow Abstract Method Overriding](#allow-abstract-method-overriding)
  - [Password Hashing with Argon2](#password-hashing-with-argon2)
@@ -46,6 +47,12 @@ test(new StdClass());
 ```
 
 RFC: [Object typehint](https://wiki.php.net/rfc/object-typehint)
+
+### Libsodium is now a Core Extension (as ext/sodium)
+
+The modern [libsodium](https://github.com/jedisct1/libsodium) cryptography library has now become a core extension in PHP. More information on ext/sodium can be found [here](https://paragonie.com/book/pecl-libsodium).
+
+RFC: [Make Libsodium a Core Extension](https://wiki.php.net/rfc/libsodium)
 
 ### Extension Loading by Name
 
