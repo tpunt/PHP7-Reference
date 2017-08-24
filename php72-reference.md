@@ -22,13 +22,24 @@ PHP 7.2 will be released towards the end of 2017. It brings a number of new feat
  - [Prevent `number_format()` from Returning Negative Zero](#prevent-number_format-from-returning-negative-zero)
  - [Parameter Type Widening](#parameter-type-widening)
  - [Convert Numeric Keys in Object/Array Casts](#convert-numeric-keys-in-objectarray-casts)
- - [Deprecate and Remove Unquoted Strings](#deprecate-and-remove-unquoted-strings)
  - [Disallow Passing `null` to `get_class()`](#disallow-passing-null-to-get_class)
  - [Warn When Counting Non-Countable Types](#warn-when-counting-non-countable-types)
  - [Allow a Trailing Comma for Grouped Namespaces](#allow-a-trailing-comma-for-grouped-namespaces)
- - [Deprecate `png2wbmp()` and `jpeg2wbmp()`](#deprecate-png2wbmp-and-jpeg2wbmp)
+ - [Deprecations](#deprecations)
+   - [Unquoted Strings](#unquoted-strings)
+   - [`png2wbmp()` and `jpeg2wbmp()`](#png2wbmp-and-jpeg2wbmp)
+   - [INTL_IDNA_VARIANT_2003](#intl_idna_variant_2003)
+   - [`__autoload` Method](#__autoload-method)
+   - [`track_errors` ini Setting and `$php_errormsg` Variable](#track_errors-ini-setting-and-php_errormsg-variable)
+   - [`create_function` Function](#create_function-function)
+   - [`mbstring.func_overload` ini Setting](#mbstringfunc_overload-ini-setting)
+   - [`(unset)` Cast](#unset-cast)
+   - [`parse_str` Without a Second Argument](#parse_str-without-a-second-argument)
+   - [`gmp_random` Function](#gmp_random-function)
+   - [`each` Function](#each-function)
+   - [`assert` With a String Argument](#assert-with-a-string-argument)
+   - [`$errcontext` Argument of Error Handlers](#errcontext-argument-of-error-handlers)
  - [Move ext/hash from Resources to Objects](#move-exthash-from-resources-to-objects)
- - [Deprecate and Remove `INTL_IDNA_VARIANT_2003`](#deprecate-and-remove-intl_idna_variant_2003)
  - [Improve SSL/TLS Defaults](#improve-ssltls-defaults)
 
 ## Features
@@ -223,21 +234,6 @@ int(1)
 
 RFC: [Convert numeric keys in object/array casts](https://wiki.php.net/rfc/convert_numeric_keys_in_object_array_casts)
 
-### Deprecate and Remove Unquoted Strings
-
-Unquoted strings that are non-existent global constants are taken to be strings of themselves. This behaviour used to emit an `E_NOTICE`, but will not emit an `E_WARNING`. The manual will be updated to reflect that this behaviour has been deprecated, and in the next major version of PHP, an exception will be thrown instead.
-
-```
-var_dump(NONEXISTENT);
-
-/* Output:
-Warning: Use of undefined constant NONEXISTENT - assumed 'NONEXISTENT' (this will throw an Error in a future version of PHP) in %s on line %d
-string(11) "NONEXISTENT"
-*/
-```
-
-RFC: [Deprecate and Remove Bareword (Unquoted) Strings](https://wiki.php.net/rfc/deprecate-bareword-strings)
-
 ### Disallow Passing `null` to `get_class()`
 
 Previously, passing `null` to the [`get_class()`](http://php.net/get_class) function would output the name of the enclosing class. This behaviour has now been removed, where an `E_WARNING` will be output instead. To achieve the same behaviour as before, the argument should simply be elided instead.
@@ -285,23 +281,100 @@ use Foo\Bar\{
 
 RFC: [Trailing Commas In List Syntax](https://wiki.php.net/rfc/list-syntax-trailing-commas)
 
-### Deprecate `png2wbmp()` and `jpeg2wbmp()`
+### Deprecations
+
+#### Unquoted Strings
+
+Unquoted strings that are non-existent global constants are taken to be strings of themselves. This behaviour used to emit an `E_NOTICE`, but will now emit an `E_WARNING`. The manual will be updated to reflect that this behaviour has been deprecated, and in the next major version of PHP, an exception will be thrown instead.
+
+```
+var_dump(NONEXISTENT);
+
+/* Output:
+Warning: Use of undefined constant NONEXISTENT - assumed 'NONEXISTENT' (this will throw an Error in a future version of PHP) in %s on line %d
+string(11) "NONEXISTENT"
+*/
+```
+
+RFC: [Deprecate and Remove Bareword (Unquoted) Strings](https://wiki.php.net/rfc/deprecate-bareword-strings)
+
+#### `png2wbmp()` and `jpeg2wbmp()`
 
 The functions [`png2wbmp()`](http://php.net/png2wbmp) and [`jpeg2wbmp()`](http://php.net/jpeg2wbmp) from ext/gd have now been deprecated and will be removed in PHP 8. This is because they did not really belong in ext/gd, since they were the only conversion functions from the extension and did not follow the naming conventions of the extension. A simple implementation can be made [in PHP instead](http://news.php.net/php.internals/96366).
 
 RFC: [Deprecate png2wbmp() and jpeg2wbmp()](https://wiki.php.net/rfc/deprecate-png-jpeg-2wbmp)
+
+#### INTL_IDNA_VARIANT_2003
+
+The INTL extension has deprecated the `INTL_IDNA_VARIANT_2003`, which is the default for [`idn_to_ascii()`](http://php.net/idn_to_ascii) and [`idn_to_utf8()`](http://php.net/idn_to_utf8). PHP 7.4 will see these defaults changed to `INTL_IDNA_VARIANT_UTS46`, and the next major version of PHP will remove `INTL_IDNA_VARIANT_2003` altogether.
+
+RFC: [Deprecate and remove INTL_IDNA_VARIANT_2003](https://wiki.php.net/rfc/deprecate-and-remove-intl_idna_variant_2003)
+
+#### `__autoload` Method
+
+Given the lack of interoperability between `__autoload` and `spl_autoload_register`, and with the latter is superior (due to it being able to chain autoloaders), this method has been deprecated.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `track_errors` ini Setting and `$php_errormsg` Variable
+
+When the `track_errors` ini setting is enabled, a `$php_errormsg` variable will be created in the local scope when a non-fatal error occurs. Given that the preferred way of retrieving such error information is by using `error_get_last`, this feature has been deprecated.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `create_function` Function
+
+Given the security issues of this function (being a thin wrapper around `eval`), and the preferred way of creating `Closure`s by defining an anonymous function, this dated function has now been deprecated.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `mbstring.func_overload` ini Setting
+
+Given the interoperability problems of string-based functions being used in environments with this setting enabled, it has now been deprecated.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `(unset)` Cast
+
+Casting any expression to this type will always result in `null`, and so this superfluous casting type has now been deprecated.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `parse_str` Without a Second Argument
+
+If the second argument to `parse_str` was elided, the query string parameters would instead populate local symbol table instead. Given the security problems around this, using `parse_str` without a second argument has now been deprecated. The function should always be used with two arguments (the second argument causes the query string to be parsed into an array).
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `gmp_random` Function
+
+This function generates a random number based upon a range that is calculated by an unexposed, platform-specific limb size. Given this facet, this function has now been deprecated. The preferred way of generating a random number using the GMP extension is by `gmp_random_bits` and `gmp_random_range`.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `each` Function
+
+This function is far slower at iteration than a normal `foreach`, and causes implementation issues for some language changes. It has therefore been deprecated.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `assert` With a String Argument
+
+Using `assert` with a string argument required the string to be `eval`ed. Given the potential for remote code execution, using `assert` with a string argument is now deprecated. The preferred way of using `assert` now is with PHP boolean expressions.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
+
+#### `$errcontext` Argument of Error Handlers
+
+The `$errcontext` argument contains all local variables of the error site. Given its rare usage, and the problems it causes with internal optimisations, it has now been deprecated (with a soft deprecation notice in the manual). A proper debugger should be used instead to retrieve information on local variables at the error site.
+
+RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
 
 ### Move ext/hash from Resources to Objects
 
 As part of the long-term migration away from resources, the Hash extension has been updated to use objects instead of resources. The change should be seamless for PHP developers, except for where `is_resource()` checks have been made (which will need updating to `is_object()` instead).
 
 RFC: [Migration Hash Context from Resource to Object](https://wiki.php.net/rfc/hash-context.as-resource)
-
-### Deprecate and remove INTL_IDNA_VARIANT_2003
-
-The INTL extension has deprecated the `INTL_IDNA_VARIANT_2003`, which is the default for [`idn_to_ascii()`](http://php.net/idn_to_ascii) and [`idn_to_utf8()`](http://php.net/idn_to_utf8). PHP 7.4 will see these defaults changed to `INTL_IDNA_VARIANT_UTS46`, and the next major version of PHP will remove `INTL_IDNA_VARIANT_2003` altogether.
-
-RFC: [Deprecate and remove INTL_IDNA_VARIANT_2003](https://wiki.php.net/rfc/deprecate-and-remove-intl_idna_variant_2003)
 
 ### Improve SSL/TLS Defaults
 
