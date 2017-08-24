@@ -5,7 +5,7 @@
 
 # PHP 7.2
 
-PHP 7.2 will be released towards the end of 2017. It brings a number of new features and changes that are outlined below.
+PHP 7.2 will be released at the [end of 2017](https://wiki.php.net/todo/php72). It brings a number of new features and changes that are outlined below.
 
 [Features](#features)
  - [New `object` Type](#new-object-type)
