@@ -40,8 +40,8 @@ that are outlined below.
 * [Integer Semantics](#integer-semantics)
 * [JSON Extension Replaced with JSOND](#json-extension-replaced-with-jsond)
 * [ZPP Failure on Overflow](#zpp-failure-on-overflow)
-* [Fixes to `foreach()`'s Behaviour](#fixes-to-foreachs-behaviour)
-* [Changes to `list()`'s Behaviour](#changes-to-lists-behaviour)
+* [Fixes to `foreach()`'s Behavior](#fixes-to-foreachs-behavior)
+* [Changes to `list()`'s Behavior](#changes-to-lists-behavior)
 * [Changes to Division by Zero Semantics](#changes-to-division-by-zero-semantics)
 * [Fixes to Custom Session Handler Return Values](#fixes-to-custom-session-handler-return-values)
 * [Deprecation of PHP 4-Style Constructors](#deprecation-of-php-4-style-constructors)
@@ -90,7 +90,7 @@ integer return value that can be either:
 * a negative integer (if the right-hand operand is greater than the left-hand operand)
 
 The operator has the same precedence as the equality operators (`==`, `!=`,
-`===`, `!==`) and has the exact same behaviour as the other loose comparison
+`===`, `!==`) and has the exact same behavior as the other loose comparison
 operators (`<`, `>=`, etc). It is also non-associative like them too, so
 chaining of the operands (like `1 <=> 2 <=> 3`) is not allowed.
 
@@ -106,7 +106,7 @@ var_dump(['a', 'b'] <=> ['a', 'b']); // int(0)
 ```
 
 Objects are not comparable, and so using them as operands with this operator
-will result in undefined behaviour.
+will result in undefined behavior.
 
 RFC: [Combined Comparison Operator](https://wiki.php.net/rfc/combined-comparison-operator)
 
@@ -127,7 +127,7 @@ $route = $_GET['route'] ?? 'index';
 RFC: [Null Coalesce Operator](https://wiki.php.net/rfc/isset_ternary)
 
 ### Scalar Type Declarations
-Scalar type declarations come in two flavours: **coercive** (default) and
+Scalar type declarations come in two flavors: **coercive** (default) and
 **strict**. The following types for parameters can now be enforced (either
 coercively or strictly): strings (`string`), integers (`int`), floating-point
 numbers (`float`), and booleans (`bool`). They augment the other types
@@ -374,7 +374,7 @@ RFC: [Unicode Codepoint Escape Syntax](https://wiki.php.net/rfc/unicode_escape)
 ### Closure call() Method
 
 The new `call()` method for closures is used as a shorthand way of invoking a
-closure whilst binding an object scope to it. This creates more perfomant and
+closure whilst binding an object scope to it. This creates more performance and
 compact code by removing the need to create an intermediate closure before
 invoking it.
 
@@ -406,7 +406,7 @@ $data = unserialize($foo, ["allowed_classes" => false]);
 // converts all objects into __PHP_Incomplete_Class object except those of MyClass and MyClass2
 $data = unserialize($foo, ["allowed_classes" => ["MyClass", "MyClass2"]]);
 
-// default behaviour (same as omitting the second argument) that accepts all classes
+// default behavior (same as omitting the second argument) that accepts all classes
 $data = unserialize($foo, ["allowed_classes" => true]);
 ```
 
@@ -539,7 +539,7 @@ RFC: [Generator Return Expressions](https://wiki.php.net/rfc/generator-return-ex
 ### Generator Delegation
 
 Generator delegation builds upon the ability of being able to return
-expressions from generators. It does this by using an new syntax of `yield from
+expressions from generators. It does this by using a new syntax of `yield from
 <expr>`, where <expr> can be any `Traversable` object or array. This <expr>
 will be advanced until no longer valid, and then execution will continue in the
 calling generator. This feature enables `yield` statements to be broken down
@@ -812,7 +812,7 @@ foo()() // invoke the return of foo()
 
 The ability to arbitrarily combine variable operators came from reversing the
 evaluation semantics of indirect variable, property, and method references. The
-new behaviour is more intuitive and always follows a left-to-right evaluation
+new behavior is more intuitive and always follows a left-to-right evaluation
 order:
 
 ```PHP
@@ -833,7 +833,7 @@ RFC: [Uniform Variable Syntax](https://wiki.php.net/rfc/uniform_variable_syntax)
 
 ### Exceptions in the Engine
 
-Exceptions in the engine converts many fatal and recoverable fatal errors into
+Exceptions in the engine convert many fatal and recoverable fatal errors into
 exceptions. This enables for graceful degradation of applications through
 custom error handling procedures. It also means that cleanup-driven features
 such as the `finally` clause and object destructors will now be executed.
@@ -923,7 +923,7 @@ RFC: [Throwable Interface](https://wiki.php.net/rfc/throwable-interface)
 
 ### Integer Semantics
 
-The semantics for some integer-based behaviour has changed in an effort to make
+The semantics for some integer-based behavior has changed in an effort to make
 them more intuitive and platform-independent. Here is a list of those changes:
  - Casting `NAN` and `INF` to an integer will always result in 0
  - Bitwise shifting by a negative number of bits is now disallowed (causes a
@@ -969,15 +969,15 @@ E_WARNING.
 
 RFC: [ZPP Failure on Overflow](https://wiki.php.net/rfc/zpp_fail_on_overflow)
 
-### Fixes to `foreach()`'s Behaviour
+### Fixes to `foreach()`'s Behavior
 
 PHP's `foreach()` loop had a number of strange edge-cases to it. These were all
-implementation-driven and caused a lot of undefined and inconsistent behaviour
+implementation-driven and caused a lot of undefined and inconsistent behavior
 when iterating between copies and references of an array, when using iterator
 manipulators like `current()` and `reset()`, when modifying the array currently
 being iterated, and so on.
 
-This change eliminates the undefined behaviour of these edge-cases and makes
+This change eliminates the undefined behavior of these edge-cases and makes
 the semantics more predictable and intuitive.
 
 `foreach()` by value on arrays
@@ -1001,7 +1001,7 @@ foreach($array as $val) {
 ```
 
 When by-value semantics are used, the array being iterated over is now not
-modified in-place. `current()` also now has defined behaviour, where it will
+modified in-place. `current()` also now has defined behavior, where it will
 always begin at the start of the array.
 
 `foreach()` by reference on arrays and objects and by value on objects
@@ -1057,7 +1057,7 @@ foreach($array as &$val) {
 
 RFC: [Fix "foreach" behavior](https://wiki.php.net/rfc/php7_foreach)
 
-### Changes to `list()`'s Behaviour
+### Changes to `list()`'s Behavior
 
 The `list()` function was documented as not supporting strings, however in few cases strings could have been used:
 ```PHP
@@ -1118,10 +1118,10 @@ RFC: [Abstract syntax tree](https://wiki.php.net/rfc/abstract_syntax_tree)
 
 Prior to PHP 7, when a divisor was 0 for either the divide (/) or modulus (%) operators,
 an E_WARNING would be emitted and `false` would be returned. This was nonsensical for
-an arithmetic operation to return a boolean in some cases, and so the behaviour has been
+an arithmetic operation to return a boolean in some cases, and so the behavior has been
 rectified in PHP 7.
 
-The new behaviour causes the divide operator to return a float as either +INF, -INF, or
+The new behavior causes the divide operator to return a float as either +INF, -INF, or
 NAN. The modulus operator E_WARNING has been removed and (alongside the new `intdiv()`
 function) will throw a `DivisionByZeroError` exception. In addition, the `intdiv()`
 function may also throw an `ArithmeticError` when valid integer arguments are supplied
@@ -1197,15 +1197,15 @@ because the conditions upon whether the PHP 4-style constructor was invoked
 caused additional cognitive overhead to developers that could also be confusing
 to the inexperienced.
 
-For example, if the class is defined within a namespace or if an
-`__construct()` method existed, then a PHP 4-style constructor was recognised
-as a plain method. If it was defined above an `__construct()` method, then an
-E_STRICT notice would be emitted, but still recognised as a plain method.
+For example, if the class is defined within a namespace or if a
+`__construct()` method existed, then a PHP 4-style constructor was recognized
+as a plain method. If it was defined above a `__construct()` method, then an
+E_STRICT notice would be emitted, but still recognized as a plain method.
 
 Now in PHP 7, if the class is not in a namespace and there is no
 `__construct()` method present, the PHP 4-style constructor will be used as a
 constructor but an E_DEPRECATED will be emitted. In PHP 8, the PHP 4-style
-constructor will always be recognised as a plain method and the E_DEPRECATED
+constructor will always be recognized as a plain method and the E_DEPRECATED
 notice will disappear.
 
 **BC Breaks**
@@ -1300,7 +1300,7 @@ RFC: [Removal of dead or not yet PHP7 ported SAPIs and extensions](https://wiki.
 
 ### Removal of Hex Support in Numerical Strings
 
-A Stringy hexadecimal number is no longer recognised as numerical.
+A Stringy hexadecimal number is no longer recognized as numerical.
 ```PHP
 var_dump(is_numeric('0x123'));
 var_dump('0x123' == '291');

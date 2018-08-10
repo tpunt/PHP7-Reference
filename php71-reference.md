@@ -108,7 +108,7 @@ var_dump(swap($a, $b), $a, $b); // null, int(2), int(1)
 
 Attempting to use a void function's return value simply evaluates to `null`,
 with no warnings are emitted. The reason for this is because warnings would
-implicate the use of generic higher order functions.
+implicate the use of generic higher-order functions.
 
 RFC: [Void Return Type](https://wiki.php.net/rfc/void_return_type)
 
@@ -209,7 +209,7 @@ RFC: [Allow specifying keys in list()](https://wiki.php.net/rfc/list_keys)
 
 ### Support for Negative String Offsets
 
-Ubiquituous support for negative string offsets has been added. This affects [a
+Ubiquitous support for negative string offsets has been added. This affects [a
 number of built-in functions](https://wiki.php.net/rfc/negative-string-offsets#in_built-in_functions),
 as well as the array dereferencing operator (`[]`).
 
@@ -328,7 +328,7 @@ RFC: [Warn about invalid strings in arithmetic](https://wiki.php.net/rfc/invalid
 The mcrypt extension has been abandonware for quite some time now (nearly a
 decade). It was also fairly complex to use, causing many to implement it
 incorrectly (and subsequently, insecurely). It has therefore been deprecated in
-favour of [OpenSSL](http://php.net/openssl), where it will be removed from the
+favor of [OpenSSL](http://php.net/openssl), where it will be removed from the
 core and into PECL in PHP 7.2.
 
 RFC: [Deprecate (then Remove) Mcrypt](https://wiki.php.net/rfc/mcrypt-viking-funeral)
@@ -345,7 +345,7 @@ RFC: [Deprecate mb_ereg_replace eval option](https://wiki.php.net/rfc/deprecate_
 
 Previously, 3 octit octals could overflow without warning the programmer. Now,
 an `E_WARNING` will be emitted on such overflows (with the previous overflow
-behaviour remaining the same).
+behavior remaining the same).
 
 ```php
 var_dump("\500");
@@ -358,7 +358,7 @@ var_dump("\500");
 
 Dynamic calls for certain functions have been forbidden. These functions either
 inspect or modify another scope, and present with them ambiguous and unreliable
-behaviour. The functions are as follows:
+behavior. The functions are as follows:
 ```
 assert() - with a string as the first argument
 compact()
@@ -385,7 +385,7 @@ RFC: [Forbid dynamic calls to scope introspection functions](https://wiki.php.ne
 ### Throw on Passing too few Function Arguments
 
 An `Error` exception will now be thrown when a *user-defined function* (not an
-*internal function*) is passed too few arguments. This new behaviour aims to
+*internal function*) is passed too few arguments. This new behavior aims to
 help expose potentially buggy code.
 
 ```php
@@ -400,7 +400,7 @@ RFC: [Replace "Missing argument" warning with "Too few arguments" exception](htt
 Whilst `$this` is considered a special variable in PHP, it lacked proper checks
 to ensure it wasn't used as a variable name or reassigned. This has now been
 rectified to ensure that `$this` cannot be a user-defined variable, reassigned
-to a different value, or be globalised.
+to a different value, or be globalized.
 
 RFC: [Fix inconsistent behavior of $this variable](https://wiki.php.net/rfc/this_var)
 

@@ -112,7 +112,7 @@ PDO's string type has been extended to support the national character type when 
  - `PDO::PARAM_STR_CHAR`
  - `PDO::ATTR_DEFAULT_STR_PARAM`
 
-These constants are utilised by bitwise OR'ing them with `PDO::PARAM_STR`:
+These constants are utilized by bitwise OR'ing them with `PDO::PARAM_STR`:
 ```php
 $db->quote('über', PDO::PARAM_STR | PDO::PARAM_STR_NATL);
 ```
@@ -236,7 +236,7 @@ RFC: [Convert numeric keys in object/array casts](https://wiki.php.net/rfc/conve
 
 ### Disallow Passing `null` to `get_class()`
 
-Previously, passing `null` to the [`get_class()`](http://php.net/get_class) function would output the name of the enclosing class. This behaviour has now been removed, where an `E_WARNING` will be output instead. To achieve the same behaviour as before, the argument should simply be elided instead.
+Previously, passing `null` to the [`get_class()`](http://php.net/get_class) function would output the name of the enclosing class. This behavior has now been removed, where an `E_WARNING` will be output instead. To achieve the same behavior as before, the argument should simply be elided instead.
 
 RFC: [get_class() disallow null parameter](https://wiki.php.net/rfc/get_class_disallow_null_parameter)
 
@@ -285,7 +285,7 @@ RFC: [Trailing Commas In List Syntax](https://wiki.php.net/rfc/list-syntax-trail
 
 #### Unquoted Strings
 
-Unquoted strings that are non-existent global constants are taken to be strings of themselves. This behaviour used to emit an `E_NOTICE`, but will now emit an `E_WARNING`. The manual will be updated to reflect that this behaviour has been deprecated, and in the next major version of PHP, an exception will be thrown instead.
+Unquoted strings that are non-existent global constants are taken to be strings of themselves. This behavior used to emit an `E_NOTICE`, but will now emit an `E_WARNING`. The manual will be updated to reflect that this behavior has been deprecated, and in the next major version of PHP, an exception will be thrown instead.
 
 ```
 var_dump(NONEXISTENT);
@@ -366,7 +366,7 @@ RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
 
 #### `$errcontext` Argument of Error Handlers
 
-The `$errcontext` argument contains all local variables of the error site. Given its rare usage, and the problems it causes with internal optimisations, it has now been deprecated (with a soft deprecation notice in the manual). A proper debugger should be used instead to retrieve information on local variables at the error site.
+The `$errcontext` argument contains all local variables of the error site. Given its rare usage, and the problems it causes with internal optimizations, it has now been deprecated (with a soft deprecation notice in the manual). A proper debugger should be used instead to retrieve information on local variables at the error site.
 
 RFC: [Deprecations for PHP 7.2](https://wiki.php.net/rfc/deprecations_php_7_2)
 
