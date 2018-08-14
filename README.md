@@ -374,8 +374,8 @@ RFC: [Unicode Codepoint Escape Syntax](https://wiki.php.net/rfc/unicode_escape)
 ### Closure call() Method
 
 The new `call()` method for closures is used as a shorthand way of invoking a
-closure whilst binding an object scope to it. This creates more performance and
-compact code by removing the need to create an intermediate closure before
+closure whilst binding an object scope to it. This increases performance and 
+compacts the code by removing the need to create an intermediate closure before
 invoking it.
 
 ```PHP
